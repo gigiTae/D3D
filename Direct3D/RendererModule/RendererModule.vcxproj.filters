@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="MathHeader.h" />
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="RendererHeader.h" />
   </ItemGroup>
 </Project>
