@@ -22,11 +22,17 @@
       <Filter>Private\Windows\Resource</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Application.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="WindowsApp.cpp">
       <Filter>Private\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

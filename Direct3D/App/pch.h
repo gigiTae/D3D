@@ -22,9 +22,16 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+#include <iostream>
 
+#include <assert.h>
+// 메모릭 추적
+#include <crtdbg.h>
+#include <memory.h>
+
+#include "MathModule/MathHeader.h"
+#include "RendererModule/RendererHeader.h"
 #include "EngineModule/EngineHeader.h"
-
 
 #include "resource.h"
 
