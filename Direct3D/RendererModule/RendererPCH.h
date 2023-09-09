@@ -17,4 +17,6 @@
 #include <dxgi.h>
 #include <wrl/client.h>
 
+#include "HRDefine.h"
+
 

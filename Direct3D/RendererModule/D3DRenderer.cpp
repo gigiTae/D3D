@@ -26,15 +26,44 @@ bool D3DRenderer::Initialize(HWND hWnd, std::pair<unsigned int, unsigned int> sc
 	m_screenSize = screenSize;
 	m_hWnd = hWnd;
 
-	/// ==================================
-	///          Direct3D 초기화 
-	/// ==================================
+	InitializeD3D();
+	InitializePipeLine();
 
-	// Direct3D 초기화 8가지 단계
+}
+
+void D3DRenderer::Finalize()
+{
 	
-	// 1. D3D11CreateDevice 함수를 이용해서 장치, 즉 ID3D11 Device 인터페이스와
-	// 장치 문맥, 즉 ID3D11DeviceContext 인터 페이스를 생성한다. 
-	 
+
+
+	CoUninitialize();
+}
+
+void D3DRenderer::ClearBuffer()
+{
+	float arr[4]{ 0.2f,0.2f,0.5f,1.f };
+
+	// 후면 버퍼를파란색으로지운다. Colors: :Blue는 d3dUtil.h에 정의되어 있다.
+	m_d3dDeviceContext->ClearRenderTargetView(m_d3dRenderTargetView.Get(),
+		arr);
+	// 깊이 버퍼를 1. Of로, 스텐실 버퍼를 0으로 지운다.
+	m_d3dDeviceContext->ClearDepthStencilView(m_depthStencilView.Get(),
+		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+
+	HR(m_swapChain->Present(0, 0));
+}
+
+bool D3DRenderer::InitializeD3D()
+{
+	/// ==================================
+///          Direct3D 초기화 
+/// ==================================
+
+// Direct3D 초기화 8가지 단계
+
+// 1. D3D11CreateDevice 함수를 이용해서 장치, 즉 ID3D11 Device 인터페이스와
+// 장치 문맥, 즉 ID3D11DeviceContext 인터 페이스를 생성한다. 
+
 	UINT createDeviceFlags = 0;
 
 #if defined (DEBUG) || defined (_DEBUG)
@@ -55,7 +84,7 @@ bool D3DRenderer::Initialize(HWND hWnd, std::pair<unsigned int, unsigned int> sc
 
 	if (FAILED(hr))
 	{
-		MessageBox(0, L"D3D11CreateDevice Failed." ,0, 0);
+		MessageBox(0, L"D3D11CreateDevice Failed.", 0, 0);
 		return false;
 	}
 
@@ -64,12 +93,12 @@ bool D3DRenderer::Initialize(HWND hWnd, std::pair<unsigned int, unsigned int> sc
 		MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
 		return false;
 	}
-	
+
 	// 2. ID3D11Device::CheckMultisampleQualityLevels 메서드를 이용해서 
 	// 4XMSAA 품질 수준 지원 여부를 점검한다.
 
 	UINT m4xMsaaQuality{};
-	
+
 	HR(m_d3dDevice->CheckMultisampleQualityLevels(
 		DXGI_FORMAT_R8G8B8A8_UNORM, 4, &m4xMsaaQuality));
 
@@ -125,13 +154,14 @@ bool D3DRenderer::Initialize(HWND hWnd, std::pair<unsigned int, unsigned int> sc
 	dxgiFactory->Release();
 
 	// 5. 교환 사슬의 후면 버퍼에 대한 렌더 대상 뷰를 생성한다.
-	ID3D11Texture2D* backBuffer= nullptr;
+	ID3D11Texture2D* backBuffer = nullptr;
 	HR(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
 	assert(backBuffer);
-	
+
 	HR(m_d3dDevice->CreateRenderTargetView(backBuffer, 0, &m_d3dRenderTargetView));
-	
+
 	backBuffer->Release();
+
 
 	// 6. 깊이, 스텐실 버퍼와 그에 연결되는 깊이,스텐실 뷰를 생성한다.
 	D3D11_TEXTURE2D_DESC depthStencilDesc{};
@@ -159,7 +189,7 @@ bool D3DRenderer::Initialize(HWND hWnd, std::pair<unsigned int, unsigned int> sc
 	depthStencilDesc.MiscFlags = 0;
 
 	HR(m_d3dDevice->CreateTexture2D(&depthStencilDesc, 0, &m_depthStencilBuffer));
-	
+
 	assert(m_depthStencilBuffer);
 	HR(m_d3dDevice->CreateDepthStencilView(m_depthStencilBuffer.Get(), 0, &m_depthStencilView));
 
@@ -171,8 +201,8 @@ bool D3DRenderer::Initialize(HWND hWnd, std::pair<unsigned int, unsigned int> sc
 	m_d3dDeviceContext->OMSetRenderTargets(1, &renderTargetView, m_depthStencilView.Get());
 
 	// 8. 뷰포트를 설정한다. 뷰포트 2개설정하면 화면분할 가능 
-	
- 	D3D11_VIEWPORT vp{};
+
+	D3D11_VIEWPORT vp{};
 	vp.TopLeftX = 0.f;
 	vp.TopLeftY = 0.f;
 	vp.Width = static_cast<float>(m_screenSize.first);
@@ -185,24 +215,36 @@ bool D3DRenderer::Initialize(HWND hWnd, std::pair<unsigned int, unsigned int> sc
 	return true;
 }
 
-void D3DRenderer::DrawLine()
+bool D3DRenderer::InitializePipeLine()
 {
-	float arr[4]{ 1.f,1.f,0.f,1.f };
+	HRESULT hr = S_OK;
 
-	// 후면 버퍼를파란색으로지운다. Colors: :Blue는 d3dUtil.h에 정의되어 있다.
-    m_d3dDeviceContext->ClearRenderTargetView(m_d3dRenderTargetView.Get(),
-		arr);
-	// 깊이 버퍼를 1. Of로, 스텐실 버퍼를 0으로 지운다.
-	m_d3dDeviceContext->ClearDepthStencilView(m_depthStencilView.Get(),
-		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+	ID3D10Blob* vertexShader = nullptr;
+	ID3D10Blob* pixelShader = nullptr;
 
-	HR(m_swapChain->Present(0,0));
-}
-
-void D3DRenderer::Finalize()
-{
+	// 쉐이더 불러오기
+	HR(D3DCompileFromFile(L"shaders.shader", 0, 0
+		, "VShader", "vs_0_0", 0, 0,  &vertexShader,  0));
 	
+	HR(D3DCompileFromFile(L"shaders.shader", 0, 0
+		, "VShader", "vs_0_0", 0, 0, &pixelShader, 0));
+
+	// 쉐이더 생성
+	HR(m_d3dDevice->CreateVertexShader(
+		vertexShader->GetBufferPointer(),
+		vertexShader->GetBufferSize(),
+		NULL, &m_vertexShader));
+
+	HR(m_d3dDevice->CreatePixelShader(
+		pixelShader->GetBufferPointer(),
+		pixelShader->GetBufferSize(),
+		NULL, &m_pixelShader));
+
+	// 쉐이더 연결
+	m_d3dDeviceContext->VSSetShader(m_vertexShader.Get(), 0, 0);
+	m_d3dDeviceContext->PSSetShader(m_pixelShader.Get(), 0, 0);
 
 
-	CoUninitialize();
+
+	return true;
 }

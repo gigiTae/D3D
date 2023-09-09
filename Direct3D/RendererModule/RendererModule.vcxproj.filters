@@ -22,5 +22,8 @@
     <ClInclude Include="D3DRenderer.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="HRDefine.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,11 +1,11 @@
 #pragma once
 
-
 /// <summary>
 ///  모듈들을 이용하는 가장 상단 클래스 
 /// </summary>
 class Application
 {
+
 public:
 	Application();
 	~Application();
