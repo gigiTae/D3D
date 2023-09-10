@@ -29,6 +29,9 @@ bool D3DRenderer::Initialize(HWND hWnd, std::pair<unsigned int, unsigned int> sc
 	InitializeD3D();
 	InitializePipeLine();
 
+
+
+	return true;
 }
 
 void D3DRenderer::Finalize()
@@ -217,32 +220,32 @@ bool D3DRenderer::InitializeD3D()
 
 bool D3DRenderer::InitializePipeLine()
 {
-	HRESULT hr = S_OK;
+	//HRESULT hr = S_OK;
 
-	ID3D10Blob* vertexShader = nullptr;
-	ID3D10Blob* pixelShader = nullptr;
+	//ID3D10Blob* vertexShader = nullptr;
+	//ID3D10Blob* pixelShader = nullptr;
 
-	// ½¦ÀÌ´õ ºÒ·¯¿À±â
-	HR(D3DCompileFromFile(L"shaders.shader", 0, 0
-		, "VShader", "vs_0_0", 0, 0,  &vertexShader,  0));
-	
-	HR(D3DCompileFromFile(L"shaders.shader", 0, 0
-		, "VShader", "vs_0_0", 0, 0, &pixelShader, 0));
+	//// ½¦ÀÌ´õ ºÒ·¯¿À±â
+	//HR(D3DCompileFromFile(L"shaders.shader", 0, 0
+	//	, "VShader", "vs_0_0", 0, 0,  &vertexShader,  0));
+	//
+	//HR(D3DCompileFromFile(L"shaders.shader", 0, 0
+	//	, "VShader", "vs_0_0", 0, 0, &pixelShader, 0));
 
-	// ½¦ÀÌ´õ »ý¼º
-	HR(m_d3dDevice->CreateVertexShader(
-		vertexShader->GetBufferPointer(),
-		vertexShader->GetBufferSize(),
-		NULL, &m_vertexShader));
+	//// ½¦ÀÌ´õ »ý¼º
+	//HR(m_d3dDevice->CreateVertexShader(
+	//	vertexShader->GetBufferPointer(),
+	//	vertexShader->GetBufferSize(),
+	//	NULL, &m_vertexShader));
 
-	HR(m_d3dDevice->CreatePixelShader(
-		pixelShader->GetBufferPointer(),
-		pixelShader->GetBufferSize(),
-		NULL, &m_pixelShader));
+	//HR(m_d3dDevice->CreatePixelShader(
+	//	pixelShader->GetBufferPointer(),
+	//	pixelShader->GetBufferSize(),
+	//	NULL, &m_pixelShader));
 
-	// ½¦ÀÌ´õ ¿¬°á
-	m_d3dDeviceContext->VSSetShader(m_vertexShader.Get(), 0, 0);
-	m_d3dDeviceContext->PSSetShader(m_pixelShader.Get(), 0, 0);
+	//// ½¦ÀÌ´õ ¿¬°á
+	//m_d3dDeviceContext->VSSetShader(m_vertexShader.Get(), 0, 0);
+	//m_d3dDeviceContext->PSSetShader(m_pixelShader.Get(), 0, 0);
 
 
 
