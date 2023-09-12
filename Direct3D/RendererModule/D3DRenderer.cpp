@@ -12,6 +12,11 @@ D3DRenderer::D3DRenderer()
 	,m_depthStencilView()
 	,m_depthStencilBuffer()
 {
+	DirectX::XMMATRIX I = DirectX::XMMatrixIdentity();
+
+	DirectX::XMStoreFloat4x4(&m_world, I);
+	DirectX::XMStoreFloat4x4(&m_view, I);
+	DirectX::XMStoreFloat4x4(&m_proj, I);
 
 }
 
@@ -44,7 +49,7 @@ void D3DRenderer::Finalize()
 
 void D3DRenderer::ClearBuffer()
 {
-	float arr[4]{ 0.2f,0.2f,0.5f,1.f };
+	float arr[4]{ 0.f,0.f,0.f,1.f };
 
 	// 후면 버퍼를파란색으로지운다. Colors: :Blue는 d3dUtil.h에 정의되어 있다.
 	m_d3dDeviceContext->ClearRenderTargetView(m_d3dRenderTargetView.Get(),
@@ -52,13 +57,79 @@ void D3DRenderer::ClearBuffer()
 	// 깊이 버퍼를 1. Of로, 스텐실 버퍼를 0으로 지운다.
 	m_d3dDeviceContext->ClearDepthStencilView(m_depthStencilView.Get(),
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+}
+
+void D3DRenderer::Render()
+{
+	ClearBuffer();
+
+	// 정범 버퍼
+	DM::Vertex1 vertices[] = {
+		DirectX::XMFLOAT3(-0.5f, -0.5f,0.f), DirectX::XMFLOAT4(1.f,1.f,1.f,1.f),
+		DirectX::XMFLOAT3(-0.5f, 0.5f, 0.f), DirectX::XMFLOAT4(1.f,1.f,1.f,1.f),
+		DirectX::XMFLOAT3(0.5f, -0.5f, 0.f), DirectX::XMFLOAT4(1.f,1.f,1.f,1.f)
+	};
+
+	D3D11_BUFFER_DESC BF{};
+	BF.ByteWidth = sizeof(DM::Vertex1)*3; // 생성할 정점 버퍼의 크기
+	BF.Usage = D3D11_USAGE_DEFAULT;  // 버퍼가 쓰이는 방식 
+	BF.BindFlags = D3D11_BIND_VERTEX_BUFFER; // 정점 버퍼
+	BF.CPUAccessFlags = 0;
+	BF.MiscFlags = 0;
+	BF.StructureByteStride = 0;
+
+	D3D11_SUBRESOURCE_DATA SD{};
+	SD.pSysMem = &vertices;
+
+	ID3D11Buffer* mVB;
+
+	HR(m_d3dDevice->CreateBuffer(&BF, &SD, &mVB));
+
+	// 생성된 버퍼의 정점들을 실제로 파이프라인으로 공급하려면, 버퍼 장치의
+	// 한 입력 슬롯에 붙여야 한다. 
+
+	UINT stride = sizeof(DM::Vertex1);
+	UINT offset = 0;
+
+	m_d3dDeviceContext->IASetVertexBuffers(
+		0, 1, &mVB, &stride, &offset);
+
+	m_d3dDeviceContext->Draw(0, 1);
+
+	// 색인과 색인 버퍼 생성
+	UINT indices[3]
+	{
+		0,1,2 // 삼각형
+	};
+
+	// 색인 버퍼를 서술하는 구조체를 채운다.
+	D3D11_BUFFER_DESC ibd{};
+	ibd.Usage = D3D11_USAGE_IMMUTABLE;
+	ibd.ByteWidth = sizeof(UINT)* 3;
+	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibd.CPUAccessFlags = 0;
+	ibd.MiscFlags = 0;
+	ibd.StructureByteStride = 0;
+
+	// 색인 버퍼를 초기화할 자료를 지정한다.
+	D3D11_SUBRESOURCE_DATA initData{};
+	initData.pSysMem = indices;
+
+	// 색인 버퍼를 생성한다.
+	ID3D11Buffer* mIB;
+	HR(m_d3dDevice->CreateBuffer(&ibd, &initData, &mIB));
+
+	// 파이프 라인에 연결한다. 
+	m_d3dDeviceContext->IASetIndexBuffer(mIB, DXGI_FORMAT_R32_UINT, 0);
+
+	m_d3dDeviceContext->Draw(3,0);
 
 	HR(m_swapChain->Present(0, 0));
 }
 
 bool D3DRenderer::InitializeD3D()
 {
-	/// ==================================
+/// ==================================
 ///          Direct3D 초기화 
 /// ==================================
 
@@ -220,34 +291,47 @@ bool D3DRenderer::InitializeD3D()
 
 bool D3DRenderer::InitializePipeLine()
 {
-	//HRESULT hr = S_OK;
+	HRESULT hr = S_OK;
 
-	//ID3D10Blob* vertexShader = nullptr;
-	//ID3D10Blob* pixelShader = nullptr;
+	ID3D10Blob* vertexShader = nullptr;
+	ID3D10Blob* pixelShader = nullptr;
 
-	//// 쉐이더 불러오기
-	//HR(D3DCompileFromFile(L"shaders.shader", 0, 0
-	//	, "VShader", "vs_0_0", 0, 0,  &vertexShader,  0));
-	//
-	//HR(D3DCompileFromFile(L"shaders.shader", 0, 0
-	//	, "VShader", "vs_0_0", 0, 0, &pixelShader, 0));
+	std::wstring vertexShaderPath = L"C:\\Users\\User\\Desktop\\D3D\\D3D\\Direct3D\\App\\VertexShader.hlsl";
 
-	//// 쉐이더 생성
-	//HR(m_d3dDevice->CreateVertexShader(
-	//	vertexShader->GetBufferPointer(),
-	//	vertexShader->GetBufferSize(),
-	//	NULL, &m_vertexShader));
+	// 쉐이더 불러오기
+	HR(D3DCompileFromFile(vertexShaderPath.c_str(), 0, 0
+		, "main", "vs_4_0", 0, 0, &vertexShader, 0));
 
-	//HR(m_d3dDevice->CreatePixelShader(
-	//	pixelShader->GetBufferPointer(),
-	//	pixelShader->GetBufferSize(),
-	//	NULL, &m_pixelShader));
+	HR(D3DCompileFromFile(L"PixelShader.hlsl", 0, 0
+		, "main", "ps_5_0", 0, 0, &pixelShader, 0));
 
-	//// 쉐이더 연결
-	//m_d3dDeviceContext->VSSetShader(m_vertexShader.Get(), 0, 0);
-	//m_d3dDeviceContext->PSSetShader(m_pixelShader.Get(), 0, 0);
+	// 쉐이더 생성
+	HR(m_d3dDevice->CreateVertexShader(
+		vertexShader->GetBufferPointer(),
+		vertexShader->GetBufferSize(),
+		NULL, &m_vertexShader));
+
+	HR(m_d3dDevice->CreatePixelShader(
+		pixelShader->GetBufferPointer(),
+		pixelShader->GetBufferSize(),
+		NULL, &m_pixelShader));
+
+	// 쉐이더 연결
+	m_d3dDeviceContext->VSSetShader(m_vertexShader.Get(), 0, 0);
+	m_d3dDeviceContext->PSSetShader(m_pixelShader.Get(), 0, 0);
+
+	// 입력 레이아웃 객체 생성
+	D3D11_INPUT_ELEMENT_DESC ied[] =
+	{
+		{"POSITION", 0,DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT,  0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+	};
 
 
+	HR(m_d3dDevice->CreateInputLayout(ied, 2, vertexShader->GetBufferPointer()
+		, vertexShader->GetBufferSize(), &m_inputLayout[0]));
+
+	m_d3dDeviceContext->IASetInputLayout(m_inputLayout[0].Get());
 
 	return true;
 }

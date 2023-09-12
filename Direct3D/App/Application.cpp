@@ -49,7 +49,7 @@ void Application::Process()
 		else
 		{
 			// 게임 프로세스 루프
-			m_d3dRenderer->ClearBuffer();
+			m_d3dRenderer->Render();
 		};
 
 	}

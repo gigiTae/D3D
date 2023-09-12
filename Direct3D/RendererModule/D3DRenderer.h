@@ -16,16 +16,18 @@ public:
 	bool Initialize(HWND hWnd, std::pair<unsigned int, unsigned int> screenSize);
 	void Finalize();
 	void ClearBuffer();
+	void Render();
 
 private:
 	bool InitializeD3D();
 	bool InitializePipeLine();
-
+	void InitGraphics();
 
 private: 
 	std::pair<unsigned int, unsigned int> m_screenSize;
 
 	HWND m_hWnd; // 메인 윈도우 핸들 
+	bool m_enable4xMass; // 4XMSAA를 사용한다면 true로 설정
 
 	D3D_FEATURE_LEVEL m_featureLevel;
 
@@ -36,11 +38,19 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_d3dRenderTargetView;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_depthStencilView;
 
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout[2];
+
     /// ======================== 쉐이더 ================================
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 
+	DirectX::XMFLOAT4X4 m_world;
+	DirectX::XMFLOAT4X4 m_view;
+	DirectX::XMFLOAT4X4 m_proj;
 
-	bool m_enable4xMass; // 4XMSAA를 사용한다면 true로 설정
+	float m_theta;
+	float m_phi;
+	float m_radius;
+
 };
 
