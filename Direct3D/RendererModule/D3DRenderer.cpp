@@ -12,12 +12,6 @@ D3DRenderer::D3DRenderer()
 	,m_depthStencilView()
 	,m_depthStencilBuffer()
 {
-	DirectX::XMMATRIX I = DirectX::XMMatrixIdentity();
-
-	DirectX::XMStoreFloat4x4(&m_world, I);
-	DirectX::XMStoreFloat4x4(&m_view, I);
-	DirectX::XMStoreFloat4x4(&m_proj, I);
-
 }
 
 D3DRenderer::~D3DRenderer()
@@ -65,9 +59,9 @@ void D3DRenderer::Render()
 
 	// 정범 버퍼
 	DM::Vertex1 vertices[] = {
-		DirectX::XMFLOAT3(-0.5f, -0.5f,0.f), DirectX::XMFLOAT4(1.f,1.f,1.f,1.f),
-		DirectX::XMFLOAT3(-0.5f, 0.5f, 0.f), DirectX::XMFLOAT4(1.f,1.f,1.f,1.f),
-		DirectX::XMFLOAT3(0.5f, -0.5f, 0.f), DirectX::XMFLOAT4(1.f,1.f,1.f,1.f)
+		DirectX::XMFLOAT3(-0.5f, -0.5f,0.f), DirectX::XMFLOAT4(0.5f,0.5f,.5f,1.f),
+		DirectX::XMFLOAT3(-0.5f, 0.5f, 1.f), DirectX::XMFLOAT4(0.3f,0.2f,1.f,1.f),
+		DirectX::XMFLOAT3(0.5f, -0.5f, 0.f), DirectX::XMFLOAT4(0.f,0.3f,0.5f,1.f)
 	};
 
 	D3D11_BUFFER_DESC BF{};
@@ -94,12 +88,10 @@ void D3DRenderer::Render()
 	m_d3dDeviceContext->IASetVertexBuffers(
 		0, 1, &mVB, &stride, &offset);
 
-	m_d3dDeviceContext->Draw(0, 1);
-
 	// 색인과 색인 버퍼 생성
 	UINT indices[3]
 	{
-		0,1,2 // 삼각형
+		0,1,2// 삼각형
 	};
 
 	// 색인 버퍼를 서술하는 구조체를 채운다.
@@ -300,7 +292,7 @@ bool D3DRenderer::InitializePipeLine()
 
 	// 쉐이더 불러오기
 	HR(D3DCompileFromFile(vertexShaderPath.c_str(), 0, 0
-		, "main", "vs_4_0", 0, 0, &vertexShader, 0));
+		, "main", "vs_5_0", 0, 0, &vertexShader, 0));
 
 	HR(D3DCompileFromFile(L"PixelShader.hlsl", 0, 0
 		, "main", "ps_5_0", 0, 0, &pixelShader, 0));
@@ -332,6 +324,14 @@ bool D3DRenderer::InitializePipeLine()
 		, vertexShader->GetBufferSize(), &m_inputLayout[0]));
 
 	m_d3dDeviceContext->IASetInputLayout(m_inputLayout[0].Get());
+
+	
+	HR(m_d3dDevice->CreateInputLayout(ied, 2, pixelShader->GetBufferPointer()
+		, pixelShader->GetBufferSize(), &m_inputLayout[1]));
+
+	m_d3dDeviceContext->IASetInputLayout(m_inputLayout[1].Get());
+
+
 
 	return true;
 }

@@ -21,7 +21,6 @@ public:
 private:
 	bool InitializeD3D();
 	bool InitializePipeLine();
-	void InitGraphics();
 
 private: 
 	std::pair<unsigned int, unsigned int> m_screenSize;
@@ -43,14 +42,5 @@ private:
     /// ======================== Ω¶¿Ã¥ı ================================
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
-
-	DirectX::XMFLOAT4X4 m_world;
-	DirectX::XMFLOAT4X4 m_view;
-	DirectX::XMFLOAT4X4 m_proj;
-
-	float m_theta;
-	float m_phi;
-	float m_radius;
-
 };
 
