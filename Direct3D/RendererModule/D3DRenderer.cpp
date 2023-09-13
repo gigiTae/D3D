@@ -3,14 +3,14 @@
 
 D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
-	,m_hWnd(nullptr)
-	,m_d3dDeviceContext(nullptr)
-	,m_featureLevel()
-	,m_swapChain()
-	,m_enable4xMass(false)
-	,m_d3dRenderTargetView()
-	,m_depthStencilView()
-	,m_depthStencilBuffer()
+	, m_hWnd(nullptr)
+	, m_d3dDeviceContext(nullptr)
+	, m_featureLevel()
+	, m_swapChain()
+	, m_enable4xMass(false)
+	, m_d3dRenderTargetView()
+	, m_depthStencilView()
+	, m_depthStencilBuffer()
 {
 }
 
@@ -35,7 +35,7 @@ bool D3DRenderer::Initialize(HWND hWnd, std::pair<unsigned int, unsigned int> sc
 
 void D3DRenderer::Finalize()
 {
-	
+
 
 
 	CoUninitialize();
@@ -59,13 +59,13 @@ void D3DRenderer::Render()
 
 	// 정범 버퍼
 	DM::Vertex1 vertices[] = {
-		DirectX::XMFLOAT3(-0.5f, -0.5f,0.f), DirectX::XMFLOAT4(0.5f,0.5f,.5f,1.f),
+		DirectX::XMFLOAT3(-0.5f, -0.5f,0.f), DirectX::XMFLOAT4(0.5f,0.5f,255.f,1.f),
 		DirectX::XMFLOAT3(-0.5f, 0.5f, 1.f), DirectX::XMFLOAT4(0.3f,0.2f,1.f,1.f),
 		DirectX::XMFLOAT3(0.5f, -0.5f, 0.f), DirectX::XMFLOAT4(0.f,0.3f,0.5f,1.f)
 	};
 
 	D3D11_BUFFER_DESC BF{};
-	BF.ByteWidth = sizeof(DM::Vertex1)*3; // 생성할 정점 버퍼의 크기
+	BF.ByteWidth = sizeof(DM::Vertex1) * 3; // 생성할 정점 버퍼의 크기
 	BF.Usage = D3D11_USAGE_DEFAULT;  // 버퍼가 쓰이는 방식 
 	BF.BindFlags = D3D11_BIND_VERTEX_BUFFER; // 정점 버퍼
 	BF.CPUAccessFlags = 0;
@@ -97,7 +97,7 @@ void D3DRenderer::Render()
 	// 색인 버퍼를 서술하는 구조체를 채운다.
 	D3D11_BUFFER_DESC ibd{};
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(UINT)* 3;
+	ibd.ByteWidth = sizeof(UINT) * 3;
 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	ibd.CPUAccessFlags = 0;
 	ibd.MiscFlags = 0;
@@ -114,21 +114,21 @@ void D3DRenderer::Render()
 	// 파이프 라인에 연결한다. 
 	m_d3dDeviceContext->IASetIndexBuffer(mIB, DXGI_FORMAT_R32_UINT, 0);
 
-	m_d3dDeviceContext->Draw(3,0);
+	m_d3dDeviceContext->Draw(3, 0);
 
 	HR(m_swapChain->Present(0, 0));
 }
 
 bool D3DRenderer::InitializeD3D()
 {
-/// ==================================
-///          Direct3D 초기화 
-/// ==================================
+	/// ==================================
+	///          Direct3D 초기화 
+	/// ==================================
 
-// Direct3D 초기화 8가지 단계
+	// Direct3D 초기화 8가지 단계
 
-// 1. D3D11CreateDevice 함수를 이용해서 장치, 즉 ID3D11 Device 인터페이스와
-// 장치 문맥, 즉 ID3D11DeviceContext 인터 페이스를 생성한다. 
+	// 1. D3D11CreateDevice 함수를 이용해서 장치, 즉 ID3D11 Device 인터페이스와
+	// 장치 문맥, 즉 ID3D11DeviceContext 인터 페이스를 생성한다. 
 
 	UINT createDeviceFlags = 0;
 
@@ -228,7 +228,6 @@ bool D3DRenderer::InitializeD3D()
 
 	backBuffer->Release();
 
-
 	// 6. 깊이, 스텐실 버퍼와 그에 연결되는 깊이,스텐실 뷰를 생성한다.
 	D3D11_TEXTURE2D_DESC depthStencilDesc{};
 	depthStencilDesc.Width = m_screenSize.first;
@@ -319,19 +318,17 @@ bool D3DRenderer::InitializePipeLine()
 		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT,  0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
 
-
 	HR(m_d3dDevice->CreateInputLayout(ied, 2, vertexShader->GetBufferPointer()
 		, vertexShader->GetBufferSize(), &m_inputLayout[0]));
 
 	m_d3dDeviceContext->IASetInputLayout(m_inputLayout[0].Get());
 
-	
 	HR(m_d3dDevice->CreateInputLayout(ied, 2, pixelShader->GetBufferPointer()
 		, pixelShader->GetBufferSize(), &m_inputLayout[1]));
 
-	m_d3dDeviceContext->IASetInputLayout(m_inputLayout[1].Get());
+	// 
+	//m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-
-
-	return true;
+	
+	return true; 
 }
