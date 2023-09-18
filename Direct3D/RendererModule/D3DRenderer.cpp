@@ -59,9 +59,9 @@ void D3DRenderer::Render()
 
 	// 정범 버퍼
 	DM::Vertex1 vertices[] = {
-		DirectX::XMFLOAT3(-0.5f, -0.5f,0.f), DirectX::XMFLOAT4(0.5f,0.5f,255.f,1.f),
-		DirectX::XMFLOAT3(-0.5f, 0.5f, 1.f), DirectX::XMFLOAT4(0.3f,0.2f,1.f,1.f),
-		DirectX::XMFLOAT3(0.5f, -0.5f, 0.f), DirectX::XMFLOAT4(0.f,0.3f,0.5f,1.f)
+		DirectX::XMFLOAT3(-0.5f, 0.f,0.f), DirectX::XMFLOAT4(0.5f,0.5f,255.f,1.f),
+		DirectX::XMFLOAT3(-0.5f, 0.5f, 0.f), DirectX::XMFLOAT4(0.3f,0.2f,1.f,1.f),
+		DirectX::XMFLOAT3(0.f, -0.5f, 1.f), DirectX::XMFLOAT4(0.f,0.3f,0.5f,1.f)
 	};
 
 	D3D11_BUFFER_DESC BF{};
@@ -290,7 +290,7 @@ bool D3DRenderer::InitializePipeLine()
 	std::wstring vertexShaderPath = L"C:\\Users\\User\\Desktop\\D3D\\D3D\\Direct3D\\App\\VertexShader.hlsl";
 
 	// 쉐이더 불러오기
-	HR(D3DCompileFromFile(vertexShaderPath.c_str(), 0, 0
+	HR(D3DCompileFromFile(L"VertexShader.hlsl", 0, 0
 		, "main", "vs_5_0", 0, 0, &vertexShader, 0));
 
 	HR(D3DCompileFromFile(L"PixelShader.hlsl", 0, 0
@@ -323,12 +323,10 @@ bool D3DRenderer::InitializePipeLine()
 
 	m_d3dDeviceContext->IASetInputLayout(m_inputLayout[0].Get());
 
-	HR(m_d3dDevice->CreateInputLayout(ied, 2, pixelShader->GetBufferPointer()
-		, pixelShader->GetBufferSize(), &m_inputLayout[1]));
-
-	// 
-	//m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
+	//HR(m_d3dDevice->CreateInputLayout(ied, 2, pixelShader->GetBufferPointer()
+	//	, pixelShader->GetBufferSize(), &m_inputLayout[1]));
 	
+	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 	return true; 
 }

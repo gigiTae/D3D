@@ -1,13 +1,21 @@
 
-struct input
+struct Input
 {
-    float3 pos;
-    float4 color;
+    float4 pos : SV_POSITION;
+    float4 color : COLOR;
 };
 
-float4 main(float4 color : COLOR) : SV_TARGET
+struct Output
 {
-    color.x = 1.f;
-	
-	return color;
+    float4 pos : SV_POSITION;
+    float4 color : COLOR;
+
+};
+
+float4 main(Input input) : SV_TARGET
+{
+   // input.color.x += 0.3f;
+    
+    
+    return input.color;
 }
