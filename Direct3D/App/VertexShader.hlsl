@@ -14,7 +14,7 @@ struct VOut
 
 cbuffer finalMatix : register(b0)
 {
-    matrix worldViewProj ;
+    float4x4 worldViewProj ;
     
 };
 

@@ -53,6 +53,10 @@ private:
 	DirectX::XMFLOAT4X4 m_worldViewProjMatrix;
 
 	ID3D11Buffer* m_constantBuffer;
+	/// ======================== ¹öÆÛ ===================================
+	ID3D11Buffer* m_vertexBuffer;
+	ID3D11Buffer* m_indexBuffer;
+
 
 };
 

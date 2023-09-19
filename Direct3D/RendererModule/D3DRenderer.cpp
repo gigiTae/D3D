@@ -63,7 +63,8 @@ void D3DRenderer::Render()
 	//	DirectX::XMFLOAT3(-0.5f, 0.5f, 0.f), DirectX::XMFLOAT4(0.3f,0.2f,1.f,1.f),
 	//	DirectX::XMFLOAT3(0.f, -0.5f, 1.f), DirectX::XMFLOAT4(0.f,0.3f,0.5f,1.f)
 	//};
-
+	// 정범 버퍼
+	
 	//D3D11_BUFFER_DESC BF{};
 	//BF.ByteWidth = sizeof(DM::Vertex1) * 8; // 생성할 정점 버퍼의 크기
 	//BF.Usage = D3D11_USAGE_DEFAULT;  // 버퍼가 쓰이는 방식 
@@ -121,7 +122,7 @@ void D3DRenderer::Render()
 
 	DrawBox();
 	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-
+	
 	HR(m_swapChain->Present(0, 0));
 }
 
@@ -137,20 +138,22 @@ void D3DRenderer::DrawBox()
 		/// 버텍스 버퍼
 
 		XMFLOAT4 green = XMFLOAT4(0.f, 1.f, 0.f, 1.f);
+		XMFLOAT4 blue = XMFLOAT4(0.f, 0.f, 1.f, 1.f);
+
 
 		DM::Vertex1 vertices[] =
 		{
 			// 전면 
-			XMFLOAT3(0.f, 0.f,0.f), green,
-			XMFLOAT3(0.f, 2.f, 0.f), green,
-			XMFLOAT3(2.f, 0.f, 0.f), green,
-			XMFLOAT3(2.f, 2.f, 0.f), green,
+			XMFLOAT3(-2.f, -2.f,-2.f), green,
+			XMFLOAT3(-2.f, 2.f, -2.f), blue,
+			XMFLOAT3(2.f, -2.f, -2.f), green,
+			XMFLOAT3(2.f, 2.f, -2.f), blue,
 
 			// 후면
-			XMFLOAT3(0.f, 0.f,2.f), green,
-			XMFLOAT3(0.f, 2.f, 2.f), green,
-			XMFLOAT3(2.f, 0.f, 2.f), green,
-			XMFLOAT3(2.f, 2.f, 2.f), green,
+			XMFLOAT3(-2.f, -2.f,2.f), green,
+			XMFLOAT3(-2.f, 2.f, 2.f), blue,
+			XMFLOAT3(2.f, -2.f, 2.f), green,
+			XMFLOAT3(2.f, 2.f, 2.f), blue,
 		};
 
 		D3D11_BUFFER_DESC BF{};
@@ -225,22 +228,21 @@ void D3DRenderer::DrawBox()
 		worldMatrix = worldMatrix;
 
 		// 카메라 
-		XMVECTOR eyePos = XMVectorSet(0,1.f, -2.5f, 1.f);
+		XMVECTOR eyePos = XMVectorSet(0.f,0.f,5.f,1.f);
 		XMVECTOR focusPos = XMVectorZero();
 		XMVECTOR up = XMVectorSet(0.f, 1.f, 0.f, 0.f);
 		XMMATRIX cameraMatrix = XMMatrixLookAtLH(eyePos, focusPos, up);
 		
 		// 투명 행렬
 		float aspectRaito = static_cast<float>(m_screenSize.first) / static_cast<float>(m_screenSize.second);
-		XMMATRIX projectMatrix = XMMatrixPerspectiveFovLH(3.1415f* 0.5f, aspectRaito, 1.f, 1000.f);
-
+		XMMATRIX projectMatrix = XMMatrixPerspectiveFovLH(3.14* 0.25f, aspectRaito, 1.f, 1000.f);
 		// 최종 행렬
 		XMMATRIX finalMatrix = worldMatrix * cameraMatrix * projectMatrix;
 
-		XMStoreFloat4x4(&m_worldMatrix, worldMatrix);
-		XMStoreFloat4x4(&m_viewMatrix, cameraMatrix);
-		XMStoreFloat4x4(&m_projMatrix, projectMatrix);
-		XMStoreFloat4x4(&m_worldViewProjMatrix, finalMatrix);
+		DirectX::XMStoreFloat4x4(&m_worldMatrix, worldMatrix);
+		DirectX::XMStoreFloat4x4(&m_viewMatrix, cameraMatrix);
+		DirectX::XMStoreFloat4x4(&m_projMatrix, projectMatrix);
+		DirectX::XMStoreFloat4x4(&m_worldViewProjMatrix, finalMatrix);
 
 		D3D11_BUFFER_DESC contantBufferDesc{};
 		contantBufferDesc.ByteWidth = sizeof(m_worldViewProjMatrix);
@@ -264,9 +266,13 @@ void D3DRenderer::DrawBox()
 	};
 
 	XMMATRIX worldMatrix = DirectX::XMMatrixIdentity();
-	
+
+	static float r = 0.f;
+	r += 0.0001f;
+	worldMatrix = worldMatrix * XMMatrixRotationY(r);
+
 	// 카메라 
-	XMVECTOR eyePos = XMVectorSet(0, 0.f, -4.f, 1.f);
+	XMVECTOR eyePos = XMVectorSet(5, 10.f, -20.f, 1.f);
 	XMVECTOR focusPos = XMVectorZero();
 	XMVECTOR up = XMVectorSet(0.f, 1.f, 0.f, 0.f);
 	XMMATRIX cameraMatrix = XMMatrixLookAtLH(eyePos, focusPos, up);
@@ -277,8 +283,11 @@ void D3DRenderer::DrawBox()
 
 	// 최종 행렬
 	XMMATRIX finalMatrix =  worldMatrix * cameraMatrix * projectMatrix;
+	
+	/// 상수버퍼에서는 전치행렬을 보내주어야한다!!!!!!!!!!!
+	finalMatrix = XMMatrixTranspose(finalMatrix);
 
-	XMStoreFloat4x4(&m_worldViewProjMatrix, finalMatrix);
+	DirectX::XMStoreFloat4x4(&m_worldViewProjMatrix, finalMatrix);
 
 	m_d3dDeviceContext->VSSetConstantBuffers(0, 1, &m_constantBuffer);
 
