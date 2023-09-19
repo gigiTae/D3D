@@ -17,6 +17,10 @@ public:
 	void Finalize();
 	void ClearBuffer();
 	void Render();
+	
+	// ø¨Ω¿
+	void DrawBox();
+
 
 private:
 	bool InitializeD3D();
@@ -42,5 +46,13 @@ private:
     /// ======================== Ω¶¿Ã¥ı ================================
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
+
+	DirectX::XMFLOAT4X4 m_worldMatrix;
+	DirectX::XMFLOAT4X4 m_viewMatrix;
+	DirectX::XMFLOAT4X4 m_projMatrix;
+	DirectX::XMFLOAT4X4 m_worldViewProjMatrix;
+
+	ID3D11Buffer* m_constantBuffer;
+
 };
 

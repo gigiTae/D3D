@@ -12,12 +12,17 @@ struct VOut
     float4 color : COLOR;
 };
 
+cbuffer finalMatix : register(b0)
+{
+    matrix worldViewProj ;
+    
+};
 
 VOut main( VertexInput input)
-{
+{     
     VOut output;
     output.color = input.COLOR;
-    output.position = float4(input.POSITION, 1.f);
+    output.position = mul(float4(input.POSITION, 1.f), worldViewProj);
 	
     return output;
 }
