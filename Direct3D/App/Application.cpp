@@ -4,7 +4,8 @@
 Application::Application()
 	:m_hInstance(nullptr)
 	,m_hWnd(nullptr)
-	,m_screenSize{0,0}
+	,m_screenHeight(0)
+	,m_screenWidth(0)
 	,m_d3dRenderer(nullptr)
 {
 
@@ -15,22 +16,25 @@ Application::~Application()
 
 }
 
-
-void Application::Initialize(HINSTANCE hInstance, int nCmdShow, std::pair<unsigned int, unsigned int> screenSize)
+void Application::Initialize(HINSTANCE hInstance, int nCmdShow, UINT screenWidth, UINT screenHeight)
 {
 	m_hInstance = hInstance;
-	m_screenSize = screenSize;
+	m_screenWidth = screenWidth;
+	m_screenHeight = screenHeight;
 
 	// 윈도우 초기화 
 	WindowInitialize(nCmdShow);
 
 	// 그래픽스 엔진 초기화 
 	m_d3dRenderer = std::make_unique<D3DRenderer>();
-	m_d3dRenderer->Initialize(m_hWnd, m_screenSize);
+	m_d3dRenderer->Initialize(m_hWnd, screenWidth, screenHeight );
 
-	// 게임 엔진 초기화 
+	// 매니저 생성
+	m_timeManager = std::make_unique<TimeManager>();
+	m_inputManager = std::make_unique<InputManager>();
 
-
+	m_timeManager->Initialize();
+	m_inputManager->Initalize(m_hWnd);
 
 }
 
@@ -49,9 +53,62 @@ void Application::Process()
 		else
 		{
 			// 게임 프로세스 루프
+			Update();
 			m_d3dRenderer->Render();
 		};
 
+	}
+}
+
+void Application::Update()
+{
+	m_inputManager->Update();
+	m_timeManager->Update();
+
+	CameraMove();
+}
+
+void Application::CameraMove()
+{
+	// 일단 카메라 움직임을 구현해보자
+	float deltaTime = m_timeManager->GetDeltaTime();
+	
+	if (m_inputManager->IsKeyState(KEY::W, KEY_STATE::HOLD))
+	{
+		float moveSpeed = 10.f;
+		float distance = deltaTime * moveSpeed;
+		m_d3dRenderer->GetMainCamera()->MoveCameraZ(distance);
+	}
+	if (m_inputManager->IsKeyState(KEY::S, KEY_STATE::HOLD))
+	{
+		float moveSpeed = 10.f;
+		float distance = deltaTime * moveSpeed;
+		m_d3dRenderer->GetMainCamera()->MoveCameraZ(-distance);
+	}
+	if (m_inputManager->IsKeyState(KEY::A, KEY_STATE::HOLD))
+	{
+		float moveSpeed = 10.f;
+		float distance = deltaTime * moveSpeed;
+		m_d3dRenderer->GetMainCamera()->MoveCameraX(-distance);
+	}
+	if (m_inputManager->IsKeyState(KEY::D, KEY_STATE::HOLD))
+	{
+		float moveSpeed = 10.f;
+		float distance = deltaTime * moveSpeed;
+		m_d3dRenderer->GetMainCamera()->MoveCameraX(distance);
+	}
+
+	if (m_inputManager->IsKeyState(KEY::Q, KEY_STATE::HOLD))
+	{
+		float moveSpeed = 1.f;
+		float distance = deltaTime * moveSpeed;
+		m_d3dRenderer->GetMainCamera()->RotateCameraY(-distance);
+	}
+	if (m_inputManager->IsKeyState(KEY::E, KEY_STATE::HOLD))
+	{
+		float moveSpeed = 1.f;
+		float distance = deltaTime * moveSpeed;
+		m_d3dRenderer->GetMainCamera()->RotateCameraY(distance);
 	}
 }
 
@@ -104,7 +161,7 @@ void Application::WindowInitialize(int nCmdShow)
 	// 윈도우 창 생성
 	m_hWnd = CreateWindow(title, title
 		, WS_OVERLAPPEDWINDOW // 창이 겹침
-		, left, top, m_screenSize.first, m_screenSize.second
+		, left, top, m_screenWidth, m_screenHeight
 		, NULL, NULL, m_hInstance, NULL);
 
 	// 방어적코드
@@ -114,7 +171,7 @@ void Application::WindowInitialize(int nCmdShow)
 	UpdateWindow(m_hWnd);
 
 	// 화면해상도에 맞게 window 좌표계를 설정한다
-	RECT rt = { 0, 0,(long)m_screenSize.first, (long)m_screenSize.second };
+	RECT rt = { 0, 0,(long)m_screenWidth, (long)m_screenHeight };
 	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false); // window 설정스타일에 맞는 rt값을 반환해준다.
 	SetWindowPos(m_hWnd, nullptr, left, top, rt.right - rt.left, rt.bottom - rt.top, 0);
 

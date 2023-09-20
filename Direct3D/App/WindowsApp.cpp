@@ -13,7 +13,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     Application* app = new Application();
 
-    app->Initialize(hInstance, nCmdShow, std::make_pair(1000,500));
+    app->Initialize(hInstance, nCmdShow, 1920,1080);
 
     app->Process();
 

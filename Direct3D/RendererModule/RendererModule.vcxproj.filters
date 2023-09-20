@@ -15,6 +15,12 @@
     <ClCompile Include="D3DRenderer.cpp">
       <Filter>Private</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleMesh.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraObject.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RendererPCH.h" />
@@ -23,6 +29,12 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="HRDefine.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMesh.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraObject.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>

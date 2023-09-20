@@ -1,5 +1,7 @@
 #pragma once
 
+struct SimpleMesh;
+class CameraObject;
 
 /// <summary>
 ///  DX11  
@@ -13,7 +15,7 @@ public:
 	D3DRenderer();
 	~D3DRenderer();
 
-	bool Initialize(HWND hWnd, std::pair<unsigned int, unsigned int> screenSize);
+	bool Initialize(HWND hWnd, int screenWidth, int screenHeight);
 	void Finalize();
 	void ClearBuffer();
 	void Render();
@@ -21,19 +23,23 @@ public:
 	// 연습
 	void DrawBox();
 
-
+	DirectX::XMMATRIX GetWorldViewProjMatrix();
+	CameraObject* GetMainCamera() const { return m_mainCamera.get(); }
 private:
 	bool InitializeD3D();
 	bool InitializePipeLine();
+	void CreateGrid(float width, float depth, UINT m, UINT n, SimpleMesh& mesh);
 
 private: 
-	std::pair<unsigned int, unsigned int> m_screenSize;
+	int m_screenHeight;
+	int m_screenWidth;
 
 	HWND m_hWnd; // 메인 윈도우 핸들 
 	bool m_enable4xMass; // 4XMSAA를 사용한다면 true로 설정
 
-	D3D_FEATURE_LEVEL m_featureLevel;
+	std::unique_ptr<CameraObject> m_mainCamera; // 메인 카메라 
 
+	D3D_FEATURE_LEVEL m_featureLevel;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> m_swapChain;
 	Microsoft::WRL::ComPtr<ID3D11Device> m_d3dDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_d3dDeviceContext;
@@ -48,15 +54,13 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 
 	DirectX::XMFLOAT4X4 m_worldMatrix;
-	DirectX::XMFLOAT4X4 m_viewMatrix;
-	DirectX::XMFLOAT4X4 m_projMatrix;
 	DirectX::XMFLOAT4X4 m_worldViewProjMatrix;
 
-	ID3D11Buffer* m_constantBuffer;
 	/// ======================== 버퍼 ===================================
+	ID3D11Buffer* m_constantBuffer;
 	ID3D11Buffer* m_vertexBuffer;
 	ID3D11Buffer* m_indexBuffer;
 
-
+	SimpleMesh* m_mesh;
 };
 

@@ -10,21 +10,24 @@ public:
 	Application();
 	~Application();
 
-	void Initialize(HINSTANCE hInstance, int nCmdShow, std::pair<unsigned int, unsigned int> screenSize); 
+	void Initialize(HINSTANCE hInstance, int nCmdShow, UINT screenWidth, UINT screenHeight );
 	void Process();
 	void Finalize();
 
 private:
 	void WindowInitialize(int nCmdShow);
+	void Update();
+	void CameraMove();
 
 private:
-	std::pair<unsigned int, unsigned int> m_screenSize;
+	UINT m_screenWidth;
+	UINT m_screenHeight;
 
 	HINSTANCE m_hInstance;
 	HWND m_hWnd; // 메인 윈도우 핸들 
 
 	std::unique_ptr<D3DRenderer> m_d3dRenderer; 
-
-
+	std::unique_ptr<InputManager> m_inputManager;
+	std::unique_ptr<TimeManager> m_timeManager;
 };
 

@@ -16,7 +16,6 @@ namespace DM
 		DirectX::XMFLOAT2 tex1;
 	};
 
-
 	struct ConstantBuffer
 	{
 		DirectX::XMMATRIX world;

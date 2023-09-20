@@ -16,10 +16,16 @@
     <ClInclude Include="Vertex.h">
       <Filter>Public</Filter>
     </ClInclude>
+    <ClInclude Include="MathUtil.h">
+      <Filter>Public</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MathPCH.cpp" />
     <ClCompile Include="Vertex.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="MathUtil.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
