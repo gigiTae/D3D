@@ -14,5 +14,5 @@ using namespace DirectX;
 #include <map>
 
 #include "MathUtil.h"
-
 #include "Vertex.h"
+#include "Geometry.h"

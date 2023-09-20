@@ -4,6 +4,11 @@ namespace DM
 {
 	struct Vertex1
 	{
+		Vertex1(){}
+		Vertex1(XMFLOAT3 position, XMFLOAT4 color)
+			:position(position),color(color)
+		{}
+
 		DirectX::XMFLOAT3 position;
 		DirectX::XMFLOAT4 color;	
 	};
