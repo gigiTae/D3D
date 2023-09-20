@@ -72,42 +72,34 @@ void Application::CameraMove()
 {
 	// 일단 카메라 움직임을 구현해보자
 	float deltaTime = m_timeManager->GetDeltaTime();
+	float moveSpeed = 10.f;
+	float distance = deltaTime * moveSpeed;
 	
 	if (m_inputManager->IsKeyState(KEY::W, KEY_STATE::HOLD))
 	{
-		float moveSpeed = 10.f;
-		float distance = deltaTime * moveSpeed;
 		m_d3dRenderer->GetMainCamera()->MoveCameraZ(distance);
 	}
 	if (m_inputManager->IsKeyState(KEY::S, KEY_STATE::HOLD))
 	{
-		float moveSpeed = 10.f;
-		float distance = deltaTime * moveSpeed;
 		m_d3dRenderer->GetMainCamera()->MoveCameraZ(-distance);
 	}
 	if (m_inputManager->IsKeyState(KEY::A, KEY_STATE::HOLD))
 	{
-		float moveSpeed = 10.f;
-		float distance = deltaTime * moveSpeed;
 		m_d3dRenderer->GetMainCamera()->MoveCameraX(-distance);
 	}
 	if (m_inputManager->IsKeyState(KEY::D, KEY_STATE::HOLD))
 	{
-		float moveSpeed = 10.f;
-		float distance = deltaTime * moveSpeed;
 		m_d3dRenderer->GetMainCamera()->MoveCameraX(distance);
 	}
 
 	if (m_inputManager->IsKeyState(KEY::Q, KEY_STATE::HOLD))
 	{
-		float moveSpeed = 1.f;
-		float distance = deltaTime * moveSpeed;
+		distance *= 0.5f;
 		m_d3dRenderer->GetMainCamera()->RotateCameraY(-distance);
 	}
 	if (m_inputManager->IsKeyState(KEY::E, KEY_STATE::HOLD))
 	{
-		float moveSpeed = 1.f;
-		float distance = deltaTime * moveSpeed;
+		distance *= 0.5f;
 		m_d3dRenderer->GetMainCamera()->RotateCameraY(distance);
 	}
 }
