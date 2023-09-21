@@ -3,7 +3,7 @@
 
 /// <summary>
 /// 박스 메쉬 
-/// 
+/// 교수님 코드를 이해해보자
 /// 
 /// </summary>
 class Box :
@@ -26,10 +26,13 @@ public:
 
 private:
     void BuildBuffers();
-    void BuildFX();
+    void BuildEffect();
     void BuildLayout();
 
 private:
+    const unsigned int vertexSize = 8;
+    const unsigned int indexSize = 36;
+
     XMFLOAT4X4 m_world; // 월드 변환 행렬
     XMFLOAT4X4 m_view;  // 시야 변환 행렬
     XMFLOAT4X4 m_proj;  // 투명 변환 행렬 
@@ -43,5 +46,8 @@ private:
     ComPtr<ID3D11InputLayout> m_inputLayout;
     ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
+    ComPtr<ID3DX11Effect> m_effect;	// 이펙트
+	ComPtr<ID3DX11EffectTechnique> m_tech;	// 테크
+	ComPtr<ID3DX11EffectMatrixVariable> m_fxWorldViewProj;	// 이펙트용변수
 };
 

@@ -2,6 +2,7 @@
 
 struct SimpleMesh;
 class CameraObject;
+class Box;
 
 /// <summary>
 ///  DX11  
@@ -23,7 +24,7 @@ public:
 	// 연습
 	void SetWorldViewProjMatrix();
 
-	DirectX::XMMATRIX GetWorldViewProjMatrix();
+	XMMATRIX GetWorldViewProjMatrix();
 	CameraObject* GetMainCamera() const { return m_mainCamera.get(); }
 private:
 	bool InitializeD3D();
@@ -44,29 +45,31 @@ private:
 	std::unique_ptr<CameraObject> m_mainCamera; // 메인 카메라 
 
 	D3D_FEATURE_LEVEL m_featureLevel;
-	Microsoft::WRL::ComPtr<IDXGISwapChain> m_swapChain;
-	Microsoft::WRL::ComPtr<ID3D11Device> m_d3dDevice;
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_d3dDeviceContext;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_depthStencilBuffer;
-	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_d3dRenderTargetView;
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_depthStencilView;
+	ComPtr<IDXGISwapChain> m_swapChain;
+	ComPtr<ID3D11Device> m_d3dDevice;
+	ComPtr<ID3D11DeviceContext> m_d3dDeviceContext;
+	ComPtr<ID3D11Texture2D> m_depthStencilBuffer;
+	ComPtr<ID3D11RenderTargetView> m_d3dRenderTargetView;
+	ComPtr<ID3D11DepthStencilView> m_depthStencilView;
 
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout[2];
+	ComPtr<ID3D11InputLayout> m_inputLayout[2];
 
     /// ======================== 쉐이더 ================================
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
+	ComPtr<ID3D11VertexShader> m_vertexShader;
+	ComPtr<ID3D11PixelShader> m_pixelShader;
 
-	DirectX::XMFLOAT4X4 m_worldMatrix;
-	DirectX::XMFLOAT4X4 m_worldViewProjMatrix;
+	XMFLOAT4X4 m_worldMatrix;
+	XMFLOAT4X4 m_worldViewProjMatrix;
 
 	/// ======================== 버퍼 ===================================
 	ID3D11Buffer* m_constantBuffer;
 	
 	std::unordered_map < std::wstring, Microsoft::WRL::ComPtr<ID3D11Buffer>> m_bufferContainer;
 
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState[2];
+	ComPtr<ID3D11RasterizerState> m_rasterizerState[2];
 
+	/// ===================== 임시객체 ================================
+	Box* m_box;
 	SimpleMesh* m_mesh;
 	
 };

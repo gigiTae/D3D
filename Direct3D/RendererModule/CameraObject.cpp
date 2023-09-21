@@ -3,13 +3,13 @@
 
 CameraObject::CameraObject()
 	:m_projectMatrix()
-	,m_viewMatrix()
 	,m_worldUp()
 	,m_cameraDirection()
 	,m_cameraPosition()
 	,m_fovAngleY(0.f)
 	,m_aspectRatio(0.f)
-	,m_nearZ(0.f)
+	, m_nearZ(0.f)
+	, m_viewMatrix()
 	,m_farZ(0.f)
 {
 

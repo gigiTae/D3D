@@ -51,5 +51,6 @@
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl" />
     <FxCompile Include="PixelShader.hlsl" />
+    <FxCompile Include="color.fx" />
   </ItemGroup>
 </Project>

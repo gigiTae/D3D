@@ -11,16 +11,26 @@
 #include <windows.h>
 #include <assert.h>
 #include <memory.h> // 스마트 포인터 
+#include <sstream>
+#include <fstream>
+#include <string>
 
+#include <wrl/client.h>
+using Microsoft::WRL::ComPtr;
+
+/// =============== D3D ========================= 
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <d3dcommon.h>
 #include <dxgi.h>
-#include <wrl/client.h>
 #include <DirectXPackedVector.h>
+#include "./FL/d3dx11Effect.h"	
 
-
-using Microsoft::WRL::ComPtr;
+#ifdef _DEBUG
+#pragma comment( lib, "../Resource/Lib/x64/Effects11d.lib" )
+#else
+#pragma comment( lib, "../Resource/Lib/x64/Effects11.lib" )
+#endif
 
 
 #include "HRDefine.h"

@@ -2,6 +2,7 @@
 #include "D3DRenderer.h"
 #include "SimpleMesh.h"
 #include "CameraObject.h"
+#include "Box.h"
 
 D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
@@ -19,8 +20,10 @@ D3DRenderer::D3DRenderer()
 	, m_screenWidth(0)
 	, m_screenHeight(0)
 	,m_bufferContainer()
+	,m_box(nullptr)
 {
 	m_mesh = new SimpleMesh();
+	
 }
 
 D3DRenderer::~D3DRenderer()
@@ -48,6 +51,8 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 
 	CreateBuffer();
 
+	m_box = new Box(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_box->Initialize();
 
 	return true;
 }
@@ -77,6 +82,11 @@ void D3DRenderer::Render()
 
 	SetWorldViewProjMatrix();
 	// 그림을 그려보자 
+	XMMATRIX worldMatrix = XMLoadFloat4x4(&m_worldMatrix);
+	XMMATRIX viewMatrix = m_mainCamera->GetViewMatrix();
+	XMMATRIX projectMatrix = m_mainCamera->GetProjectMatrix();
+	m_box->Update(worldMatrix, viewMatrix, projectMatrix);
+	m_box->Render();
 
 	m_d3dDeviceContext->RSSetState(m_rasterizerState[0].Get());
 	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
