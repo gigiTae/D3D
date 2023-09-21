@@ -24,12 +24,22 @@ using Microsoft::WRL::ComPtr;
 #include <d3dcommon.h>
 #include <dxgi.h>
 #include <DirectXPackedVector.h>
-#include "./FL/d3dx11Effect.h"	
 
+
+#include "./FL/d3dx11Effect.h"	
+/// =============== 이펙트 라이브러리 설정 ====================
 #ifdef _DEBUG
+#ifdef _WIN64 // x64 설정인 경우
 #pragma comment( lib, "../Resource/Lib/x64/Effects11d.lib" )
+#else // x86 설정인 경우
+#pragma comment( lib, "../Resource/Lib/x86/Effects11d.lib" )
+#endif
 #else
+#ifdef _WIN64 // x64 설정인 경우
 #pragma comment( lib, "../Resource/Lib/x64/Effects11.lib" )
+#else // x86 설정인 경우
+#pragma comment( lib, "../Resource/Lib/x86/Effects11.lib" )
+#endif
 #endif
 
 

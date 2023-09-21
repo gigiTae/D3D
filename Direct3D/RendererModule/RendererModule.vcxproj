@@ -150,8 +150,8 @@
     <ClInclude Include="Box.h" />
     <ClInclude Include="CameraObject.h" />
     <ClInclude Include="D3DRenderer.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="HRDefine.h" />
-    <ClInclude Include="IMesh.h" />
     <ClInclude Include="RendererPCH.h" />
     <ClInclude Include="RendererHeader.h" />
     <ClInclude Include="SimpleMesh.h" />
@@ -160,7 +160,7 @@
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="CameraObject.cpp" />
     <ClCompile Include="D3DRenderer.cpp" />
-    <ClCompile Include="IMesh.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="RendererPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

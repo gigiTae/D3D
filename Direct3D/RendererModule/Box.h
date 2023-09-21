@@ -1,13 +1,11 @@
 #pragma once
-#include "IMesh.h"
 
 /// <summary>
 /// 박스 메쉬 
 /// 교수님 코드를 이해해보자
 /// 
 /// </summary>
-class Box :
-    public IMesh
+class Box
 {
 public:
     Box(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* rs);
@@ -20,9 +18,9 @@ public:
     };
 
 public:
-    void Initialize() override;
-    void Update(const XMMATRIX& world, const XMMATRIX& view, const XMMATRIX& proj) override;
-    void Render() override;
+    void Initialize();
+    void Update(const XMMATRIX& world, const XMMATRIX& view, const XMMATRIX& proj);
+    void Render();
 
 private:
     void BuildBuffers();

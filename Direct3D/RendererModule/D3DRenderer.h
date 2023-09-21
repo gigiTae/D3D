@@ -3,6 +3,8 @@
 struct SimpleMesh;
 class CameraObject;
 class Box;
+class Grid;
+
 
 /// <summary>
 ///  DX11  
@@ -21,19 +23,10 @@ public:
 	void ClearScreen();
 	void Render();
 	
-	// 연습
-	void SetWorldViewProjMatrix();
-
 	XMMATRIX GetWorldViewProjMatrix();
 	CameraObject* GetMainCamera() const { return m_mainCamera.get(); }
 private:
 	bool InitializeD3D();
-	bool InitializePipeLine();
-	void CreateBuffer();
-	void CreateBox();
-
-	void CreateGrid(float width, float depth, UINT m, UINT n);
-	void CreateContantBuffer();
 
 private: 
 	int m_screenHeight;
@@ -52,25 +45,14 @@ private:
 	ComPtr<ID3D11RenderTargetView> m_d3dRenderTargetView;
 	ComPtr<ID3D11DepthStencilView> m_depthStencilView;
 
-	ComPtr<ID3D11InputLayout> m_inputLayout[2];
-
     /// ======================== 쉐이더 ================================
-	ComPtr<ID3D11VertexShader> m_vertexShader;
-	ComPtr<ID3D11PixelShader> m_pixelShader;
-
 	XMFLOAT4X4 m_worldMatrix;
 	XMFLOAT4X4 m_worldViewProjMatrix;
-
-	/// ======================== 버퍼 ===================================
-	ID3D11Buffer* m_constantBuffer;
-	
-	std::unordered_map < std::wstring, Microsoft::WRL::ComPtr<ID3D11Buffer>> m_bufferContainer;
 
 	ComPtr<ID3D11RasterizerState> m_rasterizerState[2];
 
 	/// ===================== 임시객체 ================================
 	Box* m_box;
-	SimpleMesh* m_mesh;
-	
+	Grid* m_grid;
 };
 

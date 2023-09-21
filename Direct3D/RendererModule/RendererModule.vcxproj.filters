@@ -1,52 +1,63 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Renderer">
+    <Filter Include="01.Renderer">
       <UniqueIdentifier>{d67e2686-be5b-462c-9223-b5d718cfa5bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Camera">
+    <Filter Include="02.Camera">
       <UniqueIdentifier>{fa0e41eb-c3ea-4792-859e-941187b50e28}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mesh">
+    <Filter Include="03.Mesh">
       <UniqueIdentifier>{27a94246-23e3-48d7-9a37-943ceddb566f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Define">
+      <UniqueIdentifier>{f660b35c-8022-47e2-acba-8a30df49c0db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DRenderer.cpp">
-      <Filter>Renderer</Filter>
+      <Filter>01.Renderer</Filter>
     </ClCompile>
     <ClCompile Include="CameraObject.cpp">
-      <Filter>Camera</Filter>
+      <Filter>02.Camera</Filter>
     </ClCompile>
     <ClCompile Include="SimpleMesh.cpp">
-      <Filter>Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="RendererPCH.cpp" />
-    <ClCompile Include="IMesh.cpp">
-      <Filter>Mesh</Filter>
+      <Filter>03.Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Box.cpp">
-      <Filter>Mesh</Filter>
+      <Filter>03.Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="RendererPCH.cpp">
+      <Filter>00.Define</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>03.Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3DRenderer.h">
-      <Filter>Renderer</Filter>
+      <Filter>01.Renderer</Filter>
     </ClInclude>
     <ClInclude Include="CameraObject.h">
-      <Filter>Camera</Filter>
+      <Filter>02.Camera</Filter>
     </ClInclude>
     <ClInclude Include="SimpleMesh.h">
-      <Filter>Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="HRDefine.h" />
-    <ClInclude Include="RendererHeader.h" />
-    <ClInclude Include="RendererPCH.h" />
-    <ClInclude Include="IMesh.h">
-      <Filter>Mesh</Filter>
+      <Filter>03.Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Box.h">
-      <Filter>Mesh</Filter>
+      <Filter>03.Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HRDefine.h">
+      <Filter>00.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="RendererHeader.h">
+      <Filter>00.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="RendererPCH.h">
+      <Filter>00.Define</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>03.Mesh</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
