@@ -17,10 +17,15 @@
 #include <d3dcommon.h>
 #include <dxgi.h>
 #include <wrl/client.h>
+#include <DirectXPackedVector.h>
+
+
+using Microsoft::WRL::ComPtr;
 
 
 #include "HRDefine.h"
 
 #include "MathModule/MathHeader.h"
+
 
 

@@ -47,3 +47,63 @@ std::vector<unsigned int> DM::Geometry::GetBoxIndices()
 		3, 7, 6   // 삼각형 12
 	};
 }
+
+void DM::Geometry::GetCylinder(float bottomRadius, float topRadius
+	, float height, unsigned int sliceCount, unsigned int stackCount
+	, std::vector<Vertex1>& vertex, std::vector<unsigned int>& index)
+{
+	vertex.clear();
+	index.clear();
+
+	// 더미들을 만든다.
+	float stackHegiht = height / stackCount;
+
+	// 한 단계 위로 올라갈 때의 
+	// 반지름 변화량을 구한다
+	float radiusStep = (topRadius - bottomRadius) / stackCount;
+
+	unsigned int ringCount = stackCount + 1; 
+
+	// 최하단 고리에서 최상단 고리까지 훓으면서 
+	// 각 고리의 점정들을 계산한다.
+	for (unsigned int i = 0; i < ringCount; ++i)
+	{
+		float y = -0.5f * height + i * stackHegiht;
+		float r = bottomRadius + i * radiusStep;
+
+		// 현재 고리의 정점들
+		float dTheta = 2.f * DM::PI / sliceCount;
+		for (unsigned int j = 0; j <= sliceCount; ++j)
+		{
+			Vertex1 v{};
+			float c = cosf(j * dTheta);
+			float s = sinf(j * dTheta);
+
+			v.position = DirectX::XMFLOAT3(r * c, y ,r * s);
+			v.color = DirectX::XMFLOAT4(0.f, 1.f, 0.f, 1.f);
+
+			vertex.push_back(std::move(v));
+		}
+	}
+
+	// 원기둥에 텍스처를 제대로 입히려면 첫 정점과 마지막 정점이 중복되어야한다.
+	// 이를 위해 정점개수를 조각 개수보다 하나 더 많게 한다.
+	unsigned int ringVertexCount = sliceCount + 1;
+
+	// 각 더미마다 색인들을 계산한다
+	for (unsigned int i = 0; i < stackCount; ++i)
+	{
+		for (unsigned int j = 0; j < sliceCount; ++j)
+		{
+			index.push_back(i * ringVertexCount + j);
+			index.push_back((i+1) * ringVertexCount + j);
+			index.push_back((i+1) * ringVertexCount + j+1);
+
+			index.push_back(i * ringVertexCount + j);
+			index.push_back((i+1) * ringVertexCount + j+1);
+			index.push_back(i * ringVertexCount + j+1);
+		}
+	}
+
+
+}

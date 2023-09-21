@@ -1,41 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Private">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{d67e2686-be5b-462c-9223-b5d718cfa5bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Public">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{fa0e41eb-c3ea-4792-859e-941187b50e28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{27a94246-23e3-48d7-9a37-943ceddb566f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RendererPCH.cpp" />
     <ClCompile Include="D3DRenderer.cpp">
-      <Filter>Private</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleMesh.cpp">
-      <Filter>Private</Filter>
+      <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="CameraObject.cpp">
-      <Filter>Private</Filter>
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleMesh.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="RendererPCH.cpp" />
+    <ClCompile Include="IMesh.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RendererPCH.h" />
-    <ClInclude Include="RendererHeader.h" />
     <ClInclude Include="D3DRenderer.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="HRDefine.h">
-      <Filter>Public</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleMesh.h">
-      <Filter>Public</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="CameraObject.h">
-      <Filter>Public</Filter>
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMesh.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HRDefine.h" />
+    <ClInclude Include="RendererHeader.h" />
+    <ClInclude Include="RendererPCH.h" />
+    <ClInclude Include="IMesh.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Mesh</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -38,6 +38,11 @@ void Application::Initialize(HINSTANCE hInstance, int nCmdShow, UINT screenWidth
 
 }
 
+void Application::Finalize()
+{
+	m_d3dRenderer->Finalize();
+}
+
 void Application::Process()
 {
 	MSG msg;
@@ -104,12 +109,7 @@ void Application::CameraMove()
 	}
 }
 
-void Application::Finalize()
-{
 
-	m_d3dRenderer->Finalize();
-
-}
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 

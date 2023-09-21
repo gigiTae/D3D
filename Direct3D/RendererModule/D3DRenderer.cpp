@@ -48,6 +48,7 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 
 	CreateBuffer();
 
+
 	return true;
 }
 
