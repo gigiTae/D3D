@@ -3,19 +3,19 @@
 
 std::vector<DM::Vertex1> DM::Geometry::GetBoxVertices()
 {
-	XMFLOAT4 green = XMFLOAT4(0.f, 1.f, 0.f, 1.f);
+	XMFLOAT4 red = XMFLOAT4(1.f, 0.f, 0.f, 1.f);
 
 	return {
 		// 전면
-		Vertex1(XMFLOAT3(-1.f,-1.f,-1.f),green),
-		Vertex1(XMFLOAT3(-1.f,1.f,-1.f),green),
-		Vertex1(XMFLOAT3(1.f,-1.f,-1.f),green),
-		Vertex1(XMFLOAT3(1.f,1.f,-1.f),green),
+		Vertex1(XMFLOAT3(-1.f,-1.f,-1.f),red),
+		Vertex1(XMFLOAT3(-1.f,1.f,-1.f),red),
+		Vertex1(XMFLOAT3(1.f,-1.f,-1.f),red),
+		Vertex1(XMFLOAT3(1.f,1.f,-1.f),red),
 		// 후면
-		Vertex1(XMFLOAT3(-1.f,-1.f,1.f),green),
-		Vertex1(XMFLOAT3(-1.f,1.f,1.f),green),
-		Vertex1(XMFLOAT3(1.f,-1.f,1.f),green),
-		Vertex1(XMFLOAT3(1.f,1.f,1.f),green) };
+		Vertex1(XMFLOAT3(-1.f,-1.f,1.f),red),
+		Vertex1(XMFLOAT3(-1.f,1.f,1.f),red),
+		Vertex1(XMFLOAT3(1.f,-1.f,1.f),red),
+		Vertex1(XMFLOAT3(1.f,1.f,1.f),red) };
 
 }
 

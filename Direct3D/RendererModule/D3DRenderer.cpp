@@ -16,10 +16,9 @@ D3DRenderer::D3DRenderer()
 	, m_worldViewProjMatrix()
 	, m_worldMatrix()
 	, m_constantBuffer(nullptr)
-	, m_indexBuffer(nullptr)
-	, m_vertexBuffer(nullptr)
 	, m_screenWidth(0)
 	, m_screenHeight(0)
+	,m_bufferContainer()
 {
 	m_mesh = new SimpleMesh();
 }
@@ -41,13 +40,13 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 
 	// 카메라 생성
 	m_mainCamera = std::make_unique<CameraObject>();
-	XMVECTOR cameraPosition = XMVectorSet(10.f, 10.f, 0.f, 1.f);
+	XMVECTOR cameraPosition = XMVectorSet(10.f, 20.f, 10.f, 1.f);
 	m_mainCamera->Initialize(m_screenWidth, m_screenHeight, cameraPosition);
 
 	InitializeD3D();
 	InitializePipeLine();
 
-	
+	CreateBuffer();
 
 	return true;
 }
@@ -60,7 +59,7 @@ void D3DRenderer::Finalize()
 	CoUninitialize();
 }
 
-void D3DRenderer::ClearBuffer()
+void D3DRenderer::ClearScreen()
 {
 	float arr[4]{ 0.f,0.f,0.f,1.f };
 
@@ -73,116 +72,109 @@ void D3DRenderer::ClearBuffer()
 
 void D3DRenderer::Render()
 {
-	ClearBuffer();
+	ClearScreen();
 
-	 //그리드 생성
-	if (m_mesh->vertices.empty())
+	SetWorldViewProjMatrix();
+	// 그림을 그려보자 
+
+	m_d3dDeviceContext->RSSetState(m_rasterizerState[0].Get());
+	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	///// Grid
+	// 버텍스 버퍼
+	auto vIter = m_bufferContainer.find(L"vGrid");
+	assert(vIter != m_bufferContainer.end());
+	auto vertex = vIter->second.Get();
+
+	UINT stride = sizeof(DM::Vertex1);
+	UINT offset = 0;
+
+	m_d3dDeviceContext->IASetVertexBuffers(
+		0, 1, &vertex, &stride, &offset);
+
+	// 인덱스 버퍼
+	auto iter = m_bufferContainer.find(L"iGrid");
+	auto index = iter->second.Get();
+	m_d3dDeviceContext->IASetIndexBuffer(index, DXGI_FORMAT_R32_UINT, 0);
+
+	m_d3dDeviceContext->DrawIndexed(58806, 0, 0);
+	
+	/// BOX
 	{
-		CreateGrid(100, 100, 100, 100, *m_mesh);
 
-		D3D11_BUFFER_DESC BF{};
-		BF.ByteWidth = sizeof(DM::Vertex1) * m_mesh->vertices.size(); // 생성할 정점 버퍼의 크기
-		BF.Usage = D3D11_USAGE_DEFAULT;  // 버퍼가 쓰이는 방식 
-		BF.BindFlags = D3D11_BIND_VERTEX_BUFFER; // 정점 버퍼
-		BF.CPUAccessFlags = 0;
-		BF.MiscFlags = 0;
-		BF.StructureByteStride = 0;
-
-		D3D11_SUBRESOURCE_DATA SD{};
-		SD.pSysMem = m_mesh->vertices.data();
-
-		ID3D11Buffer* mVB;
-
-		HR(m_d3dDevice->CreateBuffer(&BF, &SD, &mVB));
+		m_d3dDeviceContext->RSSetState(m_rasterizerState[1].Get());
+		m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		auto vIter = m_bufferContainer.find(L"vBox");
+		assert(vIter != m_bufferContainer.end());
+		auto vertex = vIter->second.Get();
 
 		UINT stride = sizeof(DM::Vertex1);
 		UINT offset = 0;
 
 		m_d3dDeviceContext->IASetVertexBuffers(
-			0, 1, &mVB, &stride, &offset);
+			0, 1, &vertex, &stride, &offset);
 
-		// 색인과 색인 버퍼 생성
-	
-		// 색인 버퍼를 서술하는 구조체를 채운다.
-		D3D11_BUFFER_DESC ibd{};
-		ibd.Usage = D3D11_USAGE_IMMUTABLE;
-		ibd.ByteWidth = sizeof(UINT) * m_mesh->indices.size();
-		ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		ibd.CPUAccessFlags = 0;
-		ibd.MiscFlags = 0;
-		ibd.StructureByteStride = 0;
+		// 인덱스 버퍼
+		auto iter = m_bufferContainer.find(L"iBox");
+		auto index = iter->second.Get();
+		m_d3dDeviceContext->IASetIndexBuffer(index, DXGI_FORMAT_R32_UINT, 0);
 
-		// 색인 버퍼를 초기화할 자료를 지정한다.
-		D3D11_SUBRESOURCE_DATA initData{};
-		initData.pSysMem = m_mesh->indices.data();
-
-		// 색인 버퍼를 생성한다.
-		ID3D11Buffer* mIB;
-		HR(m_d3dDevice->CreateBuffer(&ibd, &initData, &mIB));
-
-		// 파이프 라인에 연결한다. 
-		m_d3dDeviceContext->IASetIndexBuffer(mIB, DXGI_FORMAT_R32_UINT, 0);
+		m_d3dDeviceContext->DrawIndexed(36, 0, 0);
 	}
 
-	m_d3dDeviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	DrawBox();
-	
-	m_d3dDeviceContext->DrawIndexed(m_mesh->indices.size(), 0, 0);
-	
 	HR(m_swapChain->Present(0, 0));
 }
 
-void D3DRenderer::DrawBox()
+void D3DRenderer::CreateBox()
 {
 	using namespace DirectX;
 
-	static int i = 0;
-	if (i == 0)
-	{
-		/// 상수 버퍼
+	auto vertex = DM::Geometry::GetBoxVertices();
+	auto index = DM::Geometry::GetBoxIndices();
 
-		// 월드 
-		XMMATRIX worldMatrix = DirectX::XMMatrixIdentity();
-		
-		// 카메라 
-		XMMATRIX viewMatrix = m_mainCamera->GetViewMatrix();
+	/// 상수 버퍼
+	D3D11_BUFFER_DESC BF{};
+	BF.ByteWidth = sizeof(DM::Vertex1) * vertex.size(); // 생성할 정점 버퍼의 크기
+	BF.Usage = D3D11_USAGE_DEFAULT;  // 버퍼가 쓰이는 방식 
+	BF.BindFlags = D3D11_BIND_VERTEX_BUFFER; // 정점 버퍼
+	BF.CPUAccessFlags = 0;
+	BF.MiscFlags = 0;
+	BF.StructureByteStride = 0;
 
-		XMMATRIX projectMatrix = m_mainCamera->GetProjectMatrix();
+	D3D11_SUBRESOURCE_DATA SD{};
+	SD.pSysMem = vertex.data();
 
-		// 최종 행렬
-		XMMATRIX finalMatrix = worldMatrix * viewMatrix * projectMatrix;
+	ID3D11Buffer* mVB;
 
-		DirectX::XMStoreFloat4x4(&m_worldMatrix, worldMatrix);
-		DirectX::XMStoreFloat4x4(&m_worldViewProjMatrix, finalMatrix);
+	HR(m_d3dDevice->CreateBuffer(&BF, &SD, &mVB));
+	m_bufferContainer.insert(std::make_pair(L"vBox", mVB));
 
-		D3D11_BUFFER_DESC contantBufferDesc{};
-		contantBufferDesc.ByteWidth = sizeof(m_worldViewProjMatrix);
-		contantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-		contantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		contantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		contantBufferDesc.MiscFlags = 0;
-		contantBufferDesc.StructureByteStride = 0;
+	// 색인과 색인 버퍼 생성	
 
-		D3D11_SUBRESOURCE_DATA initData2{};
-		initData2.pSysMem = &m_worldViewProjMatrix;
-		initData2.SysMemPitch = 0;
-		initData2.SysMemSlicePitch = 0;
+	// 색인 버퍼를 서술하는 구조체를 채운다.
+	D3D11_BUFFER_DESC ibd{};
+	ibd.Usage = D3D11_USAGE_IMMUTABLE;
+	ibd.ByteWidth = sizeof(UINT) * index.size();
+	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibd.CPUAccessFlags = 0;
+	ibd.MiscFlags = 0;
+	ibd.StructureByteStride = 0;
 
-		// 상수 버퍼 생성
-		HR(m_d3dDevice->CreateBuffer(&contantBufferDesc, &initData2, &m_constantBuffer));
+	// 색인 버퍼를 초기화할 자료를 지정한다.
+	D3D11_SUBRESOURCE_DATA initData{};
+	initData.pSysMem = index.data();
 
-		m_d3dDeviceContext->VSSetConstantBuffers(0, 1, &m_constantBuffer);
- 
-		++i;
-	};
+	// 색인 버퍼를 생성한다.
+	ID3D11Buffer* mIB;
+	HR(m_d3dDevice->CreateBuffer(&ibd, &initData, &mIB));
+	m_bufferContainer.insert(std::make_pair(L"iBox", mIB));
 
-	XMMATRIX world = XMLoadFloat4x4(&m_worldMatrix);
-	world = XMMatrixIdentity();
-	XMStoreFloat4x4(&m_worldMatrix, world);
+}
 
+void D3DRenderer::SetWorldViewProjMatrix()
+{
 	// 최종 행렬
 	XMMATRIX worldviewProjMatrix = GetWorldViewProjMatrix();
-	
+
 	/// 상수버퍼에서는 전치행렬을 보내주어야한다!!!!!!!!!!!
 	worldviewProjMatrix = XMMatrixTranspose(worldviewProjMatrix);
 
@@ -196,7 +188,7 @@ void D3DRenderer::DrawBox()
 	m_d3dDeviceContext->Map(m_constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
 	// 상수 버퍼의 포인터를 가져옵니다.
-    XMFLOAT4X4* dataPtr = (XMFLOAT4X4*)mappedResource.pData;
+	XMFLOAT4X4* dataPtr = static_cast<XMFLOAT4X4*>(mappedResource.pData);
 
 	// 상수 버퍼에 업데이트할 데이터를 복사합니다.
 	*dataPtr = m_worldViewProjMatrix;
@@ -374,7 +366,7 @@ bool D3DRenderer::InitializeD3D()
 
 	m_d3dDeviceContext->RSSetViewports(1, &vp);
 
-	// 래스터라이즈
+	// 래스터라이즈 설정
 
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
@@ -385,9 +377,13 @@ bool D3DRenderer::InitializeD3D()
 	rasterizerDesc.FrontCounterClockwise = false; // 시계 방향으로 그려지는 삼각형
 	rasterizerDesc.DepthClipEnable = true; // 깊이 클리핑 활성화
 
-	ID3D11RasterizerState* rasterizerState;
-	m_d3dDevice->CreateRasterizerState(&rasterizerDesc, &rasterizerState);
-	m_d3dDeviceContext->RSSetState(rasterizerState);
+	m_d3dDevice->CreateRasterizerState(&rasterizerDesc, &m_rasterizerState[0]);
+
+	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+
+	m_d3dDevice->CreateRasterizerState(&rasterizerDesc, &m_rasterizerState[1]);
+
+	m_d3dDeviceContext->RSSetState(m_rasterizerState[0].Get());
 
 	return true;
 }
@@ -437,12 +433,27 @@ bool D3DRenderer::InitializePipeLine()
 
 
 	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 	return true;
 }
 
-void D3DRenderer::CreateGrid(float width, float depth, UINT m, UINT n, SimpleMesh& mesh)
+void D3DRenderer::CreateBuffer()
 {
+	/// ====== 버퍼들을 생성한다 =========
+
+	/// 정점 버퍼 생성 
+	 //그리드 생성
+	CreateGrid(100, 100, 100, 100);
+	
+	CreateBox();
+
+	// 상수 버퍼 생성
+	CreateContantBuffer();
+}
+
+void D3DRenderer::CreateGrid(float width, float depth, UINT m, UINT n)
+{
+	auto& mesh = *m_mesh;
+
 	UINT vertexCount = m * n;
 	UINT faceCount = (m - 1) * (n - 1) * 2;
 
@@ -493,6 +504,82 @@ void D3DRenderer::CreateGrid(float width, float depth, UINT m, UINT n, SimpleMes
 		}
 	}
 
+	D3D11_BUFFER_DESC BF{};
+	BF.ByteWidth = sizeof(DM::Vertex1) * m_mesh->vertices.size(); // 생성할 정점 버퍼의 크기
+	BF.Usage = D3D11_USAGE_DEFAULT;  // 버퍼가 쓰이는 방식 
+	BF.BindFlags = D3D11_BIND_VERTEX_BUFFER; // 정점 버퍼
+	BF.CPUAccessFlags = 0;
+	BF.MiscFlags = 0;
+	BF.StructureByteStride = 0;
+
+	D3D11_SUBRESOURCE_DATA SD{};
+	SD.pSysMem = m_mesh->vertices.data();
+
+	ID3D11Buffer* mVB;
+
+	// 생성한 버퍼를 저장한다
+	HR(m_d3dDevice->CreateBuffer(&BF, &SD, &mVB));
+
+	m_bufferContainer.insert(std::make_pair(L"vGrid", mVB));
+
+	UINT stride = sizeof(DM::Vertex1);
+	UINT offset = 0;
+
+	// 색인과 색인 버퍼 생성
+
+	// 색인 버퍼를 서술하는 구조체를 채운다.
+	D3D11_BUFFER_DESC ibd{};
+	ibd.Usage = D3D11_USAGE_IMMUTABLE;
+	ibd.ByteWidth = sizeof(UINT) * m_mesh->indices.size();
+	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibd.CPUAccessFlags = 0;
+	ibd.MiscFlags = 0;
+	ibd.StructureByteStride = 0;
+
+	// 색인 버퍼를 초기화할 자료를 지정한다.
+	D3D11_SUBRESOURCE_DATA initData{};
+	initData.pSysMem = m_mesh->indices.data();
+
+	// 색인 버퍼를 생성한다.
+	ID3D11Buffer* mIB;
+	HR(m_d3dDevice->CreateBuffer(&ibd, &initData, &mIB));
+
+	m_bufferContainer.insert(std::make_pair(L"iGrid", mIB));
+
 }
 
+void D3DRenderer::CreateContantBuffer()
+{
+	// 월드 
+	XMMATRIX worldMatrix = DirectX::XMMatrixIdentity();
+
+	// 카메라 
+	XMMATRIX viewMatrix = m_mainCamera->GetViewMatrix();
+
+	XMMATRIX projectMatrix = m_mainCamera->GetProjectMatrix();
+
+	// 최종 행렬
+	XMMATRIX finalMatrix = worldMatrix * viewMatrix * projectMatrix;
+
+	DirectX::XMStoreFloat4x4(&m_worldMatrix, worldMatrix);
+	DirectX::XMStoreFloat4x4(&m_worldViewProjMatrix, finalMatrix);
+
+	D3D11_BUFFER_DESC contantBufferDesc{};
+	contantBufferDesc.ByteWidth = sizeof(m_worldViewProjMatrix);
+	contantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	contantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	contantBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	contantBufferDesc.MiscFlags = 0;
+	contantBufferDesc.StructureByteStride = 0;
+
+	D3D11_SUBRESOURCE_DATA initData2{};
+	initData2.pSysMem = &m_worldViewProjMatrix;
+	initData2.SysMemPitch = 0;
+	initData2.SysMemSlicePitch = 0;
+
+	// 상수 버퍼 생성
+	HR(m_d3dDevice->CreateBuffer(&contantBufferDesc, &initData2, &m_constantBuffer));
+
+	m_d3dDeviceContext->VSSetConstantBuffers(0, 1, &m_constantBuffer);
+}
 

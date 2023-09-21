@@ -17,18 +17,22 @@ public:
 
 	bool Initialize(HWND hWnd, int screenWidth, int screenHeight);
 	void Finalize();
-	void ClearBuffer();
+	void ClearScreen();
 	void Render();
 	
 	// 연습
-	void DrawBox();
+	void SetWorldViewProjMatrix();
 
 	DirectX::XMMATRIX GetWorldViewProjMatrix();
 	CameraObject* GetMainCamera() const { return m_mainCamera.get(); }
 private:
 	bool InitializeD3D();
 	bool InitializePipeLine();
-	void CreateGrid(float width, float depth, UINT m, UINT n, SimpleMesh& mesh);
+	void CreateBuffer();
+	void CreateBox();
+
+	void CreateGrid(float width, float depth, UINT m, UINT n);
+	void CreateContantBuffer();
 
 private: 
 	int m_screenHeight;
@@ -58,9 +62,12 @@ private:
 
 	/// ======================== 버퍼 ===================================
 	ID3D11Buffer* m_constantBuffer;
-	ID3D11Buffer* m_vertexBuffer;
-	ID3D11Buffer* m_indexBuffer;
+	
+	std::unordered_map < std::wstring, Microsoft::WRL::ComPtr<ID3D11Buffer>> m_bufferContainer;
+
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState[2];
 
 	SimpleMesh* m_mesh;
+	
 };
 
