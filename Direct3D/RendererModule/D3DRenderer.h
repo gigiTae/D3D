@@ -4,7 +4,7 @@ struct SimpleMesh;
 class CameraObject;
 class Box;
 class Grid;
-
+class Cylinder;
 
 /// <summary>
 ///  DX11  
@@ -54,5 +54,7 @@ private:
 	/// ===================== ¿”Ω√∞¥√º ================================
 	Box* m_box;
 	Grid* m_grid;
+	Cylinder* m_cylinder;
+
 };
 

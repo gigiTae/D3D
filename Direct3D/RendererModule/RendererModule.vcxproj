@@ -149,16 +149,17 @@
   <ItemGroup>
     <ClInclude Include="Box.h" />
     <ClInclude Include="CameraObject.h" />
+    <ClInclude Include="Cylinder.h" />
     <ClInclude Include="D3DRenderer.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HRDefine.h" />
     <ClInclude Include="RendererPCH.h" />
     <ClInclude Include="RendererHeader.h" />
-    <ClInclude Include="SimpleMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="CameraObject.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="D3DRenderer.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="RendererPCH.cpp">
@@ -167,7 +168,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SimpleMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MathModule\MathModule.vcxproj">

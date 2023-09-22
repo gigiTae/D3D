@@ -1,8 +1,8 @@
 #include "RendererPCH.h"
 #include "D3DRenderer.h"
-#include "SimpleMesh.h"
 #include "CameraObject.h"
 #include "Box.h"
+#include "Cylinder.h"
 #include "Grid.h"
 
 D3DRenderer::D3DRenderer()
@@ -65,6 +65,9 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 	m_grid = new Grid(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
 	m_grid->Initialize(100, 100, 10, 10);
 
+	m_cylinder = new Cylinder(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_cylinder->Initailize(10.f, 10.f, 10.f, 100, 100);
+
 	return true;
 }
 
@@ -103,6 +106,9 @@ void D3DRenderer::Render()
 
 	m_grid->Update(worldMatrix, viewMatrix, projectMatrix);
 	m_grid->Render();
+
+	m_cylinder->Update(worldMatrix, viewMatrix, projectMatrix);
+	m_cylinder->Render();
 
 	HR(m_swapChain->Present(0, 0));
 }

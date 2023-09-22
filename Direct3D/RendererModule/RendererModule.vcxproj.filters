@@ -21,9 +21,6 @@
     <ClCompile Include="CameraObject.cpp">
       <Filter>02.Camera</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleMesh.cpp">
-      <Filter>03.Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="Box.cpp">
       <Filter>03.Mesh</Filter>
     </ClCompile>
@@ -33,6 +30,9 @@
     <ClCompile Include="Grid.cpp">
       <Filter>03.Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="Cylinder.cpp">
+      <Filter>03.Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3DRenderer.h">
@@ -40,9 +40,6 @@
     </ClInclude>
     <ClInclude Include="CameraObject.h">
       <Filter>02.Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleMesh.h">
-      <Filter>03.Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>03.Mesh</Filter>
@@ -57,6 +54,9 @@
       <Filter>00.Define</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
+      <Filter>03.Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Cylinder.h">
       <Filter>03.Mesh</Filter>
     </ClInclude>
   </ItemGroup>
