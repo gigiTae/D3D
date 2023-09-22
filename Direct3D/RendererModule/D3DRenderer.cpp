@@ -116,16 +116,16 @@ void D3DRenderer::Render()
 	XMMATRIX projectMatrix = m_mainCamera->GetProjectMatrix();
 
 	m_box->Update(worldMatrix, viewMatrix, projectMatrix);
-	//m_box->Render();
+	m_box->Render();
 
 	m_grid->Update(worldMatrix, viewMatrix, projectMatrix);
 	m_grid->Render();
 
 	m_cylinder->Update(worldMatrix, viewMatrix, projectMatrix);
-	//m_cylinder->Render();
+	m_cylinder->Render();
 
 	m_sphere->Update(worldMatrix, viewMatrix, projectMatrix);
-//	m_sphere->Render();
+	m_sphere->Render();
 
 	m_geoSphere->Update(worldMatrix, viewMatrix, projectMatrix);
 	m_geoSphere->Render();

@@ -13,6 +13,9 @@
     <Filter Include="00.Define">
       <UniqueIdentifier>{f660b35c-8022-47e2-acba-8a30df49c0db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Mesh\Geometry">
+      <UniqueIdentifier>{8e9bfc93-f827-4666-8bd6-00d2e050a39c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DRenderer.cpp">
@@ -21,23 +24,23 @@
     <ClCompile Include="CameraObject.cpp">
       <Filter>02.Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>03.Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="RendererPCH.cpp">
       <Filter>00.Define</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>03.Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="Cylinder.cpp">
-      <Filter>03.Mesh</Filter>
+    <ClCompile Include="Box.cpp">
+      <Filter>03.Mesh\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="Sphere.cpp">
-      <Filter>03.Mesh</Filter>
+    <ClCompile Include="Cylinder.cpp">
+      <Filter>03.Mesh\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="GeoSphere.cpp">
-      <Filter>03.Mesh</Filter>
+      <Filter>03.Mesh\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>03.Mesh\Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -46,9 +49,6 @@
     </ClInclude>
     <ClInclude Include="CameraObject.h">
       <Filter>02.Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Box.h">
-      <Filter>03.Mesh</Filter>
     </ClInclude>
     <ClInclude Include="HRDefine.h">
       <Filter>00.Define</Filter>
@@ -62,14 +62,17 @@
     <ClInclude Include="Grid.h">
       <Filter>03.Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="Cylinder.h">
-      <Filter>03.Mesh</Filter>
+    <ClInclude Include="Box.h">
+      <Filter>03.Mesh\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>03.Mesh</Filter>
+    <ClInclude Include="Cylinder.h">
+      <Filter>03.Mesh\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="GeoSphere.h">
-      <Filter>03.Mesh</Filter>
+      <Filter>03.Mesh\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>03.Mesh\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
