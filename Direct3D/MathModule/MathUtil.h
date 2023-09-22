@@ -8,5 +8,5 @@ namespace DM
 	static constexpr float HalfPI = { 1.57079632679f };
 	static constexpr float InvPI = { 0.31830988618f };
 
-
+	float AngleFromXY(float x, float y);
 }

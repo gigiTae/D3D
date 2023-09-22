@@ -4,7 +4,7 @@
 Sphere::Sphere(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* rs)
 	:m_d3dDevice(device), m_d3dDeviceContext(deviceContext), m_rasterizerState(rs)
 	, m_proj(), m_world(), m_view(), m_indexBuffer(), m_vertexBuffer(), m_inputLayout()
-	, m_radius(0.f), m_sliceCount(0), m_stackCount(0)
+	, m_radius(0.f), m_sliceCount(0), m_stackCount(0), m_vertexSize(0), m_indexSize(0)
 {
 
 }

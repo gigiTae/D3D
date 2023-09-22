@@ -6,6 +6,7 @@ class Box;
 class Grid;
 class Cylinder;
 class Sphere;
+class GeoSphere;
 
 /// <summary>
 ///  DX11  
@@ -58,6 +59,7 @@ private:
 	Grid* m_grid;
 	Cylinder* m_cylinder;
 	Sphere* m_sphere;
+	GeoSphere* m_geoSphere;
 
 };
 

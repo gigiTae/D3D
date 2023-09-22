@@ -151,6 +151,7 @@
     <ClInclude Include="CameraObject.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="D3DRenderer.h" />
+    <ClInclude Include="GeoSphere.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HRDefine.h" />
     <ClInclude Include="RendererPCH.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="CameraObject.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="D3DRenderer.cpp" />
+    <ClCompile Include="GeoSphere.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="RendererPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

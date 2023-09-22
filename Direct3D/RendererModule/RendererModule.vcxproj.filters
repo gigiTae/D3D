@@ -36,6 +36,9 @@
     <ClCompile Include="Sphere.cpp">
       <Filter>03.Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="GeoSphere.cpp">
+      <Filter>03.Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3DRenderer.h">
@@ -63,6 +66,9 @@
       <Filter>03.Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Sphere.h">
+      <Filter>03.Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="GeoSphere.h">
       <Filter>03.Mesh</Filter>
     </ClInclude>
   </ItemGroup>

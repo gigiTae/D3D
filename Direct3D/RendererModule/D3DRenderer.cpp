@@ -5,6 +5,7 @@
 #include "Cylinder.h"
 #include "Grid.h"
 #include "Sphere.h"
+#include "GeoSphere.h"
 
 D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
@@ -23,6 +24,8 @@ D3DRenderer::D3DRenderer()
 	,m_box(nullptr)
 	,m_grid(nullptr)
 	,m_sphere(nullptr)
+	,m_cylinder(nullptr)
+	,m_geoSphere(nullptr)
 {
 	
 }
@@ -73,6 +76,9 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 	m_sphere = new Sphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
 	m_sphere->Initialize(10.f, 20,20);
 
+	m_geoSphere = new GeoSphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_geoSphere->Initilize(10.f, 2);
+
 	return true;
 }
 
@@ -84,6 +90,7 @@ void D3DRenderer::Finalize()
 	delete m_box;
 	delete m_sphere;
 	delete m_cylinder;
+	delete m_geoSphere;
 
 	CoUninitialize();
 }
@@ -118,7 +125,10 @@ void D3DRenderer::Render()
 	//m_cylinder->Render();
 
 	m_sphere->Update(worldMatrix, viewMatrix, projectMatrix);
-	m_sphere->Render();
+//	m_sphere->Render();
+
+	m_geoSphere->Update(worldMatrix, viewMatrix, projectMatrix);
+	m_geoSphere->Render();
 
 	HR(m_swapChain->Present(0, 0));
 }

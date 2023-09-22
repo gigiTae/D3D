@@ -13,6 +13,7 @@
 #include <memory.h> // 스마트 포인터 
 #include <sstream>
 #include <fstream>
+#include <algorithm>
 #include <string>
 
 #include <wrl/client.h>

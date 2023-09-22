@@ -27,7 +27,6 @@ void Box::Update(const XMMATRIX& world, const XMMATRIX& view, const XMMATRIX& pr
 
 void Box::Render()
 {
-
 	// 입력 배치 셋팅
 	m_d3dDeviceContext->IASetInputLayout(m_inputLayout.Get());
 	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
