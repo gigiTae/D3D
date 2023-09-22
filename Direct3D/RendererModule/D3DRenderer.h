@@ -5,6 +5,7 @@ class CameraObject;
 class Box;
 class Grid;
 class Cylinder;
+class Sphere;
 
 /// <summary>
 ///  DX11  
@@ -49,12 +50,14 @@ private:
 	XMFLOAT4X4 m_worldMatrix;
 	XMFLOAT4X4 m_worldViewProjMatrix;
 
+
 	ComPtr<ID3D11RasterizerState> m_rasterizerState[2];
 
 	/// ===================== ¿”Ω√∞¥√º ================================
 	Box* m_box;
 	Grid* m_grid;
 	Cylinder* m_cylinder;
+	Sphere* m_sphere;
 
 };
 

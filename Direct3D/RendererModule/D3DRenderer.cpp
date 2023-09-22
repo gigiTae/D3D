@@ -4,6 +4,7 @@
 #include "Box.h"
 #include "Cylinder.h"
 #include "Grid.h"
+#include "Sphere.h"
 
 D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
@@ -21,6 +22,7 @@ D3DRenderer::D3DRenderer()
 	, m_screenHeight(0)
 	,m_box(nullptr)
 	,m_grid(nullptr)
+	,m_sphere(nullptr)
 {
 	
 }
@@ -66,7 +68,10 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 	m_grid->Initialize(100, 100, 10, 10);
 
 	m_cylinder = new Cylinder(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_cylinder->Initailize(10.f, 10.f, 10.f, 100, 100);
+	m_cylinder->Initailize(10.f, 0.f, 10.f, 100, 100);
+
+	m_sphere = new Sphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_sphere->Initialize(10.f, 20,20);
 
 	return true;
 }
@@ -77,6 +82,8 @@ void D3DRenderer::Finalize()
 
 	delete m_grid;
 	delete m_box;
+	delete m_sphere;
+	delete m_cylinder;
 
 	CoUninitialize();
 }
@@ -102,13 +109,16 @@ void D3DRenderer::Render()
 	XMMATRIX projectMatrix = m_mainCamera->GetProjectMatrix();
 
 	m_box->Update(worldMatrix, viewMatrix, projectMatrix);
-	m_box->Render();
+	//m_box->Render();
 
 	m_grid->Update(worldMatrix, viewMatrix, projectMatrix);
 	m_grid->Render();
 
 	m_cylinder->Update(worldMatrix, viewMatrix, projectMatrix);
-	m_cylinder->Render();
+	//m_cylinder->Render();
+
+	m_sphere->Update(worldMatrix, viewMatrix, projectMatrix);
+	m_sphere->Render();
 
 	HR(m_swapChain->Present(0, 0));
 }

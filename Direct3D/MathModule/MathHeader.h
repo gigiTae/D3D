@@ -14,6 +14,7 @@ using namespace DirectX;
 #include <map>
 #include <unordered_map>
 
+#include <DirectXColors.h>
 
 #include "MathUtil.h"
 #include "Vertex.h"

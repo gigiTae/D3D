@@ -6,7 +6,8 @@
 Cylinder::Cylinder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* rs)
 	:m_d3dDevice(device), m_d3dDeviceContext(deviceContext), m_rasterizerState(rs)
 	, m_proj(), m_world(), m_view(), m_indexBuffer(), m_vertexBuffer(), m_inputLayout()
-	,indexSize(0), vertexSize(0)
+	,indexSize(0), vertexSize(0),m_bottomRadius(0.f),m_topRadius(0.f),m_height(0.f)
+	,m_sliceCount(0),m_stackCount(0)
 {
 
 }
@@ -18,6 +19,12 @@ Cylinder::~Cylinder()
 
 void Cylinder::Initailize(float bottomRadius, float topRadius, float height, UINT sliceCount, UINT stackCount)
 {
+	m_bottomRadius = bottomRadius;
+	m_topRadius = topRadius;
+	m_height = height;
+	m_sliceCount = sliceCount;
+	m_stackCount = stackCount;
+
 	BuildBuffers(bottomRadius,topRadius, height, sliceCount, stackCount);
 	BuildEffect();
 	BuildLayout();
@@ -251,8 +258,8 @@ void Cylinder::BuildClinderBottomCap(float bottomRadius, float topRadius, float 
 	// (텍스처 좌표와 법선이 다르므로 이처럼 중복이 필요하다.)
 	for (UINT i = 0; i <= sliceCount; ++i)
 	{
-		float x = topRadius * cosf(i * dTheta);
-		float z = topRadius * sinf(i * dTheta);
+		float x = bottomRadius * cosf(i * dTheta);
+		float z = bottomRadius * sinf(i * dTheta);
 
 		// 윈면 마개의 텍스처 좌표 면적이 밑면에 비례하도록, 
 		// 텍스처 좌표를 높이에 따라 적절히 축소한다.

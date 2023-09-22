@@ -155,6 +155,7 @@
     <ClInclude Include="HRDefine.h" />
     <ClInclude Include="RendererPCH.h" />
     <ClInclude Include="RendererHeader.h" />
+    <ClInclude Include="Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
@@ -168,6 +169,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MathModule\MathModule.vcxproj">

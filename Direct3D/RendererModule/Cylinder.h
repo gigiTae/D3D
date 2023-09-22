@@ -35,10 +35,15 @@ private:
 	void BuildClinderBottomCap(float bottomRadius, float topRadius, float height, UINT sliceCount, UINT stackCount
 		, std::vector<Vertex>& vertices, std::vector<UINT>& indices);
 
-
 private:
 	unsigned int vertexSize;
 	unsigned int indexSize;
+
+	float m_bottomRadius;
+	float m_topRadius;
+	float m_height;
+	UINT m_sliceCount;
+	UINT m_stackCount;
 
 	XMFLOAT4X4 m_world; // 월드 변환 행렬
 	XMFLOAT4X4 m_view;  // 시야 변환 행렬

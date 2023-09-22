@@ -96,17 +96,37 @@ void Application::CameraMove()
 	{
 		m_d3dRenderer->GetMainCamera()->MoveCameraX(distance);
 	}
-
 	if (m_inputManager->IsKeyState(KEY::Q, KEY_STATE::HOLD))
+	{
+		m_d3dRenderer->GetMainCamera()->MoveCameraY(-distance);
+	}
+	if (m_inputManager->IsKeyState(KEY::E, KEY_STATE::HOLD))
+	{
+		m_d3dRenderer->GetMainCamera()->MoveCameraY(distance);
+	}
+
+
+	if (m_inputManager->IsKeyState(KEY::LEFT, KEY_STATE::HOLD))
 	{
 		distance *= 0.5f;
 		m_d3dRenderer->GetMainCamera()->RotateCameraY(-distance);
 	}
-	if (m_inputManager->IsKeyState(KEY::E, KEY_STATE::HOLD))
+	if (m_inputManager->IsKeyState(KEY::RIGHT, KEY_STATE::HOLD))
 	{
 		distance *= 0.5f;
 		m_d3dRenderer->GetMainCamera()->RotateCameraY(distance);
 	}
+	if (m_inputManager->IsKeyState(KEY::DOWN, KEY_STATE::HOLD))
+	{
+		distance *= 0.5f;
+		m_d3dRenderer->GetMainCamera()->RotateCameraX(-distance);
+	}
+	if (m_inputManager->IsKeyState(KEY::UP, KEY_STATE::HOLD))
+	{
+		distance *= 0.5f;
+		m_d3dRenderer->GetMainCamera()->RotateCameraX(+distance);
+	}
+
 }
 
 

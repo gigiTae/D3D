@@ -75,14 +75,32 @@ void CameraObject::MoveCameraX(float distace)
 
 void CameraObject::MoveCameraY(float distace)
 {
+	XMVECTOR normal = XMVector3Normalize(m_cameraDirection);
 
+	XMVECTOR xAxis = XMVector3Cross(m_worldUp, normal);
+
+	XMVECTOR yAxis = XMVector3Cross(normal, xAxis);
+
+	m_cameraPosition += yAxis * distace;
+
+	Update();
 }
 
 void CameraObject::RotateCameraY(float angle)
 {
+
 	XMMATRIX rotainoMat = XMMatrixRotationY(angle);
-	
+
 	m_cameraDirection = XMVector4Transform(m_cameraDirection, rotainoMat);;
+
+	Update();
+}
+
+void CameraObject::RotateCameraX(float angle)
+{
+	XMMATRIX rotainoMat = XMMatrixRotationX(angle);
+
+	m_cameraDirection = XMVector4Transform(m_cameraDirection, rotainoMat);
 
 	Update();
 }

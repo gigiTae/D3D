@@ -28,6 +28,7 @@ public:
 	void MoveCameraX(float distace);
 	void MoveCameraY(float distace);
 	void RotateCameraY(float angle);
+	void RotateCameraX(float angle);
 	
 private:
 	DirectX::XMMATRIX m_viewMatrix; // 카메라 변환 행렬 
