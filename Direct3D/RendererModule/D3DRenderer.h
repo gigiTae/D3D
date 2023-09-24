@@ -8,6 +8,13 @@ class Cylinder;
 class Sphere;
 class GeoSphere;
 class BaseAxis;
+class Land;
+
+/// 라이트
+struct DirectionalLight;
+struct PointLight;
+struct SpotLight;
+struct Material;
 
 /// <summary>
 ///  DX11  
@@ -25,12 +32,20 @@ public:
 	void Finalize();
 	void ClearScreen();
 	void Render();
+
+	/// 라이트 임시
 	
 	XMMATRIX GetWorldViewProjMatrix();
 	CameraObject* GetMainCamera() const { return m_mainCamera.get(); }
 private:
 	bool InitializeD3D();
 
+	/// ============================== 임시 코드 ===============================
+	void InitializeMesh();
+	void InitializeLight();
+
+	void RenderLight();
+	/// ========================================================================
 private: 
 	int m_screenHeight;
 	int m_screenWidth;
@@ -62,6 +77,15 @@ private:
 	Sphere* m_sphere;
 	GeoSphere* m_geoSphere;
 	BaseAxis* m_baseAxis;
+	Land* m_land;
+
+	/// ======================= 라이트 관련 ================================
+	DirectionalLight* m_directLight;
+	PointLight* m_pointLight;
+	SpotLight* m_spotLight;
+
+	Material* m_landMat;
+	Material* m_sphereMat;
 
 };
 

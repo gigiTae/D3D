@@ -34,7 +34,7 @@ struct PointLight
 	float range;
 
 	// (A0,A1,A2,Pad) 형태로 하나의 4차원 벡터에 채워 넣는다.
-	XMFLOAT3 Att;
+	XMFLOAT3 att;
 	float pad; 
 };
 
@@ -53,7 +53,7 @@ struct SpotLight
 	float spot;
 
 	// (A0,A1,A2,Pad) 형태로 하나의 4차원 벡터에 채워 넣는다.
-	XMFLOAT3 Att;
+	XMFLOAT3 att;
 	float pad;
 
 }; 
@@ -63,8 +63,8 @@ struct Material
 {
 	Material() { ZeroMemory(this, sizeof(this)); }
 
-	XMFLOAT4 Ambient;
-	XMFLOAT4 Diffuse;
-	XMFLOAT4 Specular; // w = SpecPower
-	XMFLOAT4 Reflect;
+	XMFLOAT4 ambient;
+	XMFLOAT4 diffuse;
+	XMFLOAT4 specular; // w = SpecPower
+	XMFLOAT4 reflect;
 };

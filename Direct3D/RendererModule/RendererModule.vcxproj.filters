@@ -57,6 +57,9 @@
     <ClCompile Include="Light.cpp">
       <Filter>04.Light</Filter>
     </ClCompile>
+    <ClCompile Include="Land.cpp">
+      <Filter>03.Mesh\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3DRenderer.h">
@@ -97,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>04.Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Land.h">
+      <Filter>03.Mesh\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

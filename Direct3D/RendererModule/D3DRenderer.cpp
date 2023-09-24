@@ -1,12 +1,18 @@
 #include "RendererPCH.h"
 #include "D3DRenderer.h"
 #include "CameraObject.h"
+
+/// Mesh
 #include "Box.h"
 #include "Cylinder.h"
 #include "Grid.h"
 #include "Sphere.h"
 #include "GeoSphere.h"
 #include "BaseAxis.h"
+#include "Land.h"
+
+/// Light
+#include "Light.h"
 
 D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
@@ -28,6 +34,7 @@ D3DRenderer::D3DRenderer()
 	,m_cylinder(nullptr)
 	,m_geoSphere(nullptr)
 	,m_baseAxis(nullptr)
+	,m_land(nullptr)
 {
 	
 }
@@ -66,23 +73,8 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 	DirectX::XMStoreFloat4x4(&m_worldMatrix, worldMatrix);
 	DirectX::XMStoreFloat4x4(&m_worldViewProjMatrix, finalMatrix);
 	
-	m_box = new Box(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_box->Initialize();
-
-	m_grid = new Grid(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_grid->Initialize(100, 100, 10, 10);
-
-	m_cylinder = new Cylinder(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_cylinder->Initailize(10.f, 0.f, 10.f, 100, 100);
-
-	m_sphere = new Sphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_sphere->Initialize(10.f, 20,20);
-
-	m_geoSphere = new GeoSphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
-	m_geoSphere->Initilize(10.f, 2);
-
-	m_baseAxis = new BaseAxis(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_baseAxis->Initalize();
+	InitializeMesh();
+	InitializeLight();
 
 	return true;
 }
@@ -98,6 +90,9 @@ void D3DRenderer::Finalize()
 	delete m_geoSphere;
 	delete m_baseAxis;
 
+
+	delete m_sphereMat;
+	delete m_landMat;
 	CoUninitialize();
 }
 
@@ -125,7 +120,7 @@ void D3DRenderer::Render()
 	//m_box->Render();
 
 	m_grid->Update(worldMatrix, viewMatrix, projectMatrix);
-	m_grid->Render();
+	//m_grid->Render();
 
 	m_cylinder->Update(worldMatrix, viewMatrix, projectMatrix);
 	//m_cylinder->Render();
@@ -134,11 +129,17 @@ void D3DRenderer::Render()
 	//m_sphere->Render();
 
 	m_geoSphere->Update(worldMatrix, viewMatrix, projectMatrix);
-	m_geoSphere->Render();
+	//m_geoSphere->Render();
 
 	m_baseAxis->Update(worldMatrix, viewMatrix, projectMatrix);
 	m_baseAxis->Render();
 
+	
+	m_land->Update(worldMatrix, viewMatrix, projectMatrix);
+	XMFLOAT3 eyePos;
+	XMStoreFloat3(&eyePos, m_mainCamera->GetPosition());
+	
+	m_land->Render(m_directLight, m_pointLight, m_spotLight, &eyePos);
 
 	HR(m_swapChain->Present(0, 0));
 }
@@ -327,5 +328,81 @@ bool D3DRenderer::InitializeD3D()
 	m_d3dDeviceContext->RSSetState(m_rasterizerState[0].Get());
 
 	return true;
+}
+
+void D3DRenderer::InitializeMesh()
+{
+	/// 아직까지는 게임오브젝트 설계하기는 무리이다.  어차피 엄청나게 뜯어 고쳐야함
+	/// 그러므로 공부하자 
+	
+	m_box = new Box(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_box->Initialize();
+
+	m_grid = new Grid(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_grid->Initialize(100, 100, 10, 10);
+
+	m_cylinder = new Cylinder(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_cylinder->Initailize(10.f, 0.f, 10.f, 100, 100);
+
+	m_sphere = new Sphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_sphere->Initialize(10.f, 20, 20);
+
+	m_geoSphere = new GeoSphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
+	m_geoSphere->Initilize(10.f, 2);
+
+	m_baseAxis = new BaseAxis(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_baseAxis->Initalize();
+
+	m_land = new Land(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
+	m_land->Initialize(100, 100, 10, 10);
+
+}
+
+void D3DRenderer::InitializeLight()
+{
+	// Light
+	m_directLight = new DirectionalLight();
+	m_pointLight = new PointLight;
+	m_spotLight = new SpotLight();
+
+	// Material
+	m_landMat = new Material;
+	m_sphereMat = new Material;
+
+	// Directional light.
+	m_directLight->ambient  = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	m_directLight->diffuse  = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+	m_directLight->specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+	m_directLight->direction = XMFLOAT3(0.57735f, -0.57735f, 0.57735f);
+ 
+	// Point light--position is changed every frame to animate in UpdateScene function.
+	m_pointLight->ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+	m_pointLight->diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+	m_pointLight->specular = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+	m_pointLight->att = XMFLOAT3(0.0f, 0.1f, 0.0f);
+	m_pointLight->range = 25.0f;
+
+	// Spot light--position and direction changed every frame to animate in UpdateScene function.
+	m_spotLight->ambient  = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_spotLight->diffuse  = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+	m_spotLight->specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_spotLight->att      = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	m_spotLight->spot     = 96.0f;
+	m_spotLight->range = 10000.0f;
+
+	m_landMat->ambient  = XMFLOAT4(0.48f, 0.77f, 0.46f, 1.0f);
+	m_landMat->diffuse  = XMFLOAT4(0.48f, 0.77f, 0.46f, 1.0f);
+	m_landMat->specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 16.0f);
+
+	m_sphereMat->ambient = XMFLOAT4(0.137f, 0.42f, 0.556f, 1.0f);
+	m_sphereMat->diffuse  = XMFLOAT4(0.137f, 0.42f, 0.556f, 1.0f);
+	m_sphereMat->specular = XMFLOAT4(0.8f, 0.8f, 0.8f, 96.0f);
+
+
+}
+
+void D3DRenderer::RenderLight()
+{
+
 }
 

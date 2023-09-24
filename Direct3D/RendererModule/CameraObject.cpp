@@ -28,22 +28,22 @@ void CameraObject::Initialize(int width, int hegiht, XMVECTOR position)
 	m_fovAngleY = DM::HalfPI; 
 
 	// 카메라 위치는 원점 
-	m_position = position;
+	SetPosition(position);
 	XMVECTOR zero = XMVectorZero();
 	m_worldUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
 
 	// 카메라는 원점을 바라본다 
-	m_cameraDirection = zero - m_position;
+	m_cameraDirection = zero - GetPosition();
 	
 	// 행렬 계산
-	m_viewMatrix = XMMatrixLookToLH(m_position, m_cameraDirection, m_worldUp);
+	m_viewMatrix = XMMatrixLookToLH(GetPosition(), m_cameraDirection, m_worldUp);
 	m_projectMatrix = XMMatrixPerspectiveFovLH(m_fovAngleY, m_aspectRatio, m_nearZ, m_farZ);
 
 }
 
 void CameraObject::Update()
 {
-	m_viewMatrix = XMMatrixLookToLH(m_position, m_cameraDirection, m_worldUp);
+	m_viewMatrix = XMMatrixLookToLH(GetPosition(), m_cameraDirection, m_worldUp);
 	m_projectMatrix = XMMatrixPerspectiveFovLH(m_fovAngleY, m_aspectRatio, m_nearZ, m_farZ);
 }
 
@@ -56,7 +56,7 @@ void CameraObject::MoveCameraZ(float distace)
 {
 	XMVECTOR normal = XMVector3Normalize(m_cameraDirection);
 	
-	m_position += normal * distace;
+	SetPosition(GetPosition() + normal * distace);
 
 	Update();
 }
@@ -67,7 +67,7 @@ void CameraObject::MoveCameraX(float distace)
 
 	XMVECTOR xAxis = XMVector3Cross(m_worldUp, normal);
 
-	m_position += xAxis * distace;
+	SetPosition(GetPosition() + xAxis * distace);
 	
 	Update();
 }
@@ -80,7 +80,7 @@ void CameraObject::MoveCameraY(float distace)
 
 	XMVECTOR yAxis = XMVector3Cross(normal, xAxis);
 
-	m_position += yAxis * distace;
+	SetPosition(GetPosition() + yAxis * distace);
 
 	Update();
 }
