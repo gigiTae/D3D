@@ -6,7 +6,7 @@ Land::Land(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11Raste
 	, m_proj(), m_world(), m_view(), m_indexBuffer(), m_vertexBuffer(), m_inputLayout()
 	, m_vertexSize(0), m_indexSize(0)
 {
-	m_landColor = XMFLOAT4(0.4f, 0.5f, 1.f, 1.f);
+	m_landColor = XMFLOAT4(1.f, 1.f, 1.f, 1.f);
 
  
 	m_landMaterial.ambient = XMFLOAT4(0.48f, 0.77f, 0.46f, 1.0f);
@@ -117,7 +117,7 @@ void Land::BuildBuffers(float width, float depth, UINT xVertex, UINT zVertex)
 			v[i * zVertex + j].color = m_landColor;
 
 			// 조명에 쓰이는 특성
-			v[i* zVertex + j].normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+			v[i* zVertex + j].normal = XMFLOAT3(0.f, 1.f, 0.0f);
 
 			// 텍스처 적용에 쓰이는 특성
 		}

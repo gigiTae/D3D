@@ -29,6 +29,7 @@ struct VertexIn
 {
 	float3 PosL    : POSITION;
 	float3 NormalL : NORMAL;
+    float4 Color : COLOR;
 };
 
 struct VertexOut
@@ -36,6 +37,7 @@ struct VertexOut
 	float4 PosH    : SV_POSITION;
     float3 PosW    : POSITION;
     float3 NormalW : NORMAL;
+    float4 Color : COLOR;
 };
 
 VertexOut VS(VertexIn vin)
@@ -48,6 +50,8 @@ VertexOut VS(VertexIn vin)
 		
 	// 동차 절단 공간으로 변환한다.
 	vout.PosH = mul(float4(vin.PosL, 1.0f), gWorldViewProj);
+	
+    vout.Color = vin.Color;
 	
 	return vout;
 }
@@ -82,7 +86,7 @@ float4 PS(VertexOut pin) : SV_Target
 	diffuse += D;
 	spec    += S;
 	   
-	float4 litColor = ambient + diffuse + spec;
+    float4 litColor = (ambient + diffuse + spec)*0.5f + pin.Color*0.5f;
 
 	// 분산광 재질의 알파와 텍스처의 알파의 곱을 전체적인 알파 값으로 사용한다. 
 	litColor.a = gMaterial.Diffuse.a;

@@ -370,7 +370,7 @@ void D3DRenderer::InitializeLight()
 	m_sphereMat = new Material;
 
 	// Directional light.
-	m_directLight->ambient  = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	m_directLight->ambient  = XMFLOAT4(0.2f, 1.f, 1.f, 1.0f);
 	m_directLight->diffuse  = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
 	m_directLight->specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
 	m_directLight->direction = XMFLOAT3(0.57735f, -0.57735f, 0.57735f);
