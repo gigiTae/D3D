@@ -78,10 +78,10 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 	m_sphere = new Sphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
 	m_sphere->Initialize(10.f, 20,20);
 
-	m_geoSphere = new GeoSphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_geoSphere = new GeoSphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
 	m_geoSphere->Initilize(10.f, 2);
 
-	m_baseAxis = new BaseAxis(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
+	m_baseAxis = new BaseAxis(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
 	m_baseAxis->Initalize();
 
 	return true;
@@ -134,7 +134,7 @@ void D3DRenderer::Render()
 	//m_sphere->Render();
 
 	m_geoSphere->Update(worldMatrix, viewMatrix, projectMatrix);
-	//m_geoSphere->Render();
+	m_geoSphere->Render();
 
 	m_baseAxis->Update(worldMatrix, viewMatrix, projectMatrix);
 	m_baseAxis->Render();
@@ -320,7 +320,7 @@ bool D3DRenderer::InitializeD3D()
 
 	m_d3dDevice->CreateRasterizerState(&rasterizerDesc, m_rasterizerState[0].GetAddressOf());
 
-	rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
+	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
 
 	m_d3dDevice->CreateRasterizerState(&rasterizerDesc, m_rasterizerState[1].GetAddressOf());
 

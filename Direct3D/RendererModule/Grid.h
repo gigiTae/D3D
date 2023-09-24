@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Mesh.h"
 
 /// <summary>
 /// xz 평면 그리드 메쉬
 /// </summary>
-class Grid
+class Grid : public Mesh
 {
 public:
     Grid(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* rs);

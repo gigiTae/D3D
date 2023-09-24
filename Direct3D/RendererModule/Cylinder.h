@@ -1,12 +1,13 @@
 #pragma once
 
+#include "Mesh.h"
 
 /// <summary>
 /// 원통 메쉬
 /// 
 /// 
 /// </summary>
-class Cylinder
+class Cylinder : public Mesh
 {
 public:
 	Cylinder(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* rs);

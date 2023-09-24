@@ -19,6 +19,9 @@
     <Filter Include="03.Mesh\Gizumo">
       <UniqueIdentifier>{a6c0c9c4-669a-4965-a5a8-5c6fd1415580}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Light">
+      <UniqueIdentifier>{19c6e4c3-ce2d-4e02-994f-2ceffddd4bae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DRenderer.cpp">
@@ -50,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="BaseAxis.cpp">
       <Filter>03.Mesh\Gizumo</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>04.Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="BaseAxis.h">
       <Filter>03.Mesh\Gizumo</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>04.Light</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

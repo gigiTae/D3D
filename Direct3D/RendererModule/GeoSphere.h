@@ -1,12 +1,14 @@
 #pragma once
 
+#include "Mesh.h"
+
 /// <summary>
 /// 측지구 
 /// 
 /// 면적이 거의 같이고 변의 길이도 같은 삼각형들로 구를 근사한다.
 /// 
 /// </summary>
-class GeoSphere
+class GeoSphere :Mesh
 {
 public:
 	GeoSphere(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* rs);

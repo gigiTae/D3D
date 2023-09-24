@@ -16,6 +16,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{9075802d-6fd6-4393-99be-6669f23c29b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -49,6 +52,14 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="color.fx" />
+    <FxCompile Include="Lighting.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="LightHelper.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="color.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
