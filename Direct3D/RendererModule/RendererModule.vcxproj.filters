@@ -16,6 +16,9 @@
     <Filter Include="03.Mesh\Geometry">
       <UniqueIdentifier>{8e9bfc93-f827-4666-8bd6-00d2e050a39c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Mesh\Gizumo">
+      <UniqueIdentifier>{a6c0c9c4-669a-4965-a5a8-5c6fd1415580}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DRenderer.cpp">
@@ -26,9 +29,6 @@
     </ClCompile>
     <ClCompile Include="RendererPCH.cpp">
       <Filter>00.Define</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>03.Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Box.cpp">
       <Filter>03.Mesh\Geometry</Filter>
@@ -41,6 +41,15 @@
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
       <Filter>03.Mesh\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>03.Mesh\Gizumo</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>03.Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseAxis.cpp">
+      <Filter>03.Mesh\Gizumo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,9 +68,6 @@
     <ClInclude Include="RendererPCH.h">
       <Filter>00.Define</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>03.Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>03.Mesh\Geometry</Filter>
     </ClInclude>
@@ -73,6 +79,15 @@
     </ClInclude>
     <ClInclude Include="Sphere.h">
       <Filter>03.Mesh\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>03.Mesh\Gizumo</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>03.Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseAxis.h">
+      <Filter>03.Mesh\Gizumo</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

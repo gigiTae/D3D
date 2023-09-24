@@ -1,40 +1,45 @@
 #include "RendererPCH.h"
-#include "Box.h"
+#include "BaseAxis.h"
 
-Box::Box(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* rs)
+BaseAxis::BaseAxis(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* rs)
 	:m_d3dDevice(device), m_d3dDeviceContext(deviceContext), m_rasterizerState(rs)
 	, m_proj(), m_world(), m_view(), m_indexBuffer(), m_vertexBuffer(), m_inputLayout()
-{}
-
-Box::~Box()
+	,m_vertexSize(0), m_indexSize()
 {
-	/// Conptr사용
+
 }
 
-void Box::Initialize()
+BaseAxis::~BaseAxis()
+{
+
+}
+
+void BaseAxis::Initalize()
 {
 	BuildBuffers();
 	BuildEffect();
 	BuildLayout();
 }
 
-void Box::Update(const XMMATRIX& world, const XMMATRIX& view, const XMMATRIX& proj)
+void BaseAxis::Update(const XMMATRIX& world, const XMMATRIX& view, const XMMATRIX& proj)
 {
 	XMStoreFloat4x4(&m_world, world);
 	XMStoreFloat4x4(&m_view, view);
 	XMStoreFloat4x4(&m_proj, proj);
 }
 
-void Box::Render()
+void BaseAxis::Render()
 {
 	// 입력 배치 셋팅
 	m_d3dDeviceContext->IASetInputLayout(m_inputLayout.Get());
-	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	/// 선을 그리기때문에 라인리스트 사용
+	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	m_d3dDeviceContext->RSSetState(m_rasterizerState.Get());
 
 	// 버텍스 버퍼와 인덱스 버퍼 셋팅
-	UINT stride = sizeof(Box::Vertex);
+	UINT stride = sizeof(BaseAxis::Vertex);
 	UINT offset = 0;
 
 	m_d3dDeviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &stride, &offset);
@@ -56,29 +61,46 @@ void Box::Render()
 	for (UINT p = 0; p < techDesc.Passes; ++p)
 	{
 		m_tech->GetPassByIndex(p)->Apply(0, m_d3dDeviceContext.Get());
-		m_d3dDeviceContext->DrawIndexed(indexSize, 0, 0);
+		m_d3dDeviceContext->DrawIndexed(m_indexSize, 0, 0);
 	}
-
 }
 
-void Box::BuildBuffers()
+void BaseAxis::BuildBuffers()
 {
-	XMFLOAT4 green = XMFLOAT4(0.f, 1.f, 0.f, 1.f);
+	constexpr XMFLOAT4 red{ 1.f,0.f,0.f,1.f };
+	constexpr XMFLOAT4 blue { 0.f, 0.f, 1.f, 1.f };
+	constexpr XMFLOAT4 green{ 0.f,1.f,0.f,1.f };
 
-	Box::Vertex v[]{
-		// 전면
-		XMFLOAT3(-1.f,-1.f,-1.f), green,
-		XMFLOAT3(-1.f,1.f,-1.f), green,
-		XMFLOAT3(1.f,-1.f,-1.f), green,
-		XMFLOAT3(1.f,1.f,-1.f),green,
-		// 후면
-		XMFLOAT3(-1.f,-1.f,1.f),green,
-		XMFLOAT3(-1.f,1.f,1.f),green,
-		XMFLOAT3(1.f,-1.f,1.f),green,
-		XMFLOAT3(1.f,1.f,1.f),green };
+	/// 값이 너무 크면 문제가 발생하는듯 ?
+	float fMax = 10000.f;//FLT_MAX;
+	float fMin = -10000.f;//FLT_MIN;
+
+	std::vector<BaseAxis::Vertex> vertices
+	{
+
+		// XAxis
+		Vertex{XMFLOAT3(fMax, 0.f,0.f), red},
+		Vertex{XMFLOAT3(fMin, 0.f,0.f), red},
+		// YAxis
+		Vertex{XMFLOAT3(0.f, fMax,0.f), green},
+		Vertex{XMFLOAT3(0.f, fMin,0.f), green},
+		// ZAxis
+		Vertex{XMFLOAT3(0.f, 0.f,fMax),blue},
+		Vertex{XMFLOAT3(0.f, 0.f,fMin),blue},
+	};
+
+	std::vector<UINT> indices
+	{
+		0,1,
+		2,3,
+		4,5
+	};
+	
+	m_vertexSize = static_cast<UINT>(vertices.size());
+	m_indexSize = static_cast<UINT>(indices.size());
 
 	D3D11_BUFFER_DESC BF{};
-	BF.ByteWidth = sizeof(Box::Vertex) * vertexSize; // 생성할 정점 버퍼의 크기
+	BF.ByteWidth = sizeof(BaseAxis::Vertex) * m_vertexSize; // 생성할 정점 버퍼의 크기
 	BF.Usage = D3D11_USAGE_DEFAULT;  // 버퍼가 쓰이는 방식 
 	BF.BindFlags = D3D11_BIND_VERTEX_BUFFER; // 정점 버퍼
 	BF.CPUAccessFlags = 0;
@@ -86,39 +108,15 @@ void Box::BuildBuffers()
 	BF.StructureByteStride = 0;
 
 	D3D11_SUBRESOURCE_DATA SD{};
-	SD.pSysMem = &v;
+	SD.pSysMem = vertices.data();
 
 	HR(m_d3dDevice->CreateBuffer(&BF, &SD, m_vertexBuffer.GetAddressOf()));
-
-	UINT index[]{
-		// 전면
-		0, 1, 2,  // 삼각형 1	
-		1, 3, 2,  // 삼각형 2
-		// 뒷면
-		 4, 5, 6,  // 삼각형 3void Box::BuildFX()
-		 5, 7, 6,  // 삼각형 4{
-
-		 // 왼쪽 면}
-		 0, 4, 2,  // 삼각형 5
-		 4, 6, 2,  // 삼각형 6void Box::BuildLayout()
-
-		 // 오른쪽 면
-		 1, 5, 3,  // 삼각형 7}
-		 5, 7, 3,  // 삼각형 8
-
-		 // 위쪽 면
-		 1, 0, 5,  // 삼각형 9
-		 0, 4, 5,  // 삼각형 10
-
-		 // 아래쪽 면
-		 2, 3, 6,  // 삼각형 11
-		 3, 7, 6   // 삼각형 12
-	};
+	
 
 	// 색인 버퍼를 서술하는 구조체를 채운다.
 	D3D11_BUFFER_DESC ibd{};
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(UINT) * indexSize;
+	ibd.ByteWidth = sizeof(UINT) * m_indexSize;
 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	ibd.CPUAccessFlags = 0;
 	ibd.MiscFlags = 0;
@@ -126,13 +124,13 @@ void Box::BuildBuffers()
 
 	// 색인 버퍼를 초기화할 자료를 지정한다.
 	D3D11_SUBRESOURCE_DATA initData{};
-	initData.pSysMem = &index;
+	initData.pSysMem = indices.data();
 
 	// 색인 버퍼를 생성한다.
 	HR(m_d3dDevice->CreateBuffer(&ibd, &initData, m_indexBuffer.GetAddressOf()));
 }
 
-void Box::BuildEffect()
+void BaseAxis::BuildEffect()
 {
 	std::ifstream fin("..\\Resource\\Shader\\color.cso", std::ios::binary);
 
@@ -151,7 +149,7 @@ void Box::BuildEffect()
 	m_fxWorldViewProj = m_effect->GetVariableByName("gWorldViewProj")->AsMatrix();
 }
 
-void Box::BuildLayout()
+void BaseAxis::BuildLayout()
 {
 	// 인풋 레이아웃 설정
 	D3D11_INPUT_ELEMENT_DESC ied[] =
@@ -164,5 +162,4 @@ void Box::BuildLayout()
 	m_tech->GetPassByIndex(0)->GetDesc(&passDesc);
 	HR(m_d3dDevice->CreateInputLayout(ied, 2, passDesc.pIAInputSignature,
 		passDesc.IAInputSignatureSize, m_inputLayout.GetAddressOf()));
-
 }

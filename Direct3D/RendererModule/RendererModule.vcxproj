@@ -124,7 +124,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BaseAxis.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="CameraObject.h" />
     <ClInclude Include="Cylinder.h" />
@@ -154,17 +155,20 @@
     <ClInclude Include="GeoSphere.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HRDefine.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="RendererPCH.h" />
     <ClInclude Include="RendererHeader.h" />
     <ClInclude Include="Sphere.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseAxis.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="CameraObject.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="D3DRenderer.cpp" />
     <ClCompile Include="GeoSphere.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="RendererPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

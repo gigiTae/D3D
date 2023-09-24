@@ -7,6 +7,7 @@ class Grid;
 class Cylinder;
 class Sphere;
 class GeoSphere;
+class BaseAxis;
 
 /// <summary>
 ///  DX11  
@@ -60,6 +61,7 @@ private:
 	Cylinder* m_cylinder;
 	Sphere* m_sphere;
 	GeoSphere* m_geoSphere;
+	BaseAxis* m_baseAxis;
 
 };
 
