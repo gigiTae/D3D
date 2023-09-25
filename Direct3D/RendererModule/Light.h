@@ -12,7 +12,7 @@
 
 struct DirectionalLight
 {
-	DirectionalLight() { ZeroMemory(this, sizeof(this)); }
+	DirectionalLight();
 
 	XMFLOAT4 ambient; 
 	XMFLOAT4 diffuse;
@@ -24,7 +24,7 @@ struct DirectionalLight
 
 struct PointLight
 {
-	PointLight() { ZeroMemory(this, sizeof(this)); }
+	PointLight();
 
 	XMFLOAT4 ambient;
 	XMFLOAT4 diffuse;
@@ -40,7 +40,8 @@ struct PointLight
 
 struct SpotLight
 {
-	SpotLight() { ZeroMemory(this, sizeof(this)); }
+	SpotLight();
+
 	XMFLOAT4 ambient;
 	XMFLOAT4 diffuse;
 	XMFLOAT4 specular;
@@ -59,12 +60,3 @@ struct SpotLight
 }; 
 
 
-struct Material
-{
-	Material() { ZeroMemory(this, sizeof(this)); }
-
-	XMFLOAT4 ambient;
-	XMFLOAT4 diffuse;
-	XMFLOAT4 specular; // w = SpecPower
-	XMFLOAT4 reflect;
-};

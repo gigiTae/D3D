@@ -55,38 +55,39 @@ VertexOut VS(VertexIn vin)
 float4 PS(VertexOut pin) : SV_Target
 {
 	// 보간 때문에 법선이 더 이상 단위벡터가 아닐 수 있으므로 다시 정규화한다.
-    pin.NormalW = normalize(pin.NormalW); 
+    pin.NormalW = normalize(pin.NormalW);
 
-	float3 toEyeW = normalize(gEyePosW - pin.PosW);
+    float3 toEyeW = normalize(gEyePosW - pin.PosW);
 
 	// 성분들의 합이 0인 재질 속성들로 시작한다.
-	float4 ambient = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	float4 diffuse = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	float4 spec    = float4(0.0f, 0.0f, 0.0f, 0.0f);
+    float4 ambient = float4(0.0f, 0.0f, 0.0f, 0.0f);
+    float4 diffuse = float4(0.0f, 0.0f, 0.0f, 0.0f);
+    float4 spec = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
 	// 각 광원이 기여한 빛을 합한다.
-	float4 A, D, S;
+    float4 A, D, S;
 
-	ComputeDirectionalLight(gMaterial, gDirLight, pin.NormalW, toEyeW, A, D, S);
-	ambient += A;  
-	diffuse += D;
-	spec    += S;
+    ComputeDirectionalLight(gMaterial, gDirLight, pin.NormalW, toEyeW, A, D, S);
+    ambient += A;
+    diffuse += D;
+    spec += S;
 
-	ComputePointLight(gMaterial, gPointLight, pin.PosW, pin.NormalW, toEyeW, A, D, S);
-	ambient += A;
-	diffuse += D;
-	spec    += S;
+    ComputePointLight(gMaterial, gPointLight, pin.PosW, pin.NormalW, toEyeW, A, D, S);
+    //ambient += A;
+    //diffuse += D;
+    //spec += S;
 
-	ComputeSpotLight(gMaterial, gSpotLight, pin.PosW, pin.NormalW, toEyeW, A, D, S);
-	ambient += A;
-	diffuse += D;
-	spec    += S;
+    ComputeSpotLight(gMaterial, gSpotLight, pin.PosW, pin.NormalW, toEyeW, A, D, S);
+    //ambient += A;
+    //diffuse += D;
+    //spec += S;
 	   
     float4 litColor = ambient + diffuse + spec;
 
 	// 분산광 재질의 알파와 텍스처의 알파의 곱을 전체적인 알파 값으로 사용한다. 
-	litColor.a = gMaterial.Diffuse.a;
-
+    litColor.a = gMaterial.Diffuse.a;
+    float4 col = float4(pin.NormalW, 1.f);
+    
     return litColor;
 }
 

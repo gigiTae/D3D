@@ -8,7 +8,7 @@ Land::Land(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11Raste
 {
 	m_landColor = XMFLOAT4(1.f, 1.f, 1.f, 1.f);
 
- 
+
 	m_landMaterial.ambient = XMFLOAT4(0.48f, 0.77f, 0.46f, 1.0f);
 	m_landMaterial.diffuse = XMFLOAT4(0.48f, 0.77f, 0.46f, 1.0f);
 	m_landMaterial.specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 16.0f);
@@ -160,13 +160,13 @@ void Land::BuildBuffers(float width, float depth, UINT xVertex, UINT zVertex)
 	// 색인 버퍼를 서술하는 구조체를 채운다.
 	D3D11_BUFFER_DESC ibd{};
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(UINT) * index.size();
+	ibd.ByteWidth = static_cast<size_t>(sizeof(UINT) * index.size());
 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	ibd.CPUAccessFlags = 0;
 	ibd.MiscFlags = 0;
 	ibd.StructureByteStride = 0;
 
-	m_indexSize = index.size();
+	m_indexSize = static_cast<UINT>(index.size());
 
 	// 색인 버퍼를 초기화할 자료를 지정한다.
 	D3D11_SUBRESOURCE_DATA initData{};

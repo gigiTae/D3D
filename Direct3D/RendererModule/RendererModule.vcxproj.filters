@@ -22,6 +22,9 @@
     <Filter Include="04.Light">
       <UniqueIdentifier>{19c6e4c3-ce2d-4e02-994f-2ceffddd4bae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Material">
+      <UniqueIdentifier>{b1c515d3-b52d-4401-b58a-13e9de385666}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DRenderer.cpp">
@@ -59,6 +62,9 @@
     </ClCompile>
     <ClCompile Include="Land.cpp">
       <Filter>03.Mesh\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="Land.h">
       <Filter>03.Mesh\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Material</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

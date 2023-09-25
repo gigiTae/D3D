@@ -1,6 +1,7 @@
 #pragma once
 #include "Mesh.h"
 #include "Light.h"
+#include "Material.h"
 
 struct DirectionalLight;
 struct PointLight;

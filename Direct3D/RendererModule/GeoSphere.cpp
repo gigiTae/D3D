@@ -10,32 +10,7 @@ GeoSphere::GeoSphere(ID3D11Device* device, ID3D11DeviceContext* deviceContext, I
 	XMStoreFloat4x4(&m_view, I);
 	XMStoreFloat4x4(&m_proj, I);
 
-	XMMATRIX wavesOffset = XMMatrixTranslation(0.0f, -3.0f, 0.0f);
-	
-	// Directional light.
-	m_fxDirLight.ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLight.Diffuse = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-	mDirLight.Specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-	mDirLight.Direction = XMFLOAT3(0.57735f, -0.57735f, 0.57735f);
-
-	// Point light--position is changed every frame to animate in UpdateScene function.
-	mPointLight.Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-	mPointLight.Diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-	mPointLight.Specular = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-	mPointLight.Att = XMFLOAT3(0.0f, 0.1f, 0.0f);
-	mPointLight.Range = 25.0f;
-
-	// Spot light--position and direction changed every frame to animate in UpdateScene function.
-	mSpotLight.Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-	mSpotLight.Diffuse = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
-	mSpotLight.Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	mSpotLight.Att = XMFLOAT3(1.0f, 0.0f, 0.0f);
-	mSpotLight.Spot = 96.0f;
-	mSpotLight.Range = 10000.0f;
-
-	mLandMat.Ambient = XMFLOAT4(0.48f, 0.77f, 0.46f, 1.0f);
-	mLandMat.Diffuse = XMFLOAT4(0.48f, 0.77f, 0.46f, 1.0f);
-	mLandMat.Specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 16.0f);
+	m_sphereMat = Material::GetLandMaterial();
 }
 
 GeoSphere::~GeoSphere()
@@ -60,12 +35,12 @@ void GeoSphere::Update(const XMMATRIX& world, const XMMATRIX& view, const XMMATR
 	XMStoreFloat4x4(&m_proj, proj);
 }
 
-void GeoSphere::Render()
+void GeoSphere::Render(XMMATRIX world, XMFLOAT3 eye
+	, SpotLight* spot, PointLight* point, DirectionalLight* dirLight)
 {
 	// 입력 배치 셋팅
 	m_d3dDeviceContext->IASetInputLayout(m_inputLayout.Get());
 	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 	m_d3dDeviceContext->RSSetState(m_rasterizerState.Get());
 
 	// 버텍스 버퍼와 인덱스 버퍼 셋팅
@@ -78,11 +53,13 @@ void GeoSphere::Render()
 	// 행렬
 	XMMATRIX view = XMLoadFloat4x4(&m_view);
 	XMMATRIX proj = XMLoadFloat4x4(&m_proj);
-	XMMATRIX world = XMLoadFloat4x4(&m_world);
 	XMMATRIX worldViewProj = world * view * proj;
 
 	// 상수 버퍼 변수를 통해서 월드뷰프로젝션 행렬을 셋팅해준다.
 	m_fxWorldViewProj->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
+	m_fxMaterial->SetRawValue(&m_sphereMat, 0, sizeof(m_sphereMat));
+
+	SetVariable(world, eye, spot, point, dirLight);
 
 	D3DX11_TECHNIQUE_DESC techDesc;
 	m_tech->GetDesc(&techDesc);
@@ -323,4 +300,18 @@ void GeoSphere::SubDivide(std::vector<Vertex>& vertices, std::vector<UINT>& indi
 		indices.push_back(i * 6 + 1);
 		indices.push_back(i * 6 + 4);
 	}
+}
+
+void GeoSphere::SetVariable(XMMATRIX world, XMFLOAT3 eye
+	, SpotLight* spot, PointLight* point, DirectionalLight* dirLight)
+{
+	XMMATRIX worldInvTranspose = DM::InverseTranspose(world);
+
+	m_fxWorld->SetMatrix(reinterpret_cast<float*>(&world));
+	m_fxWorldInvTranspose->SetMatrix(reinterpret_cast<float*>(&worldInvTranspose));
+	
+	m_fxDirLight->SetRawValue(dirLight, 0, sizeof(&dirLight));
+	m_fxSpotLight->SetRawValue(spot, 0, sizeof(&spot));
+	m_fxPointLight->SetRawValue(point, 0, sizeof(&point));
+	m_fxEyePosW->SetRawValue(&eye, 0, sizeof(eye));
 }

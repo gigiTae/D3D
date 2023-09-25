@@ -109,7 +109,20 @@ void D3DRenderer::ClearScreen()
 
 void D3DRenderer::Render()
 {
+	XMFLOAT3 eye;
+	XMStoreFloat3(&eye, m_mainCamera->GetPosition());
+	
+	XMVECTOR dir = m_mainCamera->GetPosition();
+	XMVECTOR target = XMVectorZero();
+
+	/// 임시 Update
+	XMStoreFloat3(&m_pointLight->position, m_mainCamera->GetPosition());
+	XMStoreFloat3(&m_spotLight->direction, XMVector3Normalize(target-dir));
+	XMStoreFloat3(&m_spotLight->position, m_mainCamera->GetPosition());
+
 	ClearScreen();
+
+
 
 	// 그림을 그려보자 
 	XMMATRIX worldMatrix = XMLoadFloat4x4(&m_worldMatrix);
@@ -129,17 +142,16 @@ void D3DRenderer::Render()
 	//m_sphere->Render();
 
 	m_geoSphere->Update(worldMatrix, viewMatrix, projectMatrix);
-	m_geoSphere->Render();
+	m_geoSphere->Render(worldMatrix, eye, m_spotLight, m_pointLight, m_directLight);
 
 	m_baseAxis->Update(worldMatrix, viewMatrix, projectMatrix);
 	m_baseAxis->Render();
 
-	
 	m_land->Update(worldMatrix, viewMatrix, projectMatrix);
 	XMFLOAT3 eyePos;
 	XMStoreFloat3(&eyePos, m_mainCamera->GetPosition());
-	
-	//m_land->Render(m_directLight, m_pointLight, m_spotLight, &eyePos);
+
+	m_land->Render(m_directLight, m_pointLight, m_spotLight, &eyePos);
 
 	HR(m_swapChain->Present(0, 0));
 }
@@ -348,13 +360,13 @@ void D3DRenderer::InitializeMesh()
 	m_sphere->Initialize(10.f, 20, 20);
 
 	m_geoSphere = new GeoSphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
-	m_geoSphere->Initilize(10.f, 2);
+	m_geoSphere->Initilize(5.f, 10);
 
 	m_baseAxis = new BaseAxis(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
 	m_baseAxis->Initalize();
 
 	m_land = new Land(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
-	m_land->Initialize(100, 100, 10, 10);
+	m_land->Initialize(10, 10, 10, 10);
 
 }
 
@@ -365,22 +377,19 @@ void D3DRenderer::InitializeLight()
 	m_pointLight = new PointLight;
 	m_spotLight = new SpotLight();
 
-	// Material
-	m_landMat = new Material;
-	m_sphereMat = new Material;
-
 	// Directional light.
-	m_directLight->ambient  = XMFLOAT4(0.2f, 1.f, 1.f, 1.0f);
+	m_directLight->ambient  = XMFLOAT4(0.2f, 0.6f, 0.6f, 1.0f);
 	m_directLight->diffuse  = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
 	m_directLight->specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-	m_directLight->direction = XMFLOAT3(0.57735f, -0.57735f, 0.57735f);
- 
+	m_directLight->direction = XMFLOAT3(0.3f, 0.3f, 100.f);
+
 	// Point light--position is changed every frame to animate in UpdateScene function.
 	m_pointLight->ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
 	m_pointLight->diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
 	m_pointLight->specular = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
 	m_pointLight->att = XMFLOAT3(0.0f, 0.1f, 0.0f);
 	m_pointLight->range = 25.0f;
+	m_pointLight->position = XMFLOAT3(0.f, 30.f, 0.f);
 
 	// Spot light--position and direction changed every frame to animate in UpdateScene function.
 	m_spotLight->ambient  = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -389,15 +398,7 @@ void D3DRenderer::InitializeLight()
 	m_spotLight->att      = XMFLOAT3(1.0f, 0.0f, 0.0f);
 	m_spotLight->spot     = 96.0f;
 	m_spotLight->range = 10000.0f;
-
-	m_landMat->ambient  = XMFLOAT4(0.48f, 0.77f, 0.46f, 1.0f);
-	m_landMat->diffuse  = XMFLOAT4(0.48f, 0.77f, 0.46f, 1.0f);
-	m_landMat->specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 16.0f);
-
-	m_sphereMat->ambient = XMFLOAT4(0.137f, 0.42f, 0.556f, 1.0f);
-	m_sphereMat->diffuse  = XMFLOAT4(0.137f, 0.42f, 0.556f, 1.0f);
-	m_sphereMat->specular = XMFLOAT4(0.8f, 0.8f, 0.8f, 96.0f);
-
+	m_spotLight->position = XMFLOAT3(0.f, 30.f, 0.f);
 
 }
 

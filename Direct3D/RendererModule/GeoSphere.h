@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Mesh.h"
+#include "Light.h"
+#include "Material.h"
 
 /// <summary>
 /// 측지구 
@@ -25,7 +27,8 @@ public:
 public:
 	void Initilize(float radius, UINT numSubdivisions);
 	void Update(const XMMATRIX& world, const XMMATRIX& view, const XMMATRIX& proj);
-	void Render();
+	void Render(XMMATRIX world, XMFLOAT3 eye
+		, SpotLight* spot, PointLight* point, DirectionalLight* dirLight);
 
 private:
 	void BulidBuffers(float radius, UINT numSubdivisions);
@@ -39,6 +42,7 @@ private:
 	UINT m_indexSize;
 	UINT m_numSubdivisions;
 	float m_radius;
+	Material m_sphereMat;
 
 	XMFLOAT4X4 m_world; // 월드 변환 행렬
 	XMFLOAT4X4 m_view;  // 시야 변환 행렬
@@ -46,6 +50,10 @@ private:
 
 	ComPtr<ID3D11Device> m_d3dDevice;
 	ComPtr<ID3D11DeviceContext> m_d3dDeviceContext;
+
+
+	void SetVariable(XMMATRIX world, XMFLOAT3  eye
+		, SpotLight* spot, PointLight* point, DirectionalLight* dirLight);
 
 	/// ======================== 자원 =============================
 	ComPtr<ID3D11Buffer>  m_vertexBuffer;
@@ -64,7 +72,5 @@ private:
 	ComPtr<ID3DX11EffectVariable> m_fxPointLight;
 	ComPtr<ID3DX11EffectVariable> m_fxSpotLight;
 	ComPtr<ID3DX11EffectVariable> m_fxMaterial;
-
-
 };
 
