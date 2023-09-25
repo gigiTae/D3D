@@ -56,6 +56,15 @@ private:
 	ComPtr<ID3DX11Effect> m_effect;	// 이펙트
 	ComPtr<ID3DX11EffectTechnique> m_tech;	// 테크
 	ComPtr<ID3DX11EffectMatrixVariable> m_fxWorldViewProj;	// 이펙트용변수
+	ComPtr<ID3DX11EffectMatrixVariable> m_fxWorld; // 월드 
+	ComPtr<ID3DX11EffectMatrixVariable> m_fxWorldInvTranspose; // 월드역전치
+	ComPtr<ID3DX11EffectVectorVariable> m_fxEyePosW; // eye
+
+	ComPtr<ID3DX11EffectVariable> m_fxDirLight;
+	ComPtr<ID3DX11EffectVariable> m_fxPointLight;
+	ComPtr<ID3DX11EffectVariable> m_fxSpotLight;
+	ComPtr<ID3DX11EffectVariable> m_fxMaterial;
+
 
 };
 

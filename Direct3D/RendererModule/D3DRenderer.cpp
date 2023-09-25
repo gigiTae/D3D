@@ -117,10 +117,10 @@ void D3DRenderer::Render()
 	XMMATRIX projectMatrix = m_mainCamera->GetProjectMatrix();
 
 	m_box->Update(worldMatrix, viewMatrix, projectMatrix);
-	//m_box->Render();
+	m_box->Render();
 
 	m_grid->Update(worldMatrix, viewMatrix, projectMatrix);
-	//m_grid->Render();
+	m_grid->Render();
 
 	m_cylinder->Update(worldMatrix, viewMatrix, projectMatrix);
 	//m_cylinder->Render();
@@ -129,7 +129,7 @@ void D3DRenderer::Render()
 	//m_sphere->Render();
 
 	m_geoSphere->Update(worldMatrix, viewMatrix, projectMatrix);
-	//m_geoSphere->Render();
+	m_geoSphere->Render();
 
 	m_baseAxis->Update(worldMatrix, viewMatrix, projectMatrix);
 	m_baseAxis->Render();
@@ -139,7 +139,7 @@ void D3DRenderer::Render()
 	XMFLOAT3 eyePos;
 	XMStoreFloat3(&eyePos, m_mainCamera->GetPosition());
 	
-	m_land->Render(m_directLight, m_pointLight, m_spotLight, &eyePos);
+	//m_land->Render(m_directLight, m_pointLight, m_spotLight, &eyePos);
 
 	HR(m_swapChain->Present(0, 0));
 }

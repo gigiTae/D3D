@@ -6,7 +6,36 @@ GeoSphere::GeoSphere(ID3D11Device* device, ID3D11DeviceContext* deviceContext, I
 	, m_proj(), m_world(), m_view(), m_indexBuffer(), m_vertexBuffer(), m_inputLayout()
 	, m_numSubdivisions(0), m_radius(0.f), m_indexSize(0), m_vertexSize(0)
 {
+	XMMATRIX I = XMMatrixIdentity();
+	XMStoreFloat4x4(&m_view, I);
+	XMStoreFloat4x4(&m_proj, I);
 
+	XMMATRIX wavesOffset = XMMatrixTranslation(0.0f, -3.0f, 0.0f);
+	
+	// Directional light.
+	m_fxDirLight.ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	mDirLight.Diffuse = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+	mDirLight.Specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
+	mDirLight.Direction = XMFLOAT3(0.57735f, -0.57735f, 0.57735f);
+
+	// Point light--position is changed every frame to animate in UpdateScene function.
+	mPointLight.Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+	mPointLight.Diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+	mPointLight.Specular = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
+	mPointLight.Att = XMFLOAT3(0.0f, 0.1f, 0.0f);
+	mPointLight.Range = 25.0f;
+
+	// Spot light--position and direction changed every frame to animate in UpdateScene function.
+	mSpotLight.Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+	mSpotLight.Diffuse = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
+	mSpotLight.Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	mSpotLight.Att = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	mSpotLight.Spot = 96.0f;
+	mSpotLight.Range = 10000.0f;
+
+	mLandMat.Ambient = XMFLOAT4(0.48f, 0.77f, 0.46f, 1.0f);
+	mLandMat.Diffuse = XMFLOAT4(0.48f, 0.77f, 0.46f, 1.0f);
+	mLandMat.Specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 16.0f);
 }
 
 GeoSphere::~GeoSphere()
@@ -175,7 +204,7 @@ void GeoSphere::BulidBuffers(float radius, UINT numSubdivisions)
 
 void GeoSphere::BuildEffect()
 {
-	std::ifstream fin("..\\Resource\\Shader\\color.cso", std::ios::binary);
+	std::ifstream fin("..\\Resource\\Shader\\Lighting.cso", std::ios::binary);
 
 	fin.seekg(0, std::ios_base::end);
 	int size = static_cast<int>(fin.tellg());
@@ -188,8 +217,17 @@ void GeoSphere::BuildEffect()
 	HR(D3DX11CreateEffectFromMemory(&compiledShader[0], size,
 		0, m_d3dDevice.Get(), m_effect.GetAddressOf()));
 
-	m_tech = m_effect->GetTechniqueByName("ColorTech");
+
+	m_tech = m_effect->GetTechniqueByName("LightTech");
 	m_fxWorldViewProj = m_effect->GetVariableByName("gWorldViewProj")->AsMatrix();
+	m_fxWorld = m_effect->GetVariableByName("gWorld")->AsMatrix();
+	m_fxWorldInvTranspose = m_effect->GetVariableByName("gWorldInvTranspose")->AsMatrix();
+	m_fxEyePosW = m_effect->GetVariableByName("gEyePosW")->AsVector();
+	m_fxDirLight = m_effect->GetVariableByName("gDirLight");
+	m_fxPointLight = m_effect->GetVariableByName("gPointLight");
+	m_fxSpotLight = m_effect->GetVariableByName("gSpotLight");
+	m_fxMaterial = m_effect->GetVariableByName("gMaterial");
+
 }
 
 void GeoSphere::BuildLayout()
@@ -198,7 +236,7 @@ void GeoSphere::BuildLayout()
 	D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
 		{"POSITION", 0,DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT,  0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"NORMAL",    0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 
 	D3DX11_PASS_DESC passDesc;
