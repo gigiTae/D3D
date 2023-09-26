@@ -11,9 +11,11 @@ namespace GrapicsEngine
 	class EffectFactory
 	{
 	public:
-		EffectFactory(ID3D11Device* device);
+		EffectFactory();
 		~EffectFactory();
 
+		void Initalize(ID3D11Device* device);
+	public:
 		Effect* GetEffect(const  std::wstring& name);
 
 	private:

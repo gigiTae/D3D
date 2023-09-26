@@ -11,6 +11,12 @@ class BaseAxis;
 
 namespace GrapicsEngine
 {
+	class InputLayout;
+	class EffectFactory;
+}
+
+namespace GrapicsEngine
+{
 	/// <summary>
 	///  DX11  
 	/// 
@@ -23,24 +29,27 @@ namespace GrapicsEngine
 		D3DRenderer();
 		~D3DRenderer();
 
-		bool Initialize(HWND hWnd, int screenWidth, int screenHeight);
+		void Initialize(HWND hWnd, int screenWidth, int screenHeight);
 		void Finalize();
 		void ClearScreen();
 		void Render();
 
-		XMMATRIX GetWorldViewProjMatrix();
 		CameraObject* GetMainCamera() const { return m_mainCamera.get(); }
 	private:
-		bool InitializeD3D();
+		void InitializeD3D();
+		void InitializeResource();
+		void InitializeObject();
 
 	private:
-		int m_screenHeight;
 		int m_screenWidth;
+		int m_screenHeight; 
 
 		HWND m_hWnd; // 메인 윈도우 핸들 
 		bool m_enable4xMass; // 4XMSAA를 사용한다면 true로 설정
 
 		std::unique_ptr<CameraObject> m_mainCamera; // 메인 카메라 
+		std::unique_ptr<InputLayout> m_inputLayout; // 입력서술 배치
+		std::unique_ptr<EffectFactory> m_effectFactory;
 
 		D3D_FEATURE_LEVEL m_featureLevel;
 		ComPtr<IDXGISwapChain> m_swapChain;
@@ -50,12 +59,9 @@ namespace GrapicsEngine
 		ComPtr<ID3D11RenderTargetView> m_d3dRenderTargetView;
 		ComPtr<ID3D11DepthStencilView> m_depthStencilView;
 
-		/// ======================== 쉐이더 ================================
-		XMFLOAT4X4 m_worldMatrix;
-		XMFLOAT4X4 m_worldViewProjMatrix;
-
-
+#pragma region RenderState
 		ComPtr<ID3D11RasterizerState> m_rasterizerState[2];
+#pragma endregion
 
 		/// ===================== 임시객체 ================================
 		Box* m_box;

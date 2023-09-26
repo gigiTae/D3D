@@ -7,7 +7,7 @@ namespace GrapicsEngine
 	class DirectionalLight
 	{
 	public:
-		DirectionalLight();
+		DirectionalLight()=default;
 		~DirectionalLight();
 
 		XMFLOAT4 ambient;
@@ -20,7 +20,7 @@ namespace GrapicsEngine
 	class PointLight
 	{
 	public:
-		PointLight();
+		PointLight() =default;
 		~PointLight();
 
 		XMFLOAT4 ambient;
@@ -35,7 +35,7 @@ namespace GrapicsEngine
 	class SpotLight
 	{
 	public:
-		SpotLight();
+		SpotLight() =default;
 		~SpotLight();
 
 		XMFLOAT4 ambient;

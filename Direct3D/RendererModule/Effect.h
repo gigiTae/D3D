@@ -43,7 +43,7 @@ namespace GrapicsEngine
 		void SetMaterial(const Material& material); 
 		void SetDiffuseMap(ID3D11ShaderResourceView* tex) { m_diffuseMap->SetResource(tex); }
 
-	private:
+	public:
 		ID3DX11EffectTechnique* m_light1Tech;
 		ID3DX11EffectTechnique* m_light2Tech;
 		ID3DX11EffectTechnique* m_light3Tech;
@@ -53,6 +53,7 @@ namespace GrapicsEngine
 		ID3DX11EffectTechnique* m_light2TexTech;
 		ID3DX11EffectTechnique* m_light3TexTech;
 
+	private:
 		ID3DX11EffectMatrixVariable* m_worldViewProj;
 		ID3DX11EffectMatrixVariable* m_world;
 		ID3DX11EffectMatrixVariable* m_worldInvTranspose;

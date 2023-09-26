@@ -7,6 +7,8 @@
 #include "Sphere.h"
 #include "GeoSphere.h"
 #include "BaseAxis.h"
+#include "EffectFactory.h"
+#include "InputLayout.h"
 
 GrapicsEngine::D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
@@ -18,8 +20,6 @@ GrapicsEngine::D3DRenderer::D3DRenderer()
 	, m_d3dRenderTargetView()
 	, m_depthStencilView()
 	, m_depthStencilBuffer()
-	, m_worldViewProjMatrix()
-	, m_worldMatrix()
 	, m_screenWidth(0)
 	, m_screenHeight(0)
 	,m_box(nullptr)
@@ -39,7 +39,7 @@ GrapicsEngine::D3DRenderer::~D3DRenderer()
 
 
 
-bool GrapicsEngine::D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
+void GrapicsEngine::D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 {
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
@@ -52,39 +52,10 @@ bool GrapicsEngine::D3DRenderer::Initialize(HWND hWnd, int screenWidth, int scre
 
 	InitializeD3D();
 
-	// 월드 
-	XMMATRIX worldMatrix = DirectX::XMMatrixIdentity();
+	InitializeResource();
 
-	// 카메라 
-	XMMATRIX viewMatrix = m_mainCamera->GetViewMatrix();
-
-	XMMATRIX projectMatrix = m_mainCamera->GetProjectMatrix();
-
-	// 최종 행렬
-	XMMATRIX finalMatrix = worldMatrix * viewMatrix * projectMatrix;
-
-	DirectX::XMStoreFloat4x4(&m_worldMatrix, worldMatrix);
-	DirectX::XMStoreFloat4x4(&m_worldViewProjMatrix, finalMatrix);
-	
-	m_box = new Box(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_box->Initialize();
-
-	m_grid = new Grid(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_grid->Initialize(100, 100, 10, 10);
-
-	m_cylinder = new Cylinder(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_cylinder->Initailize(10.f, 0.f, 10.f, 100, 100);
-
-	m_sphere = new Sphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_sphere->Initialize(10.f, 20,20);
-
-	m_geoSphere = new GeoSphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_geoSphere->Initilize(10.f, 2);
-
-	m_baseAxis = new BaseAxis(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
-	m_baseAxis->Initalize();
-
-	return true;
+	/// 임시
+	InitializeObject();
 }
 
 void GrapicsEngine::D3DRenderer::Finalize()
@@ -117,7 +88,7 @@ void GrapicsEngine::D3DRenderer::Render()
 	ClearScreen();
 
 	// 그림을 그려보자 
-	XMMATRIX worldMatrix = XMLoadFloat4x4(&m_worldMatrix);
+	XMMATRIX worldMatrix = XMMatrixIdentity();
 	XMMATRIX viewMatrix = m_mainCamera->GetViewMatrix();
 	XMMATRIX projectMatrix = m_mainCamera->GetProjectMatrix();
 
@@ -143,22 +114,11 @@ void GrapicsEngine::D3DRenderer::Render()
 	HR(m_swapChain->Present(0, 0));
 }
 
-
-DirectX::XMMATRIX GrapicsEngine::D3DRenderer::GetWorldViewProjMatrix()
+void GrapicsEngine::D3DRenderer::InitializeD3D()
 {
-	XMMATRIX worldMatrix = XMLoadFloat4x4(&m_worldMatrix);
-	XMMATRIX viewMatrix = m_mainCamera->GetViewMatrix();
-	XMMATRIX projectMatrix = m_mainCamera->GetProjectMatrix();
- 
-	// 최종 행렬
-	return worldMatrix * viewMatrix * projectMatrix;
-}
-
-bool GrapicsEngine::D3DRenderer::InitializeD3D()
-{
-	/// ==================================
-	///          Direct3D 초기화 
-	/// ==================================
+	/// ======================================================
+	///                     Direct3D 초기화 
+	/// ======================================================
 
 	// Direct3D 초기화 8가지 단계
 
@@ -186,13 +146,11 @@ bool GrapicsEngine::D3DRenderer::InitializeD3D()
 	if (FAILED(hr))
 	{
 		MessageBox(0, L"D3D11CreateDevice Failed.", 0, 0);
-		return false;
 	}
 
 	if (m_featureLevel != D3D_FEATURE_LEVEL_11_0)
 	{
 		MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
-		return false;
 	}
 
 	// 2. ID3D11Device::CheckMultisampleQualityLevels 메서드를 이용해서 
@@ -306,9 +264,19 @@ bool GrapicsEngine::D3DRenderer::InitializeD3D()
 	vp.MaxDepth = 1.0f;
 
 	m_d3dDeviceContext->RSSetViewports(1, &vp);
+}
 
+void GrapicsEngine::D3DRenderer::InitializeResource()
+{
+
+	m_inputLayout = std::make_unique<InputLayout>();
+	m_effectFactory = std::make_unique<EffectFactory>();
+
+	m_inputLayout->Initailize(m_d3dDevice.Get());
+	m_effectFactory->Initalize(m_d3dDevice.Get());
+
+	
 	// 래스터라이즈 설정
-
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
 	rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME; // 와이어 프레임 모드
@@ -325,7 +293,27 @@ bool GrapicsEngine::D3DRenderer::InitializeD3D()
 	m_d3dDevice->CreateRasterizerState(&rasterizerDesc, m_rasterizerState[1].GetAddressOf());
 
 	m_d3dDeviceContext->RSSetState(m_rasterizerState[0].Get());
+}
 
-	return true;
+void GrapicsEngine::D3DRenderer::InitializeObject()
+{
+
+	m_box = new Box(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_box->Initialize();
+
+	m_grid = new Grid(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_grid->Initialize(100, 100, 10, 10);
+
+	m_cylinder = new Cylinder(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_cylinder->Initailize(10.f, 0.f, 10.f, 100, 100);
+
+	m_sphere = new Sphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_sphere->Initialize(10.f, 20, 20);
+
+	m_geoSphere = new GeoSphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_geoSphere->Initilize(10.f, 2);
+
+	m_baseAxis = new BaseAxis(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
+	m_baseAxis->Initalize();
 }
 

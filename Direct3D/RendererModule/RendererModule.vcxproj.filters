@@ -79,6 +79,7 @@
       <Filter>Resource\Effect</Filter>
     </ClCompile>
     <ClCompile Include="D3DRenderer.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraObject.h">
@@ -133,5 +134,6 @@
       <Filter>Resource\Effect</Filter>
     </ClInclude>
     <ClInclude Include="D3DRenderer.h" />
+    <ClInclude Include="ResourceManager.h" />
   </ItemGroup>
 </Project>
