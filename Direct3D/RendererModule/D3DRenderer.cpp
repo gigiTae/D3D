@@ -8,11 +8,14 @@
 #include "Grid.h"
 #include "Sphere.h"
 #include "GeoSphere.h"
+<<<<<<< HEAD
 #include "BaseAxis.h"
 #include "Land.h"
 
 /// Light
 #include "Light.h"
+=======
+>>>>>>> parent of ef95daf (축그리드 생성)
 
 D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
@@ -33,8 +36,11 @@ D3DRenderer::D3DRenderer()
 	,m_sphere(nullptr)
 	,m_cylinder(nullptr)
 	,m_geoSphere(nullptr)
+<<<<<<< HEAD
 	,m_baseAxis(nullptr)
 	,m_land(nullptr)
+=======
+>>>>>>> parent of ef95daf (축그리드 생성)
 {
 	
 }
@@ -54,7 +60,7 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 
 	// ī�޶� ����
 	m_mainCamera = std::make_unique<CameraObject>();
-	XMVECTOR cameraPosition = XMVectorSet(0.f, 10.f, 10.f, 1.f);
+	XMVECTOR cameraPosition = XMVectorSet(10.f, 20.f, 10.f, 1.f);
 	m_mainCamera->Initialize(m_screenWidth, m_screenHeight, cameraPosition);
 
 	InitializeD3D();
@@ -73,8 +79,25 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 	DirectX::XMStoreFloat4x4(&m_worldMatrix, worldMatrix);
 	DirectX::XMStoreFloat4x4(&m_worldViewProjMatrix, finalMatrix);
 	
+<<<<<<< HEAD
 	InitializeMesh();
 	InitializeLight();
+=======
+	m_box = new Box(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_box->Initialize();
+
+	m_grid = new Grid(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_grid->Initialize(100, 100, 10, 10);
+
+	m_cylinder = new Cylinder(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_cylinder->Initailize(10.f, 0.f, 10.f, 100, 100);
+
+	m_sphere = new Sphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_sphere->Initialize(10.f, 20,20);
+
+	m_geoSphere = new GeoSphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
+	m_geoSphere->Initilize(10.f, 2);
+>>>>>>> parent of ef95daf (축그리드 생성)
 
 	return true;
 }
@@ -88,7 +111,6 @@ void D3DRenderer::Finalize()
 	delete m_sphere;
 	delete m_cylinder;
 	delete m_geoSphere;
-	delete m_baseAxis;
 
 
 	delete m_sphereMat;
@@ -98,7 +120,7 @@ void D3DRenderer::Finalize()
 
 void D3DRenderer::ClearScreen()
 {
-	float arr[4]{ 0.f,0.f,0.f,1.f };
+	float arr[4]{ 0.f,0.16f,0.1f,1.f };
 
 	m_d3dDeviceContext->ClearRenderTargetView(m_d3dRenderTargetView.Get(),arr);
 
@@ -136,12 +158,13 @@ void D3DRenderer::Render()
 	m_grid->Render();
 
 	m_cylinder->Update(worldMatrix, viewMatrix, projectMatrix);
-	//m_cylinder->Render();
+	m_cylinder->Render();
 
 	m_sphere->Update(worldMatrix, viewMatrix, projectMatrix);
-	//m_sphere->Render();
+	m_sphere->Render();
 
 	m_geoSphere->Update(worldMatrix, viewMatrix, projectMatrix);
+<<<<<<< HEAD
 	m_geoSphere->Render(worldMatrix, eye, m_spotLight, m_pointLight, m_directLight);
 
 	m_baseAxis->Update(worldMatrix, viewMatrix, projectMatrix);
@@ -152,6 +175,9 @@ void D3DRenderer::Render()
 	XMStoreFloat3(&eyePos, m_mainCamera->GetPosition());
 
 	m_land->Render(m_directLight, m_pointLight, m_spotLight, &eyePos);
+=======
+	m_geoSphere->Render();
+>>>>>>> parent of ef95daf (축그리드 생성)
 
 	HR(m_swapChain->Present(0, 0));
 }

@@ -78,7 +78,7 @@ void Box::BuildBuffers()
 		XMFLOAT3(1.f,1.f,1.f),green };
 
 	D3D11_BUFFER_DESC BF{};
-	BF.ByteWidth = sizeof(Box::Vertex) * vertexSize; // 생성할 정점 버퍼의 크기
+	BF.ByteWidth = sizeof(DM::Vertex1) * vertexSize; // 생성할 정점 버퍼의 크기
 	BF.Usage = D3D11_USAGE_DEFAULT;  // 버퍼가 쓰이는 방식 
 	BF.BindFlags = D3D11_BIND_VERTEX_BUFFER; // 정점 버퍼
 	BF.CPUAccessFlags = 0;

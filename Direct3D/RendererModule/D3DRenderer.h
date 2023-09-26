@@ -7,6 +7,7 @@ class Grid;
 class Cylinder;
 class Sphere;
 class GeoSphere;
+<<<<<<< HEAD
 class BaseAxis;
 class Land;
 
@@ -15,6 +16,8 @@ struct DirectionalLight;
 struct PointLight;
 struct SpotLight;
 struct Material;
+=======
+>>>>>>> parent of ef95daf (축그리드 생성)
 
 /// <summary>
 ///  DX11  
@@ -76,6 +79,7 @@ private:
 	Cylinder* m_cylinder;
 	Sphere* m_sphere;
 	GeoSphere* m_geoSphere;
+<<<<<<< HEAD
 	BaseAxis* m_baseAxis;
 	Land* m_land;
 
@@ -86,6 +90,8 @@ private:
 
 	Material* m_landMat;
 	Material* m_sphereMat;
+=======
+>>>>>>> parent of ef95daf (축그리드 생성)
 
 };
 

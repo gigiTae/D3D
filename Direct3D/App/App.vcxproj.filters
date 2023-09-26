@@ -52,6 +52,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <FxCompile Include="Lighting.fx">
       <Filter>Shader</Filter>
     </FxCompile>
@@ -61,5 +62,10 @@
     <FxCompile Include="color.fx">
       <Filter>Shader</Filter>
     </FxCompile>
+=======
+    <FxCompile Include="VertexShader.hlsl" />
+    <FxCompile Include="PixelShader.hlsl" />
+    <FxCompile Include="color.fx" />
+>>>>>>> parent of ef95daf (축그리드 생성)
   </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@
     <Filter Include="03.Mesh\Geometry">
       <UniqueIdentifier>{8e9bfc93-f827-4666-8bd6-00d2e050a39c}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="03.Mesh\Gizumo">
       <UniqueIdentifier>{a6c0c9c4-669a-4965-a5a8-5c6fd1415580}</UniqueIdentifier>
     </Filter>
@@ -25,6 +26,8 @@
     <Filter Include="Material">
       <UniqueIdentifier>{b1c515d3-b52d-4401-b58a-13e9de385666}</UniqueIdentifier>
     </Filter>
+=======
+>>>>>>> parent of ef95daf (축그리드 생성)
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DRenderer.cpp">
@@ -35,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="RendererPCH.cpp">
       <Filter>00.Define</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>03.Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Box.cpp">
       <Filter>03.Mesh\Geometry</Filter>
@@ -48,6 +54,7 @@
     <ClCompile Include="Sphere.cpp">
       <Filter>03.Mesh\Geometry</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Grid.cpp">
       <Filter>03.Mesh\Gizumo</Filter>
     </ClCompile>
@@ -66,6 +73,8 @@
     <ClCompile Include="Material.cpp">
       <Filter>Material</Filter>
     </ClCompile>
+=======
+>>>>>>> parent of ef95daf (축그리드 생성)
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3DRenderer.h">
@@ -83,6 +92,9 @@
     <ClInclude Include="RendererPCH.h">
       <Filter>00.Define</Filter>
     </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>03.Mesh</Filter>
+    </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>03.Mesh\Geometry</Filter>
     </ClInclude>
@@ -95,6 +107,7 @@
     <ClInclude Include="Sphere.h">
       <Filter>03.Mesh\Geometry</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Grid.h">
       <Filter>03.Mesh\Gizumo</Filter>
     </ClInclude>
@@ -113,5 +126,7 @@
     <ClInclude Include="Material.h">
       <Filter>Material</Filter>
     </ClInclude>
+=======
+>>>>>>> parent of ef95daf (축그리드 생성)
   </ItemGroup>
 </Project>

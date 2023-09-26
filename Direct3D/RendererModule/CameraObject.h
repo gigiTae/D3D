@@ -36,12 +36,9 @@ private:
 	DirectX::XMMATRIX m_viewMatrix; // 카메라 변환 행렬 
 	DirectX::XMMATRIX m_projectMatrix; // 투영 행렬
 
-	XMVECTOR m_position;  // 카메라 위치 
-	XMVECTOR m_rotation;  // 카메라 각도
-
+	XMVECTOR m_cameraPosition;  // 카메라 위치 
 	XMVECTOR m_cameraDirection; // 카메라가 바라보는 방향 벡터 z축
 	XMVECTOR m_worldUp;
-
 
 	float m_fovAngleY;   // 시야각 
 	float m_aspectRatio;

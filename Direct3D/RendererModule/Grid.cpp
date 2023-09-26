@@ -6,7 +6,7 @@ Grid::Grid(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11Raste
 	, m_proj(), m_world(), m_view(), m_indexBuffer(), m_vertexBuffer(), m_inputLayout()
 	, m_vertexSize(0), m_indexSize(0)
 {
-	m_gridColor = XMFLOAT4(0.4f, 0.4f, 1.f, 0.5f);
+
 }
 
 Grid::~Grid()
@@ -91,7 +91,7 @@ void Grid::BuildBuffers(float width, float depth, UINT xVertex, UINT zVertex)
 		{
 			float x = -halfWidth + (j * dx);
 			v[i * zVertex + j].position = XMFLOAT3(x, 0.0f, z);
-			v[i * zVertex + j].color = m_gridColor;
+			v[i * zVertex + j].color = XMFLOAT4(0.f, 1.f, 0.f, 0.f);
 
 			// 조명에 쓰이는 특성
 

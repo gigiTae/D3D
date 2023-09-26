@@ -31,7 +31,6 @@ private:
 	unsigned int m_vertexSize;
 	unsigned int m_indexSize;
 
-	XMFLOAT4 m_gridColor;
 	XMFLOAT4X4 m_world; // 월드 변환 행렬
 	XMFLOAT4X4 m_view;  // 시야 변환 행렬
 	XMFLOAT4X4 m_proj;  // 투명 변환 행렬 
