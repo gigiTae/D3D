@@ -26,7 +26,7 @@ void Application::Initialize(HINSTANCE hInstance, int nCmdShow, UINT screenWidth
 	WindowInitialize(nCmdShow);
 
 	// 그래픽스 엔진 초기화 
-	m_d3dRenderer = std::make_unique<D3DRenderer>();
+	m_d3dRenderer = std::make_unique<GrapicsEngine::D3DRenderer>();
 	m_d3dRenderer->Initialize(m_hWnd, screenWidth, screenHeight );
 
 	// 매니저 생성

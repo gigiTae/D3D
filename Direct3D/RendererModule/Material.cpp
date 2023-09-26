@@ -2,6 +2,7 @@
 #include "Material.h"
 
 GrapicsEngine::Material::Material()
+	:ambient(),diffuse(),reflect(),specular()
 {
 
 }

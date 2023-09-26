@@ -8,7 +8,7 @@
 #include "GeoSphere.h"
 #include "BaseAxis.h"
 
-D3DRenderer::D3DRenderer()
+GrapicsEngine::D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
 	, m_hWnd(nullptr)
 	, m_d3dDeviceContext(nullptr)
@@ -32,14 +32,14 @@ D3DRenderer::D3DRenderer()
 	
 }
 
-D3DRenderer::~D3DRenderer()
+GrapicsEngine::D3DRenderer::~D3DRenderer()
 {
 
 }
 
 
 
-bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
+bool GrapicsEngine::D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 {
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
@@ -87,7 +87,7 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 	return true;
 }
 
-void D3DRenderer::Finalize()
+void GrapicsEngine::D3DRenderer::Finalize()
 {
 	m_mainCamera->Finalize();
 
@@ -101,7 +101,7 @@ void D3DRenderer::Finalize()
 	CoUninitialize();
 }
 
-void D3DRenderer::ClearScreen()
+void GrapicsEngine::D3DRenderer::ClearScreen()
 {
 	float arr[4]{ 0.f,0.f,0.f,1.f };
 
@@ -112,7 +112,7 @@ void D3DRenderer::ClearScreen()
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 
-void D3DRenderer::Render()
+void GrapicsEngine::D3DRenderer::Render()
 {
 	ClearScreen();
 
@@ -144,7 +144,7 @@ void D3DRenderer::Render()
 }
 
 
-DirectX::XMMATRIX D3DRenderer::GetWorldViewProjMatrix()
+DirectX::XMMATRIX GrapicsEngine::D3DRenderer::GetWorldViewProjMatrix()
 {
 	XMMATRIX worldMatrix = XMLoadFloat4x4(&m_worldMatrix);
 	XMMATRIX viewMatrix = m_mainCamera->GetViewMatrix();
@@ -154,7 +154,7 @@ DirectX::XMMATRIX D3DRenderer::GetWorldViewProjMatrix()
 	return worldMatrix * viewMatrix * projectMatrix;
 }
 
-bool D3DRenderer::InitializeD3D()
+bool GrapicsEngine::D3DRenderer::InitializeD3D()
 {
 	/// ==================================
 	///          Direct3D √ ±‚»≠ 

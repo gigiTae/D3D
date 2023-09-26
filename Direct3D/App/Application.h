@@ -26,7 +26,7 @@ private:
 	HINSTANCE m_hInstance;
 	HWND m_hWnd; // 메인 윈도우 핸들 
 
-	std::unique_ptr<D3DRenderer> m_d3dRenderer; 
+	std::unique_ptr<GrapicsEngine::D3DRenderer> m_d3dRenderer;
 	std::unique_ptr<InputManager> m_inputManager;
 	std::unique_ptr<TimeManager> m_timeManager;
 };

@@ -50,5 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="color.fx" />
+    <FxCompile Include="Basic.fx" />
+    <FxCompile Include="LightHelper.fx" />
   </ItemGroup>
 </Project>

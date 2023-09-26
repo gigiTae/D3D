@@ -1,114 +1,137 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="01.Renderer">
-      <UniqueIdentifier>{d67e2686-be5b-462c-9223-b5d718cfa5bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.Camera">
-      <UniqueIdentifier>{fa0e41eb-c3ea-4792-859e-941187b50e28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Mesh">
-      <UniqueIdentifier>{27a94246-23e3-48d7-9a37-943ceddb566f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00.Define">
-      <UniqueIdentifier>{f660b35c-8022-47e2-acba-8a30df49c0db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Mesh\Geometry">
-      <UniqueIdentifier>{8e9bfc93-f827-4666-8bd6-00d2e050a39c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Mesh\Gizumo">
-      <UniqueIdentifier>{a6c0c9c4-669a-4965-a5a8-5c6fd1415580}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{4cf453f2-e501-463f-b4db-3bb405bcba00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\Mesh">
+      <UniqueIdentifier>{27a94246-23e3-48d7-9a37-943ceddb566f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh\Geometry">
+      <UniqueIdentifier>{8e9bfc93-f827-4666-8bd6-00d2e050a39c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Mesh\Gizumo">
+      <UniqueIdentifier>{a6c0c9c4-669a-4965-a5a8-5c6fd1415580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{fa0e41eb-c3ea-4792-859e-941187b50e28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Define">
+      <UniqueIdentifier>{f660b35c-8022-47e2-acba-8a30df49c0db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Light">
+      <UniqueIdentifier>{55f9dd26-4eb6-46ff-8f03-2d8ddaaa1ade}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Vertex">
+      <UniqueIdentifier>{c2726e72-b939-4fbc-a799-aea9d05b5f12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Material">
+      <UniqueIdentifier>{9f937b98-46c7-4634-9ca9-9eedc4572f3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Effect">
+      <UniqueIdentifier>{dab35443-1121-4ffe-b889-0e4139629067}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D3DRenderer.cpp">
-      <Filter>01.Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="CameraObject.cpp">
-      <Filter>02.Camera</Filter>
+      <Filter>Camera</Filter>
     </ClCompile>
     <ClCompile Include="RendererPCH.cpp">
-      <Filter>00.Define</Filter>
+      <Filter>Define</Filter>
     </ClCompile>
     <ClCompile Include="Box.cpp">
-      <Filter>03.Mesh\Geometry</Filter>
+      <Filter>Resource\Mesh\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Cylinder.cpp">
-      <Filter>03.Mesh\Geometry</Filter>
+      <Filter>Resource\Mesh\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="GeoSphere.cpp">
-      <Filter>03.Mesh\Geometry</Filter>
+      <Filter>Resource\Mesh\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
-      <Filter>03.Mesh\Geometry</Filter>
+      <Filter>Resource\Mesh\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
-      <Filter>03.Mesh\Gizumo</Filter>
+      <Filter>Resource\Mesh\Gizumo</Filter>
     </ClCompile>
     <ClCompile Include="BaseAxis.cpp">
-      <Filter>03.Mesh\Gizumo</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertex.cpp">
-      <Filter>Resource</Filter>
+      <Filter>Resource\Mesh\Gizumo</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>03.Mesh</Filter>
+      <Filter>Resource\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
-      <Filter>Resource</Filter>
+      <Filter>Resource\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>Resource\Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="InputLayout.cpp">
+      <Filter>Resource\Vertex</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>Resource</Filter>
+      <Filter>Resource\Material</Filter>
     </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Resource\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectFactory.cpp">
+      <Filter>Resource\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="D3DRenderer.h">
-      <Filter>01.Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="CameraObject.h">
-      <Filter>02.Camera</Filter>
+      <Filter>Camera</Filter>
     </ClInclude>
     <ClInclude Include="HRDefine.h">
-      <Filter>00.Define</Filter>
+      <Filter>Define</Filter>
     </ClInclude>
     <ClInclude Include="RendererHeader.h">
-      <Filter>00.Define</Filter>
+      <Filter>Define</Filter>
     </ClInclude>
     <ClInclude Include="RendererPCH.h">
-      <Filter>00.Define</Filter>
+      <Filter>Define</Filter>
     </ClInclude>
     <ClInclude Include="Box.h">
-      <Filter>03.Mesh\Geometry</Filter>
+      <Filter>Resource\Mesh\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Cylinder.h">
-      <Filter>03.Mesh\Geometry</Filter>
+      <Filter>Resource\Mesh\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="GeoSphere.h">
-      <Filter>03.Mesh\Geometry</Filter>
+      <Filter>Resource\Mesh\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Sphere.h">
-      <Filter>03.Mesh\Geometry</Filter>
+      <Filter>Resource\Mesh\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
-      <Filter>03.Mesh\Gizumo</Filter>
+      <Filter>Resource\Mesh\Gizumo</Filter>
     </ClInclude>
     <ClInclude Include="BaseAxis.h">
-      <Filter>03.Mesh\Gizumo</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Resource</Filter>
+      <Filter>Resource\Mesh\Gizumo</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>03.Mesh</Filter>
+      <Filter>Resource\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>Resource</Filter>
+      <Filter>Resource\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Resource\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="InputLayout.h">
+      <Filter>Resource\Vertex</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
-      <Filter>Resource</Filter>
+      <Filter>Resource\Material</Filter>
     </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Resource\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectFactory.h">
+      <Filter>Resource\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DRenderer.h" />
   </ItemGroup>
 </Project>

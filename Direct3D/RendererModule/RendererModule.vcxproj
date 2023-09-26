@@ -152,9 +152,12 @@
     <ClInclude Include="CameraObject.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="D3DRenderer.h" />
+    <ClInclude Include="Effect.h" />
+    <ClInclude Include="EffectFactory.h" />
     <ClInclude Include="GeoSphere.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="HRDefine.h" />
+    <ClInclude Include="InputLayout.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -169,8 +172,11 @@
     <ClCompile Include="CameraObject.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="D3DRenderer.cpp" />
+    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="EffectFactory.cpp" />
     <ClCompile Include="GeoSphere.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
