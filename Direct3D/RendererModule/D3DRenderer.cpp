@@ -29,6 +29,7 @@ D3DRenderer::D3DRenderer()
 	,m_geoSphere(nullptr)
 	,m_baseAxis(nullptr)
 {
+	//  무언가를 작업한다.
 	
 }
 
