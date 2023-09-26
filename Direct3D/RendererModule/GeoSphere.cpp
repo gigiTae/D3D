@@ -6,11 +6,7 @@ GeoSphere::GeoSphere(ID3D11Device* device, ID3D11DeviceContext* deviceContext, I
 	, m_proj(), m_world(), m_view(), m_indexBuffer(), m_vertexBuffer(), m_inputLayout()
 	, m_numSubdivisions(0), m_radius(0.f), m_indexSize(0), m_vertexSize(0)
 {
-	XMMATRIX I = XMMatrixIdentity();
-	XMStoreFloat4x4(&m_view, I);
-	XMStoreFloat4x4(&m_proj, I);
 
-	m_sphereMat = Material::GetLandMaterial();
 }
 
 GeoSphere::~GeoSphere()
@@ -35,12 +31,12 @@ void GeoSphere::Update(const XMMATRIX& world, const XMMATRIX& view, const XMMATR
 	XMStoreFloat4x4(&m_proj, proj);
 }
 
-void GeoSphere::Render(XMMATRIX world, XMFLOAT3 eye
-	, SpotLight* spot, PointLight* point, DirectionalLight* dirLight)
+void GeoSphere::Render()
 {
 	// 입력 배치 셋팅
 	m_d3dDeviceContext->IASetInputLayout(m_inputLayout.Get());
 	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 	m_d3dDeviceContext->RSSetState(m_rasterizerState.Get());
 
 	// 버텍스 버퍼와 인덱스 버퍼 셋팅
@@ -53,13 +49,11 @@ void GeoSphere::Render(XMMATRIX world, XMFLOAT3 eye
 	// 행렬
 	XMMATRIX view = XMLoadFloat4x4(&m_view);
 	XMMATRIX proj = XMLoadFloat4x4(&m_proj);
+	XMMATRIX world = XMLoadFloat4x4(&m_world);
 	XMMATRIX worldViewProj = world * view * proj;
 
 	// 상수 버퍼 변수를 통해서 월드뷰프로젝션 행렬을 셋팅해준다.
 	m_fxWorldViewProj->SetMatrix(reinterpret_cast<float*>(&worldViewProj));
-	m_fxMaterial->SetRawValue(&m_sphereMat, 0, sizeof(m_sphereMat));
-
-	SetVariable(world, eye, spot, point, dirLight);
 
 	D3DX11_TECHNIQUE_DESC techDesc;
 	m_tech->GetDesc(&techDesc);
@@ -181,7 +175,7 @@ void GeoSphere::BulidBuffers(float radius, UINT numSubdivisions)
 
 void GeoSphere::BuildEffect()
 {
-	std::ifstream fin("..\\Resource\\Shader\\Lighting.cso", std::ios::binary);
+	std::ifstream fin("..\\Resource\\Shader\\color.cso", std::ios::binary);
 
 	fin.seekg(0, std::ios_base::end);
 	int size = static_cast<int>(fin.tellg());
@@ -194,17 +188,8 @@ void GeoSphere::BuildEffect()
 	HR(D3DX11CreateEffectFromMemory(&compiledShader[0], size,
 		0, m_d3dDevice.Get(), m_effect.GetAddressOf()));
 
-
-	m_tech = m_effect->GetTechniqueByName("LightTech");
+	m_tech = m_effect->GetTechniqueByName("ColorTech");
 	m_fxWorldViewProj = m_effect->GetVariableByName("gWorldViewProj")->AsMatrix();
-	m_fxWorld = m_effect->GetVariableByName("gWorld")->AsMatrix();
-	m_fxWorldInvTranspose = m_effect->GetVariableByName("gWorldInvTranspose")->AsMatrix();
-	m_fxEyePosW = m_effect->GetVariableByName("gEyePosW")->AsVector();
-	m_fxDirLight = m_effect->GetVariableByName("gDirLight");
-	m_fxPointLight = m_effect->GetVariableByName("gPointLight");
-	m_fxSpotLight = m_effect->GetVariableByName("gSpotLight");
-	m_fxMaterial = m_effect->GetVariableByName("gMaterial");
-
 }
 
 void GeoSphere::BuildLayout()
@@ -213,7 +198,7 @@ void GeoSphere::BuildLayout()
 	D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
 		{"POSITION", 0,DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{"NORMAL",    0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
+		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT,  0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
 
 	D3DX11_PASS_DESC passDesc;
@@ -300,18 +285,4 @@ void GeoSphere::SubDivide(std::vector<Vertex>& vertices, std::vector<UINT>& indi
 		indices.push_back(i * 6 + 1);
 		indices.push_back(i * 6 + 4);
 	}
-}
-
-void GeoSphere::SetVariable(XMMATRIX world, XMFLOAT3 eye
-	, SpotLight* spot, PointLight* point, DirectionalLight* dirLight)
-{
-	XMMATRIX worldInvTranspose = DM::InverseTranspose(world);
-
-	m_fxWorld->SetMatrix(reinterpret_cast<float*>(&world));
-	m_fxWorldInvTranspose->SetMatrix(reinterpret_cast<float*>(&worldInvTranspose));
-	
-	m_fxDirLight->SetRawValue(dirLight, 0, sizeof(&dirLight));
-	m_fxSpotLight->SetRawValue(spot, 0, sizeof(&spot));
-	m_fxPointLight->SetRawValue(point, 0, sizeof(&point));
-	m_fxEyePosW->SetRawValue(&eye, 0, sizeof(eye));
 }

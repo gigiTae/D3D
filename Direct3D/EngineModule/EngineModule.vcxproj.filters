@@ -20,8 +20,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EnginePCH.h" />
-    <ClInclude Include="EngineHeader.h" />
     <ClInclude Include="TimeManager.h">
       <Filter>Public\Manager</Filter>
     </ClInclude>
@@ -31,14 +29,20 @@
     <ClInclude Include="InputEnumClass.h">
       <Filter>Public\EnumClass</Filter>
     </ClInclude>
+    <ClInclude Include="EnginePCH.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineHeader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EnginePCH.cpp" />
     <ClCompile Include="InputManager.cpp">
       <Filter>Private\Manager</Filter>
     </ClCompile>
     <ClCompile Include="TimeManager.cpp">
       <Filter>Private\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="EnginePCH.cpp">
+      <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,13 +1,11 @@
 #pragma once
 
-#include "Mesh.h"
-
 /// <summary>
 /// 박스 메쉬  
 /// 교수님 코드를 이해해보자
 /// 
 /// </summary>
-class Box : public Mesh
+class Box
 {
 public:
     Box(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* rs);

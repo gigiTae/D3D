@@ -1,11 +1,10 @@
 #pragma once
 
-#include "Mesh.h"
 
 /// <summary>
 /// xz 평면 그리드 메쉬
 /// </summary>
-class Grid : public Mesh
+class Grid
 {
 public:
     Grid(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* rs);
@@ -31,6 +30,7 @@ private:
 	unsigned int m_vertexSize;
 	unsigned int m_indexSize;
 
+	XMFLOAT4 m_gridColor;
 	XMFLOAT4X4 m_world; // 월드 변환 행렬
 	XMFLOAT4X4 m_view;  // 시야 변환 행렬
 	XMFLOAT4X4 m_proj;  // 투명 변환 행렬 

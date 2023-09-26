@@ -7,17 +7,7 @@ class Grid;
 class Cylinder;
 class Sphere;
 class GeoSphere;
-<<<<<<< HEAD
 class BaseAxis;
-class Land;
-
-/// ¶óÀÌÆ®
-struct DirectionalLight;
-struct PointLight;
-struct SpotLight;
-struct Material;
-=======
->>>>>>> parent of ef95daf (ì¶•ê·¸ë¦¬ë“œ ìƒì„±)
 
 /// <summary>
 ///  DX11  
@@ -35,20 +25,12 @@ public:
 	void Finalize();
 	void ClearScreen();
 	void Render();
-
-	/// ¶óÀÌÆ® ÀÓ½Ã
 	
 	XMMATRIX GetWorldViewProjMatrix();
 	CameraObject* GetMainCamera() const { return m_mainCamera.get(); }
 private:
 	bool InitializeD3D();
 
-	/// ============================== ÀÓ½Ã ÄÚµå ===============================
-	void InitializeMesh();
-	void InitializeLight();
-
-	void RenderLight();
-	/// ========================================================================
 private: 
 	int m_screenHeight;
 	int m_screenWidth;
@@ -79,19 +61,7 @@ private:
 	Cylinder* m_cylinder;
 	Sphere* m_sphere;
 	GeoSphere* m_geoSphere;
-<<<<<<< HEAD
 	BaseAxis* m_baseAxis;
-	Land* m_land;
-
-	/// ======================= ¶óÀÌÆ® °ü·Ã ================================
-	DirectionalLight* m_directLight;
-	PointLight* m_pointLight;
-	SpotLight* m_spotLight;
-
-	Material* m_landMat;
-	Material* m_sphereMat;
-=======
->>>>>>> parent of ef95daf (ì¶•ê·¸ë¦¬ë“œ ìƒì„±)
 
 };
 

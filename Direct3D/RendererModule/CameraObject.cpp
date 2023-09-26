@@ -5,19 +5,18 @@ CameraObject::CameraObject()
 	:m_projectMatrix()
 	,m_worldUp()
 	,m_cameraDirection()
-	,m_cameraPosition()
+	,m_position()
 	,m_fovAngleY(0.f)
 	,m_aspectRatio(0.f)
 	, m_nearZ(0.f)
 	, m_viewMatrix()
 	,m_farZ(0.f)
 {
-
 }
 
 CameraObject::~CameraObject()
 {
-
+	
 }
 
 void CameraObject::Initialize(int width, int hegiht, XMVECTOR position)
@@ -29,37 +28,22 @@ void CameraObject::Initialize(int width, int hegiht, XMVECTOR position)
 	m_fovAngleY = DM::HalfPI; 
 
 	// ƒ´∏ﬁ∂Û ¿ßƒ°¥¬ ø¯¡° 
-<<<<<<< HEAD
-	SetPosition(position);
-=======
-	m_cameraPosition = position;
->>>>>>> parent of ef95daf (Ï∂ïÍ∑∏Î¶¨Îìú ÏÉùÏÑ±)
+	m_position = position;
 	XMVECTOR zero = XMVectorZero();
 	m_worldUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
 
 	// ƒ´∏ﬁ∂Û¥¬ ø¯¡°¿ª πŸ∂Û∫ª¥Ÿ 
-<<<<<<< HEAD
-	m_cameraDirection = zero - GetPosition();
+	m_cameraDirection = zero - m_position;
 	
 	// «‡∑ƒ ∞ËªÍ
-	m_viewMatrix = XMMatrixLookToLH(GetPosition(), m_cameraDirection, m_worldUp);
-=======
-	m_cameraDirection = zero - m_cameraPosition;
-	
-	// «‡∑ƒ ∞ËªÍ
-	m_viewMatrix = XMMatrixLookToLH(m_cameraPosition, m_cameraDirection, m_worldUp);
->>>>>>> parent of ef95daf (Ï∂ïÍ∑∏Î¶¨Îìú ÏÉùÏÑ±)
+	m_viewMatrix = XMMatrixLookToLH(m_position, m_cameraDirection, m_worldUp);
 	m_projectMatrix = XMMatrixPerspectiveFovLH(m_fovAngleY, m_aspectRatio, m_nearZ, m_farZ);
 
 }
 
 void CameraObject::Update()
 {
-<<<<<<< HEAD
-	m_viewMatrix = XMMatrixLookToLH(GetPosition(), m_cameraDirection, m_worldUp);
-=======
-	m_viewMatrix = XMMatrixLookToLH(m_cameraPosition, m_cameraDirection, m_worldUp);
->>>>>>> parent of ef95daf (Ï∂ïÍ∑∏Î¶¨Îìú ÏÉùÏÑ±)
+	m_viewMatrix = XMMatrixLookToLH(m_position, m_cameraDirection, m_worldUp);
 	m_projectMatrix = XMMatrixPerspectiveFovLH(m_fovAngleY, m_aspectRatio, m_nearZ, m_farZ);
 }
 
@@ -72,11 +56,7 @@ void CameraObject::MoveCameraZ(float distace)
 {
 	XMVECTOR normal = XMVector3Normalize(m_cameraDirection);
 	
-<<<<<<< HEAD
-	SetPosition(GetPosition() + normal * distace);
-=======
-	m_cameraPosition += normal * distace;
->>>>>>> parent of ef95daf (Ï∂ïÍ∑∏Î¶¨Îìú ÏÉùÏÑ±)
+	m_position += normal * distace;
 
 	Update();
 }
@@ -87,11 +67,7 @@ void CameraObject::MoveCameraX(float distace)
 
 	XMVECTOR xAxis = XMVector3Cross(m_worldUp, normal);
 
-<<<<<<< HEAD
-	SetPosition(GetPosition() + xAxis * distace);
-=======
-	m_cameraPosition += xAxis * distace;
->>>>>>> parent of ef95daf (Ï∂ïÍ∑∏Î¶¨Îìú ÏÉùÏÑ±)
+	m_position += xAxis * distace;
 	
 	Update();
 }
@@ -104,11 +80,7 @@ void CameraObject::MoveCameraY(float distace)
 
 	XMVECTOR yAxis = XMVector3Cross(normal, xAxis);
 
-<<<<<<< HEAD
-	SetPosition(GetPosition() + yAxis * distace);
-=======
-	m_cameraPosition += yAxis * distace;
->>>>>>> parent of ef95daf (Ï∂ïÍ∑∏Î¶¨Îìú ÏÉùÏÑ±)
+	m_position += yAxis * distace;
 
 	Update();
 }
@@ -116,7 +88,13 @@ void CameraObject::MoveCameraY(float distace)
 void CameraObject::RotateCameraY(float angle)
 {
 
-	XMMATRIX rotainoMat = XMMatrixRotationY(angle);
+	XMVECTOR zAxis = XMVector3Normalize(m_cameraDirection);
+
+	XMVECTOR xAxis = XMVector3Cross(m_worldUp, zAxis);
+
+	XMVECTOR yAxis = XMVector3Cross(zAxis, xAxis);
+
+	XMMATRIX rotainoMat = XMMatrixRotationAxis(yAxis, angle);
 
 	m_cameraDirection = XMVector4Transform(m_cameraDirection, rotainoMat);;
 
@@ -125,7 +103,15 @@ void CameraObject::RotateCameraY(float angle)
 
 void CameraObject::RotateCameraX(float angle)
 {
-	XMMATRIX rotainoMat = XMMatrixRotationX(angle);
+
+	XMVECTOR zAxis = XMVector3Normalize(m_cameraDirection);
+
+	XMVECTOR xAxis = XMVector3Cross(m_worldUp, zAxis);
+
+	XMVECTOR yAxis = XMVector3Cross(zAxis, xAxis);
+
+	XMMATRIX rotainoMat = XMMatrixRotationAxis(xAxis, angle);
+
 
 	m_cameraDirection = XMVector4Transform(m_cameraDirection, rotainoMat);
 

@@ -1,13 +1,11 @@
 #pragma once
 
-#include "Mesh.h"
-
 /// <summary>
 /// 구 메쉬 
 /// 
 /// 텍스처 입히면 일정하지 않을 예정임
 /// </summary>
-class Sphere : public Mesh
+class Sphere
 {
 public:
 	Sphere(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* rs);

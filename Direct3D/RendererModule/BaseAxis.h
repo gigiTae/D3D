@@ -6,7 +6,8 @@
 /// 
 /// 
 /// </summary>
-class BaseAxis :   public Mesh
+class BaseAxis :
+    public Mesh
 {
 public:
 	BaseAxis(ID3D11Device* device, ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* rs);

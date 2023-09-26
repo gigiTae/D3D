@@ -1,21 +1,12 @@
 #include "RendererPCH.h"
 #include "D3DRenderer.h"
 #include "CameraObject.h"
-
-/// Mesh
 #include "Box.h"
 #include "Cylinder.h"
 #include "Grid.h"
 #include "Sphere.h"
 #include "GeoSphere.h"
-<<<<<<< HEAD
 #include "BaseAxis.h"
-#include "Land.h"
-
-/// Light
-#include "Light.h"
-=======
->>>>>>> parent of ef95daf (ì¶•ê·¸ë¦¬ë“œ ìƒì„±)
 
 D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
@@ -36,12 +27,9 @@ D3DRenderer::D3DRenderer()
 	,m_sphere(nullptr)
 	,m_cylinder(nullptr)
 	,m_geoSphere(nullptr)
-<<<<<<< HEAD
 	,m_baseAxis(nullptr)
-	,m_land(nullptr)
-=======
->>>>>>> parent of ef95daf (ì¶•ê·¸ë¦¬ë“œ ìƒì„±)
 {
+	//  ¹«¾ğ°¡¸¦ ÀÛ¾÷ÇÑ´Ù.
 	
 }
 
@@ -60,7 +48,7 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 
 	// Ä«¸Ş¶ó »ı¼º
 	m_mainCamera = std::make_unique<CameraObject>();
-	XMVECTOR cameraPosition = XMVectorSet(10.f, 20.f, 10.f, 1.f);
+	XMVECTOR cameraPosition = XMVectorSet(0.f, 10.f, 10.f, 1.f);
 	m_mainCamera->Initialize(m_screenWidth, m_screenHeight, cameraPosition);
 
 	InitializeD3D();
@@ -79,10 +67,6 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 	DirectX::XMStoreFloat4x4(&m_worldMatrix, worldMatrix);
 	DirectX::XMStoreFloat4x4(&m_worldViewProjMatrix, finalMatrix);
 	
-<<<<<<< HEAD
-	InitializeMesh();
-	InitializeLight();
-=======
 	m_box = new Box(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
 	m_box->Initialize();
 
@@ -97,7 +81,9 @@ bool D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 
 	m_geoSphere = new GeoSphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
 	m_geoSphere->Initilize(10.f, 2);
->>>>>>> parent of ef95daf (ì¶•ê·¸ë¦¬ë“œ ìƒì„±)
+
+	m_baseAxis = new BaseAxis(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
+	m_baseAxis->Initalize();
 
 	return true;
 }
@@ -111,16 +97,14 @@ void D3DRenderer::Finalize()
 	delete m_sphere;
 	delete m_cylinder;
 	delete m_geoSphere;
+	delete m_baseAxis;
 
-
-	delete m_sphereMat;
-	delete m_landMat;
 	CoUninitialize();
 }
 
 void D3DRenderer::ClearScreen()
 {
-	float arr[4]{ 0.f,0.16f,0.1f,1.f };
+	float arr[4]{ 0.f,0.f,0.f,1.f };
 
 	m_d3dDeviceContext->ClearRenderTargetView(m_d3dRenderTargetView.Get(),arr);
 
@@ -131,20 +115,7 @@ void D3DRenderer::ClearScreen()
 
 void D3DRenderer::Render()
 {
-	XMFLOAT3 eye;
-	XMStoreFloat3(&eye, m_mainCamera->GetPosition());
-	
-	XMVECTOR dir = m_mainCamera->GetPosition();
-	XMVECTOR target = XMVectorZero();
-
-	/// ÀÓ½Ã Update
-	XMStoreFloat3(&m_pointLight->position, m_mainCamera->GetPosition());
-	XMStoreFloat3(&m_spotLight->direction, XMVector3Normalize(target-dir));
-	XMStoreFloat3(&m_spotLight->position, m_mainCamera->GetPosition());
-
 	ClearScreen();
-
-
 
 	// ±×¸²À» ±×·Áº¸ÀÚ 
 	XMMATRIX worldMatrix = XMLoadFloat4x4(&m_worldMatrix);
@@ -152,32 +123,23 @@ void D3DRenderer::Render()
 	XMMATRIX projectMatrix = m_mainCamera->GetProjectMatrix();
 
 	m_box->Update(worldMatrix, viewMatrix, projectMatrix);
-	m_box->Render();
+	//m_box->Render();
 
 	m_grid->Update(worldMatrix, viewMatrix, projectMatrix);
 	m_grid->Render();
 
 	m_cylinder->Update(worldMatrix, viewMatrix, projectMatrix);
-	m_cylinder->Render();
+	//m_cylinder->Render();
 
 	m_sphere->Update(worldMatrix, viewMatrix, projectMatrix);
-	m_sphere->Render();
+	//m_sphere->Render();
 
 	m_geoSphere->Update(worldMatrix, viewMatrix, projectMatrix);
-<<<<<<< HEAD
-	m_geoSphere->Render(worldMatrix, eye, m_spotLight, m_pointLight, m_directLight);
+	//m_geoSphere->Render();
 
 	m_baseAxis->Update(worldMatrix, viewMatrix, projectMatrix);
 	m_baseAxis->Render();
 
-	m_land->Update(worldMatrix, viewMatrix, projectMatrix);
-	XMFLOAT3 eyePos;
-	XMStoreFloat3(&eyePos, m_mainCamera->GetPosition());
-
-	m_land->Render(m_directLight, m_pointLight, m_spotLight, &eyePos);
-=======
-	m_geoSphere->Render();
->>>>>>> parent of ef95daf (ì¶•ê·¸ë¦¬ë“œ ìƒì„±)
 
 	HR(m_swapChain->Present(0, 0));
 }
@@ -359,77 +321,12 @@ bool D3DRenderer::InitializeD3D()
 
 	m_d3dDevice->CreateRasterizerState(&rasterizerDesc, m_rasterizerState[0].GetAddressOf());
 
-	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+	rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
 
 	m_d3dDevice->CreateRasterizerState(&rasterizerDesc, m_rasterizerState[1].GetAddressOf());
 
 	m_d3dDeviceContext->RSSetState(m_rasterizerState[0].Get());
 
 	return true;
-}
-
-void D3DRenderer::InitializeMesh()
-{
-	/// ¾ÆÁ÷±îÁö´Â °ÔÀÓ¿ÀºêÁ§Æ® ¼³°èÇÏ±â´Â ¹«¸®ÀÌ´Ù.  ¾îÂ÷ÇÇ ¾öÃ»³ª°Ô ¶â¾î °íÃÄ¾ßÇÔ
-	/// ±×·¯¹Ç·Î °øºÎÇÏÀÚ 
-	
-	m_box = new Box(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_box->Initialize();
-
-	m_grid = new Grid(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_grid->Initialize(100, 100, 10, 10);
-
-	m_cylinder = new Cylinder(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_cylinder->Initailize(10.f, 0.f, 10.f, 100, 100);
-
-	m_sphere = new Sphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_sphere->Initialize(10.f, 20, 20);
-
-	m_geoSphere = new GeoSphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
-	m_geoSphere->Initilize(5.f, 10);
-
-	m_baseAxis = new BaseAxis(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
-	m_baseAxis->Initalize();
-
-	m_land = new Land(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
-	m_land->Initialize(10, 10, 10, 10);
-
-}
-
-void D3DRenderer::InitializeLight()
-{
-	// Light
-	m_directLight = new DirectionalLight();
-	m_pointLight = new PointLight;
-	m_spotLight = new SpotLight();
-
-	// Directional light.
-	m_directLight->ambient  = XMFLOAT4(0.2f, 0.6f, 0.6f, 1.0f);
-	m_directLight->diffuse  = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-	m_directLight->specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-	m_directLight->direction = XMFLOAT3(0.3f, 0.3f, 100.f);
-
-	// Point light--position is changed every frame to animate in UpdateScene function.
-	m_pointLight->ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-	m_pointLight->diffuse = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-	m_pointLight->specular = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-	m_pointLight->att = XMFLOAT3(0.0f, 0.1f, 0.0f);
-	m_pointLight->range = 25.0f;
-	m_pointLight->position = XMFLOAT3(0.f, 30.f, 0.f);
-
-	// Spot light--position and direction changed every frame to animate in UpdateScene function.
-	m_spotLight->ambient  = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-	m_spotLight->diffuse  = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
-	m_spotLight->specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_spotLight->att      = XMFLOAT3(1.0f, 0.0f, 0.0f);
-	m_spotLight->spot     = 96.0f;
-	m_spotLight->range = 10000.0f;
-	m_spotLight->position = XMFLOAT3(0.f, 30.f, 0.f);
-
-}
-
-void D3DRenderer::RenderLight()
-{
-
 }
 
