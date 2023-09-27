@@ -4,6 +4,8 @@
 
 
 GrapicsEngine::ResourceManager::ResourceManager()
+	:m_d3dDevice()
+	,m_textureMap{}
 {
 
 }
@@ -15,21 +17,37 @@ GrapicsEngine::ResourceManager::~ResourceManager()
 
 void GrapicsEngine::ResourceManager::Initialize(ID3D11Device* device)
 {
-	ID3D11Resource* texResource = nullptr;
-	ID3D11ShaderResourceView* m_resourceView = nullptr;
-	const std::wstring& filePath = GrapicsEngine::File::GetCurrentFilePath();
+	m_d3dDevice = device;
 
-	// 텍스처 파일경로 불러오기 
-	std::wstring texturePath = filePath + L"Resource\\Texture\\box.bmp";	
+	/// 텍스처 로딩 
+	LoadTextures();
 
-	
-	CreateShaderResourceView(device, texturePath);
 }
 
-void GrapicsEngine::ResourceManager::CreateShaderResourceView(ID3D11Device* device, const std::wstring& filePath)
+ID3D11ShaderResourceView* GrapicsEngine::ResourceManager::GetShaderResourceView(const wstring& fileName)
 {
-	// 키값 생성
-	wstring fileName = File::GetFileName(filePath);
+	
+}
+
+void GrapicsEngine::ResourceManager::LoadTextures()
+{
+	// 텍스처 파일경로 불러오기 
+	const std::wstring& filePath = GrapicsEngine::File::GetCurrentFilePath();
+	std::wstring texturePath = filePath + L"Resource\\Texture";
+
+	vector<wstring> textureFileMember{};
+
+	File::GetFileMemberPath(textureFileMember, texturePath, true);
+
+	for (const auto& path : textureFileMember)
+	{
+		CreateShaderResourceView(path);
+	}
+}
+
+void GrapicsEngine::ResourceManager::CreateShaderResourceView(const std::wstring& filePath)
+{
+	wstring fileName = File::GetFileName(filePath); // fileName => key
 
 	auto iter = m_textureMap.find(fileName);
 	assert(iter == m_textureMap.end() || !L"중복 키값입니다.");
@@ -52,7 +70,7 @@ void GrapicsEngine::ResourceManager::CreateShaderResourceView(ID3D11Device* devi
 	assert(hr == S_OK || !L"파일로드 실패");
 
 	ID3D11Texture2D* texture = nullptr;
-	HR(CreateTexture(device, image.GetImages(), image.GetImageCount(), image.GetMetadata(),
+	HR(CreateTexture(m_d3dDevice.Get(), image.GetImages(), image.GetImageCount(), image.GetMetadata(),
 		reinterpret_cast<ID3D11Resource**>(&texture)));
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
@@ -61,7 +79,7 @@ void GrapicsEngine::ResourceManager::CreateShaderResourceView(ID3D11Device* devi
 	srvDesc.Format = image.GetMetadata().format;
 
 	ID3D11ShaderResourceView* shaderResourceView = nullptr;
-	HR(device->CreateShaderResourceView(texture, &srvDesc, &shaderResourceView));
+	HR(m_d3dDevice->CreateShaderResourceView(texture, &srvDesc, &shaderResourceView));
 
 	texture->Release();
 

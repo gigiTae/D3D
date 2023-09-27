@@ -14,12 +14,19 @@ namespace GrapicsEngine
 		
 		void Initialize(ID3D11Device* device);
 
+
+	public:
+		ID3D11ShaderResourceView* GetShaderResourceView(const wstring& fileName);
+
 	private:
-     	void CreateShaderResourceView(ID3D11Device* device, const std::wstring& filePath);
+		void LoadTextures();
+
+	private:
+     	void CreateShaderResourceView(const std::wstring& filePath);
 
 	private:
 		std::unordered_map<std::wstring, ComPtr<ID3D11ShaderResourceView>> m_textureMap;
-
+		ComPtr<ID3D11Device> m_d3dDevice;
 	};
 
 

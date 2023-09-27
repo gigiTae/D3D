@@ -24,7 +24,7 @@ namespace GrapicsEngine
 		void GetFileMemberName(std::vector<std::wstring>& _files, const std::wstring& _filePath, bool _allDirectories);
 
 
-		/// 파일경로를 반환
+		/// 현재 파일경로를 반환
 		const std::wstring& GetCurrentFilePath();
 
 		/// 파일 확장자 반환  
