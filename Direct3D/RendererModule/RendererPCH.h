@@ -14,7 +14,18 @@
 #include <sstream>
 #include <fstream>
 #include <algorithm>
+#include <vector>
+using std::vector;
+
 #include <string>
+using std::string;
+using std::wstring;
+
+#include <map>
+using std::map;
+
+#include <unordered_map>
+using std::unordered_map;
 
 #include <wrl/client.h>
 using Microsoft::WRL::ComPtr;
@@ -27,26 +38,47 @@ using Microsoft::WRL::ComPtr;
 #include <DirectXPackedVector.h>
 
 
-#include "./FL/d3dx11Effect.h"	
 /// =============== 이펙트 라이브러리 설정 ====================
+#include "../Resource/Lib/d3dx11effect.h"
+
 #ifdef _DEBUG
 #ifdef _WIN64 // x64 설정인 경우
-#pragma comment( lib, "../Resource/Lib/x64/Effects11d.lib" )
+#pragma comment( lib, "../Resource/Lib/64/Effects11d.lib" )
 #else // x86 설정인 경우
-#pragma comment( lib, "../Resource/Lib/x86/Effects11d.lib" )
+#pragma comment( lib, "../Resource/Lib/86/Effects11d.lib" )
 #endif
 #else
 #ifdef _WIN64 // x64 설정인 경우
-#pragma comment( lib, "../Resource/Lib/x64/Effects11.lib" )
+#pragma comment( lib, "../Resource/Lib/64/Effects11.lib" )
 #else // x86 설정인 경우
-#pragma comment( lib, "../Resource/Lib/x86/Effects11.lib" )
+#pragma comment( lib, "../Resource/Lib/86/Effects11.lib" )
 #endif
 #endif
+/// ==========================================================
+
+/// =================== DirectXTex ===========================
+#include "..\Resource\Lib\DirectXTex.h"
+#include "..\Resource\Lib\DirectXTex.inl"
+
+#ifdef _DEBUG
+#ifdef _WIN64 // x64 설정인 경우
+#pragma comment( lib, "../Resource/Lib/64/DirectXTexd.lib" )
+#else // x86 설정인 경우
+#pragma comment( lib, "../Resource/Lib/86/DirectXTexd.lib" )
+#endif
+#else
+#ifdef _WIN64 // x64 설정인 경우
+#pragma comment( lib, "../Resource/Lib/64/DirectXTex.lib" )
+#else // x86 설정인 경우
+#pragma comment( lib, "../Resource/Lib/86/DirectXTex.lib" )
+#endif
+#endif
+/// ==========================================================
+
 
 
 #include "HRDefine.h"
 
 #include "MathModule/MathHeader.h"
-
-
+#include "../RendererModule/FL/DDSTextureLoader.h"
 

@@ -9,6 +9,7 @@
 #include "BaseAxis.h"
 #include "EffectFactory.h"
 #include "InputLayout.h"
+#include "ResourceManager.h"
 
 GrapicsEngine::D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
@@ -22,6 +23,7 @@ GrapicsEngine::D3DRenderer::D3DRenderer()
 	, m_depthStencilBuffer()
 	, m_screenWidth(0)
 	, m_screenHeight(0)
+	,m_resourceManager(nullptr)
 	,m_box(nullptr)
 	,m_grid(nullptr)
 	,m_sphere(nullptr)
@@ -29,7 +31,7 @@ GrapicsEngine::D3DRenderer::D3DRenderer()
 	,m_geoSphere(nullptr)
 	,m_baseAxis(nullptr)
 {
-	
+	m_resourceManager = std::make_unique<ResourceManager>();
 }
 
 GrapicsEngine::D3DRenderer::~D3DRenderer()
@@ -53,6 +55,9 @@ void GrapicsEngine::D3DRenderer::Initialize(HWND hWnd, int screenWidth, int scre
 	InitializeD3D();
 
 	InitializeResource();
+
+	m_resourceManager->Initialize(m_d3dDevice.Get());
+
 
 	/// юс╫ц
 	InitializeObject();

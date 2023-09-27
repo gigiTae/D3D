@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 struct SimpleMesh;
 class CameraObject;
 class Box;
@@ -13,6 +15,7 @@ namespace GrapicsEngine
 {
 	class InputLayout;
 	class EffectFactory;
+	class ResourceManager;
 }
 
 namespace GrapicsEngine
@@ -47,6 +50,7 @@ namespace GrapicsEngine
 		HWND m_hWnd; // 메인 윈도우 핸들 
 		bool m_enable4xMass; // 4XMSAA를 사용한다면 true로 설정
 
+		std::unique_ptr<ResourceManager> m_resourceManager;
 		std::unique_ptr<CameraObject> m_mainCamera; // 메인 카메라 
 		std::unique_ptr<InputLayout> m_inputLayout; // 입력서술 배치
 		std::unique_ptr<EffectFactory> m_effectFactory;
