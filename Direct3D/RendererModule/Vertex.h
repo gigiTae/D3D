@@ -3,10 +3,7 @@
 namespace GrapicsEngine
 {
 	/// <summary>
-	/// 가장 기본적인 정점
-	/// 
-	/// 
-	///  
+	/// 가장 기본적인 정점 
 	/// </summary>
 	class BaseVertex
 	{
@@ -33,5 +30,7 @@ namespace GrapicsEngine
 		XMFLOAT4 color;
 
 	};
+
+
 
 }

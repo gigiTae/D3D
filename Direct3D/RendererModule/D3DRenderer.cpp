@@ -7,9 +7,9 @@
 #include "Sphere.h"
 #include "GeoSphere.h"
 #include "BaseAxis.h"
-#include "EffectFactory.h"
 #include "InputLayout.h"
 #include "ResourceManager.h"
+#include "TextManager.h"
 
 GrapicsEngine::D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
@@ -23,15 +23,18 @@ GrapicsEngine::D3DRenderer::D3DRenderer()
 	, m_depthStencilBuffer()
 	, m_screenWidth(0)
 	, m_screenHeight(0)
-	,m_resourceManager(nullptr)
-	,m_box(nullptr)
-	,m_grid(nullptr)
-	,m_sphere(nullptr)
-	,m_cylinder(nullptr)
-	,m_geoSphere(nullptr)
-	,m_baseAxis(nullptr)
+	, m_resourceManager(nullptr)
+	, m_box(nullptr)
+	, m_grid(nullptr)
+	, m_sphere(nullptr)
+	, m_cylinder(nullptr)
+	, m_geoSphere(nullptr)
+	, m_baseAxis(nullptr)
 {
 	m_resourceManager = std::make_unique<ResourceManager>();
+	m_textManager = std::make_unique<TextManager>();
+
+
 }
 
 GrapicsEngine::D3DRenderer::~D3DRenderer()
@@ -56,7 +59,9 @@ void GrapicsEngine::D3DRenderer::Initialize(HWND hWnd, int screenWidth, int scre
 
 	InitializeResource();
 
+	/// 매니져 초기화
 	m_resourceManager->Initialize(m_d3dDevice.Get());
+	m_textManager->Initialize(m_d3dDevice.Get(), m_rasterizerState[1].Get(), m_depthStencilState.Get());
 
 
 	/// 임시
@@ -81,7 +86,7 @@ void GrapicsEngine::D3DRenderer::ClearScreen()
 {
 	float arr[4]{ 0.f,0.f,0.f,1.f };
 
-	m_d3dDeviceContext->ClearRenderTargetView(m_d3dRenderTargetView.Get(),arr);
+	m_d3dDeviceContext->ClearRenderTargetView(m_d3dRenderTargetView.Get(), arr);
 
 	// 깊이 버퍼를 1. Of로, 스텐실 버퍼를 0으로 지운다.
 	m_d3dDeviceContext->ClearDepthStencilView(m_depthStencilView.Get(),
@@ -107,7 +112,7 @@ void GrapicsEngine::D3DRenderer::Render()
 	//m_cylinder->Render();
 
 	m_sphere->Update(worldMatrix, viewMatrix, projectMatrix);
-	//m_sphere->Render();
+	m_sphere->Render();
 
 	m_geoSphere->Update(worldMatrix, viewMatrix, projectMatrix);
 	//m_geoSphere->Render();
@@ -115,6 +120,17 @@ void GrapicsEngine::D3DRenderer::Render()
 	m_baseAxis->Update(worldMatrix, viewMatrix, projectMatrix);
 	m_baseAxis->Render();
 
+	XMFLOAT3 cameraPos; 
+	XMStoreFloat3(&cameraPos, m_mainCamera->GetPosition());
+
+
+	std::wstring cameraInfo = L"카메라 위치 : " + std::to_wstring(cameraPos.x) + L" " +
+		std::to_wstring(cameraPos.y) + L" " + std::to_wstring(cameraPos.z) + L" ";
+
+	/// 텍스트 출력
+	m_textManager->DrawTextColor(XMFLOAT2(10.f, 10.f), XMFLOAT4(1.f, 1.f, 1.f, .1f), cameraInfo.c_str());
+
+	m_d3dDeviceContext->OMGetDepthStencilState(m_depthStencilState.GetAddressOf(), 0);
 
 	HR(m_swapChain->Present(0, 0));
 }
@@ -275,12 +291,10 @@ void GrapicsEngine::D3DRenderer::InitializeResource()
 {
 
 	m_inputLayout = std::make_unique<InputLayout>();
-	m_effectFactory = std::make_unique<EffectFactory>();
 
 	m_inputLayout->Initailize(m_d3dDevice.Get());
-	m_effectFactory->Initalize(m_d3dDevice.Get());
 
-	
+
 	// 래스터라이즈 설정
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
@@ -293,16 +307,25 @@ void GrapicsEngine::D3DRenderer::InitializeResource()
 
 	m_d3dDevice->CreateRasterizerState(&rasterizerDesc, m_rasterizerState[0].GetAddressOf());
 
-	rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
+	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
 
 	m_d3dDevice->CreateRasterizerState(&rasterizerDesc, m_rasterizerState[1].GetAddressOf());
 
 	m_d3dDeviceContext->RSSetState(m_rasterizerState[0].Get());
+
+
+	// 폰트용 DSS
+	D3D11_DEPTH_STENCIL_DESC equalsDesc;
+	ZeroMemory(&equalsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	equalsDesc.DepthEnable = true;
+	equalsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;		// 깊이버퍼에 쓰기는 한다
+	equalsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+	HR(m_d3dDevice->CreateDepthStencilState(&equalsDesc, m_depthStencilState.GetAddressOf()));
 }
 
 void GrapicsEngine::D3DRenderer::InitializeObject()
 {
-
 	m_box = new Box(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
 	m_box->Initialize();
 

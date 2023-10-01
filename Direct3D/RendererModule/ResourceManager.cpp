@@ -1,11 +1,12 @@
 #include "RendererPCH.h"
 #include "ResourceManager.h"
 #include "FileLoader.h"
+#include "Effect.h"
 
 
 GrapicsEngine::ResourceManager::ResourceManager()
 	:m_d3dDevice()
-	,m_textureMap{}
+	,m_shaderResourceViewMap{}
 {
 
 }
@@ -19,14 +20,29 @@ void GrapicsEngine::ResourceManager::Initialize(ID3D11Device* device)
 {
 	m_d3dDevice = device;
 
+
 	/// 텍스처 로딩 
 	LoadTextures();
 
+	/// 이펙트 로딩
+	LoadEffect();
 }
 
-ID3D11ShaderResourceView* GrapicsEngine::ResourceManager::GetShaderResourceView(const wstring& fileName)
+ID3D11ShaderResourceView* GrapicsEngine::ResourceManager::GetShaderResourceView(const std::wstring& fileName)
 {
-	
+	auto iter = m_shaderResourceViewMap.find(fileName);
+
+	assert(iter != m_shaderResourceViewMap.end() || L"찾는 리소스가 없습니다.");
+
+	return iter->second.Get();
+}
+
+GrapicsEngine::Effect* GrapicsEngine::ResourceManager::GetEffect(const std::wstring& effectKey)
+{
+	auto iter = m_effects.find(effectKey);
+	assert(iter != m_effects.end());
+
+	return iter->second.get();
 }
 
 void GrapicsEngine::ResourceManager::LoadTextures()
@@ -35,7 +51,7 @@ void GrapicsEngine::ResourceManager::LoadTextures()
 	const std::wstring& filePath = GrapicsEngine::File::GetCurrentFilePath();
 	std::wstring texturePath = filePath + L"Resource\\Texture";
 
-	vector<wstring> textureFileMember{};
+	std::vector<std::wstring> textureFileMember{};
 
 	File::GetFileMemberPath(textureFileMember, texturePath, true);
 
@@ -45,12 +61,22 @@ void GrapicsEngine::ResourceManager::LoadTextures()
 	}
 }
 
+void GrapicsEngine::ResourceManager::LoadEffect()
+{
+	/// 이펙트들 생성 
+	Effect* basicFX = new BasicEffect(m_d3dDevice.Get(), L"..\\Resource\\Shader\\Basic.cso");
+	m_effects.insert(std::make_pair(L"Basic", basicFX));
+
+}
+
 void GrapicsEngine::ResourceManager::CreateShaderResourceView(const std::wstring& filePath)
 {
+	using std::wstring;
+
 	wstring fileName = File::GetFileName(filePath); // fileName => key
 
-	auto iter = m_textureMap.find(fileName);
-	assert(iter == m_textureMap.end() || !L"중복 키값입니다.");
+	auto iter = m_shaderResourceViewMap.find(fileName);
+	assert(iter == m_shaderResourceViewMap.end() || !L"중복 키값입니다.");
 
 	wstring extension = File::GetFileExtension(filePath);
 
@@ -83,5 +109,5 @@ void GrapicsEngine::ResourceManager::CreateShaderResourceView(const std::wstring
 
 	texture->Release();
 
-	m_textureMap.insert(std::make_pair(fileName, shaderResourceView));
+	m_shaderResourceViewMap.insert(std::make_pair(fileName, shaderResourceView));
 }

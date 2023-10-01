@@ -78,9 +78,6 @@
     <ClCompile Include="Effect.cpp">
       <Filter>Resource\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="EffectFactory.cpp">
-      <Filter>Resource\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="D3DRenderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="FL\DDSTextureLoader.cpp">
@@ -89,6 +86,7 @@
     <ClCompile Include="FileLoader.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="TextManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraObject.h">
@@ -139,9 +137,6 @@
     <ClInclude Include="Effect.h">
       <Filter>Resource\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="EffectFactory.h">
-      <Filter>Resource\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="D3DRenderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="FL\DDSTextureLoader.h">
@@ -150,5 +145,6 @@
     <ClInclude Include="FileLoader.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="TextManager.h" />
   </ItemGroup>
 </Project>

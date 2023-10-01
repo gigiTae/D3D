@@ -14,8 +14,8 @@ class BaseAxis;
 namespace GrapicsEngine
 {
 	class InputLayout;
-	class EffectFactory;
 	class ResourceManager;
+	class TextManager;
 }
 
 namespace GrapicsEngine
@@ -50,10 +50,11 @@ namespace GrapicsEngine
 		HWND m_hWnd; // 메인 윈도우 핸들 
 		bool m_enable4xMass; // 4XMSAA를 사용한다면 true로 설정
 
-		std::unique_ptr<ResourceManager> m_resourceManager;
+		std::unique_ptr<ResourceManager> m_resourceManager; 
+		std::unique_ptr<TextManager> m_textManager;
+
 		std::unique_ptr<CameraObject> m_mainCamera; // 메인 카메라 
 		std::unique_ptr<InputLayout> m_inputLayout; // 입력서술 배치
-		std::unique_ptr<EffectFactory> m_effectFactory;
 
 		D3D_FEATURE_LEVEL m_featureLevel;
 		ComPtr<IDXGISwapChain> m_swapChain;
@@ -65,6 +66,8 @@ namespace GrapicsEngine
 
 #pragma region RenderState
 		ComPtr<ID3D11RasterizerState> m_rasterizerState[2];
+		ComPtr<ID3D11DepthStencilState> m_depthStencilState;
+
 #pragma endregion
 
 		/// ===================== 임시객체 ================================

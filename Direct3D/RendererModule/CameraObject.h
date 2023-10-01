@@ -14,6 +14,7 @@ public:
 	void Update(); 
 	void Finalize();
 
+	DirectX::XMVECTOR GetPosition() const { return m_position; }
 public:
 	DirectX::XMMATRIX GetViewMatrix() const { return m_viewMatrix; }
 	DirectX::XMMATRIX GetProjectMatrix() const { return m_projectMatrix; }

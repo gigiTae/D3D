@@ -1,6 +1,7 @@
 #include "RendererPCH.h"
 #include "FileLoader.h"
 
+
 void GrapicsEngine::File::GetFileMemberPath(std::vector<std::wstring>& _files, const std::wstring& _filePath, bool _allDirectories)
 {
 	std::wstring tmp = _filePath + std::wstring(L"\\*.*");
@@ -88,10 +89,10 @@ const std::wstring& GrapicsEngine::File::GetCurrentFilePath()
 	return filePath;
 }
 
-wstring GrapicsEngine::File::GetFileExtension(const wstring& filePath)
+std::wstring GrapicsEngine::File::GetFileExtension(const std::wstring& filePath)
 {
 	// 파일 확장자 가져오기  
-	wstring extension = filePath.substr(filePath.find_last_of(TEXT(".")) + 1);
+	std::wstring extension = filePath.substr(filePath.find_last_of(TEXT(".")) + 1);
 
 	assert(filePath.length() != extension.length() || !L"확장자를 찾기 못했습니다");
 
@@ -105,12 +106,12 @@ wstring GrapicsEngine::File::GetFileExtension(const wstring& filePath)
 	// 따라서 std::move 를 사용하지 않아도 최적화가 적용되어 효율적으로 동장할 가능성이 높다. 
 }
 
-wstring GrapicsEngine::File::GetFileName(const wstring& filePath)
+std::wstring GrapicsEngine::File::GetFileName(const std::wstring& filePath)
 {
 	// 파일명 앞의 경로 제거 
-	wstring name = filePath.substr(filePath.find_last_of(L'\\') +1);
+	std::wstring name = filePath.substr(filePath.find_last_of(L'\\') +1);
 
-	wstring tmp = name;
+	std::wstring tmp = name;
 	// 확장자 제거  
 	while (true)
 	{

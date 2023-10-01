@@ -28,10 +28,10 @@ namespace GrapicsEngine
 		const std::wstring& GetCurrentFilePath();
 
 		/// 파일 확장자 반환  
-		wstring GetFileExtension(const wstring& filePath);
+		std::wstring GetFileExtension(const std::wstring& filePath);
 
 		/// 파일경로에서 파일이름 반환  (Key 값 만들기) 
-		wstring GetFileName(const wstring& filePath);
+		std::wstring GetFileName(const std::wstring& filePath);
 
 	};
 

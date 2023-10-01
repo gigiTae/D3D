@@ -153,7 +153,6 @@
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="D3DRenderer.h" />
     <ClInclude Include="Effect.h" />
-    <ClInclude Include="EffectFactory.h" />
     <ClInclude Include="FileLoader.h" />
     <ClInclude Include="FL\DDSTextureLoader.h" />
     <ClInclude Include="GeoSphere.h" />
@@ -167,6 +166,7 @@
     <ClInclude Include="RendererHeader.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="TextManager.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
@@ -176,7 +176,6 @@
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="D3DRenderer.cpp" />
     <ClCompile Include="Effect.cpp" />
-    <ClCompile Include="EffectFactory.cpp" />
     <ClCompile Include="FileLoader.cpp" />
     <ClCompile Include="FL\DDSTextureLoader.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -195,6 +194,7 @@
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="TextManager.cpp" />
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>

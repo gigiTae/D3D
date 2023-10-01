@@ -15,17 +15,9 @@
 #include <fstream>
 #include <algorithm>
 #include <vector>
-using std::vector;
-
 #include <string>
-using std::string;
-using std::wstring;
-
 #include <map>
-using std::map;
-
 #include <unordered_map>
-using std::unordered_map;
 
 #include <wrl/client.h>
 using Microsoft::WRL::ComPtr;
@@ -75,10 +67,29 @@ using Microsoft::WRL::ComPtr;
 #endif
 /// ==========================================================
 
+/// ====================== DirectXTK =========================
+#include "..\Resource\Lib\SpriteBatch.h"
+#include "..\Resource\Lib\SpriteFont.h"
+
+#ifdef _DEBUG
+#ifdef _WIN64 // x64 설정인 경우
+#pragma comment( lib, "../Resource/Lib/64/DirectXTKd.lib" )
+#else // x86 설정인 경우
+#pragma comment( lib, "../Resource/Lib/86/DirectXTKd.lib" )
+#endif
+#else
+#ifdef _WIN64 // x64 설정인 경우
+#pragma comment( lib, "../Resource/Lib/64/DirectXTK.lib" )
+#else // x86 설정인 경우
+#pragma comment( lib, "../Resource/Lib/86/DirectXTK.lib" )
+#endif
+#endif
+
+/// ==========================================================
+
 
 
 #include "HRDefine.h"
 
 #include "MathModule/MathHeader.h"
 #include "../RendererModule/FL/DDSTextureLoader.h"
-

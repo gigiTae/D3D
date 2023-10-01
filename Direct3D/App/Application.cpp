@@ -27,7 +27,7 @@ void Application::Initialize(HINSTANCE hInstance, int nCmdShow, UINT screenWidth
 
 	// 그래픽스 엔진 초기화 
 	m_d3dRenderer = std::make_unique<GrapicsEngine::D3DRenderer>();
-	m_d3dRenderer->Initialize(m_hWnd, screenWidth, screenHeight );
+	m_d3dRenderer->Initialize(m_hWnd, m_screenWidth, m_screenHeight );
 
 	// 매니저 생성
 	m_timeManager = std::make_unique<TimeManager>();
@@ -186,7 +186,6 @@ void Application::WindowInitialize(int nCmdShow)
 	RECT rt = { 0, 0,(long)m_screenWidth, (long)m_screenHeight };
 	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false); // window 설정스타일에 맞는 rt값을 반환해준다.
 	SetWindowPos(m_hWnd, nullptr, left, top, rt.right - rt.left, rt.bottom - rt.top, 0);
-
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
