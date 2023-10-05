@@ -13,8 +13,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     Application* app = new Application();
 
-    constexpr UINT screenWidth = 1920;
-	constexpr UINT screenHeight = 1080;
+    constexpr UINT screenWidth = 1200;
+	constexpr UINT screenHeight =960;
 
     app->Initialize(hInstance, nCmdShow, screenWidth,screenHeight);
 

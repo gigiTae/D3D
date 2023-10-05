@@ -10,6 +10,8 @@
 #include "InputLayout.h"
 #include "ResourceManager.h"
 #include "TextManager.h"
+#include "Crate.h"
+#include "BasicEffect.h"
 
 GrapicsEngine::D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
@@ -78,6 +80,7 @@ void GrapicsEngine::D3DRenderer::Finalize()
 	delete m_cylinder;
 	delete m_geoSphere;
 	delete m_baseAxis;
+	delete m_crate;
 
 	CoUninitialize();
 }
@@ -95,7 +98,7 @@ void GrapicsEngine::D3DRenderer::ClearScreen()
 
 void GrapicsEngine::D3DRenderer::Render()
 {
-	ClearScreen();
+
 
 	// 그림을 그려보자 
 	XMMATRIX worldMatrix = XMMatrixIdentity();
@@ -106,13 +109,13 @@ void GrapicsEngine::D3DRenderer::Render()
 	//m_box->Render();
 
 	m_grid->Update(worldMatrix, viewMatrix, projectMatrix);
-	m_grid->Render();
+	//m_grid->Render();
 
 	m_cylinder->Update(worldMatrix, viewMatrix, projectMatrix);
 	//m_cylinder->Render();
 
 	m_sphere->Update(worldMatrix, viewMatrix, projectMatrix);
-	m_sphere->Render();
+	//m_sphere->Render();
 
 	m_geoSphere->Update(worldMatrix, viewMatrix, projectMatrix);
 	//m_geoSphere->Render();
@@ -120,18 +123,35 @@ void GrapicsEngine::D3DRenderer::Render()
 	m_baseAxis->Update(worldMatrix, viewMatrix, projectMatrix);
 	m_baseAxis->Render();
 
+	m_crate->Render();
+
 	XMFLOAT3 cameraPos; 
 	XMStoreFloat3(&cameraPos, m_mainCamera->GetPosition());
 
 
-	std::wstring cameraInfo = L"카메라 위치 : " + std::to_wstring(cameraPos.x) + L" " +
-		std::to_wstring(cameraPos.y) + L" " + std::to_wstring(cameraPos.z) + L" ";
+	/// 카메라 위치 
+	std::wstring cameraInfo = L"카메라 위치 X " 
+		+ std::to_wstring(static_cast<int>(cameraPos.x)) + L" Y " 
+		+ std::to_wstring(static_cast<int>(cameraPos.y)) + L" Z " 
+		+ std::to_wstring(static_cast<int>(cameraPos.z));
 
 	/// 텍스트 출력
-	m_textManager->DrawTextColor(XMFLOAT2(10.f, 10.f), XMFLOAT4(1.f, 1.f, 1.f, .1f), cameraInfo.c_str());
+	m_textManager->DrawTextColor(XMFLOAT2(0.f, 10.f), XMFLOAT4(0.f, 1.f, 1.f, .1f), cameraInfo.c_str());
 
 	m_d3dDeviceContext->OMGetDepthStencilState(m_depthStencilState.GetAddressOf(), 0);
 
+
+}
+
+void GrapicsEngine::D3DRenderer::BeginRender()
+{
+	/// BeginRender
+	ClearScreen();
+}
+
+void GrapicsEngine::D3DRenderer::EndRender()
+{
+	/// EndRender 
 	HR(m_swapChain->Present(0, 0));
 }
 
@@ -340,8 +360,17 @@ void GrapicsEngine::D3DRenderer::InitializeObject()
 
 	m_geoSphere = new GeoSphere(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
 	m_geoSphere->Initilize(10.f, 2);
-
+	
 	m_baseAxis = new BaseAxis(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[1].Get());
 	m_baseAxis->Initalize();
+
+	BasicEffect* ef = dynamic_cast<BasicEffect*>(m_resourceManager->GetEffect(L"Basic"));
+
+
+	m_crate = new Crate(m_d3dDevice.Get(), m_d3dDeviceContext.Get()
+		, m_rasterizerState[0].Get(), m_inputLayout->GetBasicLayout(),ef);
+
+	m_crate->Initialize(10, 10, 10);
+
 }
 

@@ -24,7 +24,7 @@ void GrapicsEngine::TextManager::Initialize(ID3D11Device* device, ID3D11Rasteriz
 	std::wstring fileName = L"../Resource/Font/gulim9k.spritefont";
 
 	m_spriteFont = std::make_unique<SpriteFont>(device, fileName.c_str());
-	m_spriteFont->SetLineSpacing(14.f);
+	m_spriteFont->SetLineSpacing(10.f);
 
 	deviceContext->Release();
 

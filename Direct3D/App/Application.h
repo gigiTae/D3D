@@ -1,5 +1,12 @@
 #pragma once
 
+
+namespace Tool
+{
+	class ImGuiManager;
+}
+
+
 /// <summary>
 ///  모듈들을 이용하는 가장 상단 클래스 
 /// </summary>
@@ -29,5 +36,6 @@ private:
 	std::unique_ptr<GrapicsEngine::D3DRenderer> m_d3dRenderer;
 	std::unique_ptr<InputManager> m_inputManager;
 	std::unique_ptr<TimeManager> m_timeManager;
+	std::unique_ptr<Tool::ImGuiManager> m_imguiManager;
 };
 

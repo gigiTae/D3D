@@ -13,6 +13,7 @@ class BaseAxis;
 
 namespace GrapicsEngine
 {
+	class Crate;
 	class InputLayout;
 	class ResourceManager;
 	class TextManager;
@@ -36,8 +37,15 @@ namespace GrapicsEngine
 		void Finalize();
 		void ClearScreen();
 		void Render();
+		void BeginRender();
+		void EndRender();
 
 		CameraObject* GetMainCamera() const { return m_mainCamera.get(); }
+		TextManager* GetTextManager() const { return m_textManager.get(); }
+		ID3D11Device* GetDevice() const{ return m_d3dDevice.Get(); }
+		ID3D11DeviceContext* GetDeviceContext() const { return m_d3dDeviceContext.Get(); }
+
+
 	private:
 		void InitializeD3D();
 		void InitializeResource();
@@ -77,6 +85,6 @@ namespace GrapicsEngine
 		Sphere* m_sphere;
 		GeoSphere* m_geoSphere;
 		BaseAxis* m_baseAxis;
-
+		Crate* m_crate;
 	};
 }

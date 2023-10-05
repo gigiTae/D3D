@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "Application.h"
+#include "ImGuiManager.h"
+
+static UINT g_resizeWidth = 0, g_resizeHeight = 0;
 
 Application::Application()
 	:m_hInstance(nullptr)
@@ -7,6 +10,7 @@ Application::Application()
 	,m_screenHeight(0)
 	,m_screenWidth(0)
 	,m_d3dRenderer(nullptr)
+	,m_inputManager(nullptr)
 {
 
 }
@@ -28,6 +32,11 @@ void Application::Initialize(HINSTANCE hInstance, int nCmdShow, UINT screenWidth
 	// 그래픽스 엔진 초기화 
 	m_d3dRenderer = std::make_unique<GrapicsEngine::D3DRenderer>();
 	m_d3dRenderer->Initialize(m_hWnd, m_screenWidth, m_screenHeight );
+
+	/// tool
+	m_imguiManager = std::make_unique<Tool::ImGuiManager>();
+	m_imguiManager->Initialize(m_hWnd, m_d3dRenderer->GetDevice(), m_d3dRenderer->GetDeviceContext());
+
 
 	// 매니저 생성
 	m_timeManager = std::make_unique<TimeManager>();
@@ -59,7 +68,46 @@ void Application::Process()
 		{
 			// 게임 프로세스 루프
 			Update();
+
+			m_d3dRenderer->BeginRender();
 			m_d3dRenderer->Render();
+	
+			float dt = m_timeManager->GetDeltaTime();
+			int fps = m_timeManager->GetFPS();
+
+			std::wstring DT = L"DT : " + std::to_wstring(dt) + L" FPS : " + std::to_wstring(fps);
+
+			m_d3dRenderer->GetTextManager()->DrawTextColor(XMFLOAT2(0.f, 25.f), XMFLOAT4(0.f, 1.f, 1.f, 1.f), DT);
+
+			m_imguiManager->BeginRender();
+
+			float s = 1.f;
+			if (ImGui::Begin("gihih237"))
+			{
+				static float f = 0.0f;
+				static int counter = 0;
+
+				ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+				  
+				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+
+
+				if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+					counter++;
+				ImGui::SameLine();
+				ImGui::Text("counter = %d", counter);
+
+				ImGui::End();
+			}
+			
+			
+			m_imguiManager->EndRender(m_d3dRenderer->GetDeviceContext());
+			m_d3dRenderer->EndRender();
+
+			
+
 		};
 
 	}
@@ -188,15 +236,30 @@ void Application::WindowInitialize(int nCmdShow)
 	SetWindowPos(m_hWnd, nullptr, left, top, rt.right - rt.left, rt.bottom - rt.top, 0);
 }
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+		return true;
+
 	switch (message)
 	{
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			break;
+		case WM_DPICHANGED:
+			if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DpiEnableScaleViewports)
+			{
+				//const int dpi = HIWORD(wParam);
+				//printf("WM_DPICHANGED to %d (%.0f%%)\n", dpi, (float)dpi / 96.0f * 100.0f);
+				const RECT* suggested_rect = (RECT*)lParam;
+				::SetWindowPos(hWnd, nullptr, suggested_rect->left, suggested_rect->top, suggested_rect->right - suggested_rect->left, suggested_rect->bottom - suggested_rect->top, SWP_NOZORDER | SWP_NOACTIVATE);
+			}
+			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
+
 	}
 	return 0;
 }

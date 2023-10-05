@@ -21,7 +21,7 @@ namespace GrapicsEngine
 
 	public:
 		ID3D11ShaderResourceView* GetShaderResourceView(const std::wstring& fileName);
-		Effect* GetEffect(const std::wstring& effectKey);
+		GrapicsEngine::Effect* GetEffect(const std::wstring& effectKey);
 
 	private:
 		void LoadTextures();
@@ -33,7 +33,7 @@ namespace GrapicsEngine
 	private:
 		ComPtr<ID3D11Device> m_d3dDevice;
 		std::unordered_map<std::wstring, ComPtr<ID3D11ShaderResourceView>> m_shaderResourceViewMap;
-		std::unordered_map<std::wstring, std::unique_ptr<Effect>> m_effects;
+		std::unordered_map<std::wstring, std::unique_ptr<GrapicsEngine::Effect>> m_effects;
 	};
 
 }

@@ -9,4 +9,8 @@ namespace DM
 	static constexpr float InvPI = { 0.31830988618f };
 
 	float AngleFromXY(float x, float y);
+
+
+	XMMATRIX InverseTranspose(CXMMATRIX M);
+
 }

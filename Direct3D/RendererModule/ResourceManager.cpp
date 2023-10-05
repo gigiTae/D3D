@@ -2,6 +2,7 @@
 #include "ResourceManager.h"
 #include "FileLoader.h"
 #include "Effect.h"
+#include "BasicEffect.h"
 
 
 GrapicsEngine::ResourceManager::ResourceManager()
@@ -59,6 +60,7 @@ void GrapicsEngine::ResourceManager::LoadTextures()
 	{
 		CreateShaderResourceView(path);
 	}
+
 }
 
 void GrapicsEngine::ResourceManager::LoadEffect()

@@ -14,7 +14,10 @@ public:
 	void Initialize();
 	float Update();
 	void Finalize();
+
+public:
 	float GetDeltaTime() const { return static_cast<float>(m_deltaTime); }
+	int GetFPS() { return m_fps; }
 
 private:
 	LARGE_INTEGER m_curentCount;
