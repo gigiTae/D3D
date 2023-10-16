@@ -64,51 +64,58 @@ void Application::Process()
 			if (msg.message == WM_QUIT) break;
 			DispatchMessage(&msg);
 		}
-		else
+
+		if (g_resizeHeight != 0 && g_resizeWidth != 0)
 		{
-			// 게임 프로세스 루프
-			Update();
-
-			m_d3dRenderer->BeginRender();
-			m_d3dRenderer->Render();
-	
-			float dt = m_timeManager->GetDeltaTime();
-			int fps = m_timeManager->GetFPS();
-
-			std::wstring DT = L"DT : " + std::to_wstring(dt) + L" FPS : " + std::to_wstring(fps);
-
-			m_d3dRenderer->GetTextManager()->DrawTextColor(XMFLOAT2(0.f, 25.f), XMFLOAT4(0.f, 1.f, 1.f, 1.f), DT);
-
-			m_imguiManager->BeginRender();
-
-			float s = 1.f;
-			if (ImGui::Begin("gihih237"))
-			{
-				static float f = 0.0f;
-				static int counter = 0;
-
-				ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-				  
-				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			m_d3dRenderer->OnResize(g_resizeWidth, g_resizeHeight);
+			g_resizeHeight = 0;
+			g_resizeWidth = 0;
+		}
 
 
-				if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-					counter++;
-				ImGui::SameLine();
-				ImGui::Text("counter = %d", counter);
+		// 게임 프로세스 루프
+		Update();
 
-				ImGui::End();
-			}
-			
-			
-			m_imguiManager->EndRender(m_d3dRenderer->GetDeviceContext());
-			m_d3dRenderer->EndRender();
 
-			
 
-		};
+		float dt = m_timeManager->GetDeltaTime();
+		int fps = m_timeManager->GetFPS();
+
+		std::wstring DT = L"DT : " + std::to_wstring(dt) + L" FPS : " + std::to_wstring(fps);
+
+		m_d3dRenderer->GetTextManager()->DrawTextColor(XMFLOAT2(0.f, 25.f), XMFLOAT4(0.f, 1.f, 1.f, 1.f), DT);
+
+		m_imguiManager->BeginRender();
+
+		float s = 1.f;
+		if (ImGui::Begin("gihih237"))
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+
+			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+
+
+			if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+				counter++;
+			ImGui::SameLine();
+			ImGui::Text("counter = %d", counter);
+
+			ImGui::End();
+		}
+
+		ImGui::Render();
+		m_d3dRenderer->BeginRender();
+		m_d3dRenderer->Render();
+
+
+		// imgui
+		m_imguiManager->EndRender(m_d3dRenderer->GetDeviceContext());
+		m_d3dRenderer->EndRender();
 
 	}
 }
@@ -248,6 +255,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			break;
+		case WM_SIZE:
+			if (wParam == SIZE_MINIMIZED)
+				return 0;
+			g_resizeWidth = (UINT)LOWORD(lParam); // Queue resize
+			g_resizeHeight = (UINT)HIWORD(lParam);
+			return 0;
 		case WM_DPICHANGED:
 			if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DpiEnableScaleViewports)
 			{

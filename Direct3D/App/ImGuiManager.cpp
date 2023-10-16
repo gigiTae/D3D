@@ -46,14 +46,7 @@ void Tool::ImGuiManager::BeginRender()
 
 void Tool::ImGuiManager::EndRender(ID3D11DeviceContext* deviceContext)
 {
-	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-
-	/// deviceContext
-//	deviceContext->OMSetRenderTargets(1, )
-
-
 
 	ImGuiIO& io = ImGui::GetIO();
 

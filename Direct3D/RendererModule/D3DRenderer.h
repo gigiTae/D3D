@@ -36,6 +36,7 @@ namespace GrapicsEngine
 		void Initialize(HWND hWnd, int screenWidth, int screenHeight);
 		void Finalize();
 		void ClearScreen();
+		void OnResize(int width, int height);
 		void Render();
 		void BeginRender();
 		void EndRender();
@@ -57,6 +58,8 @@ namespace GrapicsEngine
 
 		HWND m_hWnd; // 메인 윈도우 핸들 
 		bool m_enable4xMass; // 4XMSAA를 사용한다면 true로 설정
+		UINT m_4xMsaaQuality;
+
 
 		std::unique_ptr<ResourceManager> m_resourceManager; 
 		std::unique_ptr<TextManager> m_textManager;
