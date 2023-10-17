@@ -54,9 +54,7 @@ public:
 	CASEParser();
 	~CASEParser();
 
-
-	/// 초기화, 로드
-	bool Init();
+	bool Initailize(); // 초기화
 	bool Load(LPSTR p_File);		// ASE파일을 읽어서, 자체 리스트에 넣는다.
 
 	/// 1차 변환

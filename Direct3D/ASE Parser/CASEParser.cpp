@@ -12,7 +12,7 @@ CASEParser::~CASEParser()
 	delete m_lexer;
 }
 
-bool CASEParser::Init()
+bool CASEParser::Initailize()
 {
 	m_lexer = new ASE::CASELexer;
 
