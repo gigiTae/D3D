@@ -1,6 +1,6 @@
 #pragma once
 
-namespace GrapicsEngine
+namespace RendererModule
 {
 
 	// 물질의 특성을 정한다 

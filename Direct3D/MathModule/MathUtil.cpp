@@ -1,7 +1,7 @@
 #include "MathPCH.h"
 #include "MathUtil.h"
 
-float DM::AngleFromXY(float x, float y)
+float MathModule::AngleFromXY(float x, float y)
 {
 	float theta = 0.0f;
 
@@ -13,18 +13,18 @@ float DM::AngleFromXY(float x, float y)
 		theta = atanf(y / x); // in [-pi/2, +pi/2]
 
 		if (theta < 0.0f)
-			theta += 2.0f * DM::PI; // in [0, 2*pi).
+			theta += 2.0f * MathModule::PI; // in [0, 2*pi).
 	}
 
 	// Quadrant II or III
 	else
-		theta = atanf(y / x) + DM::PI; // in [0, 2*pi).
+		theta = atanf(y / x) + MathModule::PI; // in [0, 2*pi).
 
 	return theta;
 
 }
 
-DirectX::XMMATRIX DM::InverseTranspose(CXMMATRIX M)
+DirectX::XMMATRIX MathModule::InverseTranspose(CXMMATRIX M)
 {
 	// Inverse-transpose is just applied to normals.  So zero out 
 	// translation row so that it doesn't get into our inverse-transpose

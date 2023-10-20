@@ -1,17 +1,17 @@
 #include "RendererPCH.h"
 #include "Light.h"
 
-GrapicsEngine::DirectionalLight::~DirectionalLight()
+RendererModule::DirectionalLight::~DirectionalLight()
 {
 
 }
 
-GrapicsEngine::PointLight::~PointLight()
+RendererModule::PointLight::~PointLight()
 {
 
 }
 
-GrapicsEngine::SpotLight::~SpotLight()
+RendererModule::SpotLight::~SpotLight()
 {
 
 }

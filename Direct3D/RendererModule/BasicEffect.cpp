@@ -3,7 +3,7 @@
 #include "Light.h"
 #include "Material.h"
 
-GrapicsEngine::BasicEffect::BasicEffect(ID3D11Device* device, const std::wstring& fileName)
+RendererModule::BasicEffect::BasicEffect(ID3D11Device* device, const std::wstring& fileName)
 	:Effect(device, fileName), m_light1Tech(nullptr), m_light2Tech(nullptr), m_light3Tech(nullptr)
 	, m_light0TexTech(nullptr), m_light1TexTech(nullptr), m_light2TexTech(nullptr)
 	, m_light3TexTech(nullptr), m_worldViewProj(nullptr), m_world(nullptr)
@@ -29,17 +29,17 @@ GrapicsEngine::BasicEffect::BasicEffect(ID3D11Device* device, const std::wstring
 	m_diffuseMap = m_fx->GetVariableByName("gDiffuseMap")->AsShaderResource();
 }
 
-GrapicsEngine::BasicEffect::~BasicEffect()
+RendererModule::BasicEffect::~BasicEffect()
 {
 
 }
 
-void GrapicsEngine::BasicEffect::SetDirLights(const DirectionalLight* lights)
+void RendererModule::BasicEffect::SetDirLights(const DirectionalLight* lights)
 {
 	m_dirLights->SetRawValue(lights, 0, 3 * sizeof(DirectionalLight));
 }
 
-void GrapicsEngine::BasicEffect::SetMaterial(const Material& mat)
+void RendererModule::BasicEffect::SetMaterial(const Material& mat)
 {
 	m_material->SetRawValue(&mat, 0, sizeof(Material));
 }

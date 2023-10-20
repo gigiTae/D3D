@@ -1,7 +1,7 @@
 #include "RendererPCH.h"
 #include "InputLayout.h"
 
-GrapicsEngine::InputLayout::InputLayout()
+RendererModule::InputLayout::InputLayout()
 	:m_simple(), m_basic(), m_basicDesc()
 {
 	m_simpleDesc[0] = { "POSITION", 0,DXGI_FORMAT_R32G32B32_FLOAT,
@@ -21,12 +21,12 @@ GrapicsEngine::InputLayout::InputLayout()
 			0, 36, D3D11_INPUT_PER_VERTEX_DATA, 0 };*/
 }
 
-GrapicsEngine::InputLayout::~InputLayout()
+RendererModule::InputLayout::~InputLayout()
 {
 
 }
 
-void GrapicsEngine::InputLayout::Initailize(ID3D11Device* device)
+void RendererModule::InputLayout::Initailize(ID3D11Device* device)
 {
 	m_d3dDevice = device;
 
@@ -34,7 +34,7 @@ void GrapicsEngine::InputLayout::Initailize(ID3D11Device* device)
 
 }
 
-void GrapicsEngine::InputLayout::Finalize()
+void RendererModule::InputLayout::Finalize()
 {
 
 }

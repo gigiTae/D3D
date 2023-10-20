@@ -1,8 +1,7 @@
 #pragma once
 
-namespace GrapicsEngine
+namespace RendererModule
 {
-
 	/// <summary>
 	/// text 출력을 도와주는 매니져
 	/// 

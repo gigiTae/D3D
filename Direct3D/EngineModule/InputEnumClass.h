@@ -1,5 +1,6 @@
 #pragma once
 
+
 ///  ================================== 키입력관련 =================================
 enum class KEY_STATE
 {
@@ -8,6 +9,7 @@ enum class KEY_STATE
 	AWAY, // 막 뗀 시점
 	NONE, // 눌리지 않았고, 이전에도 눌리지 않은 상태
 };
+
 
 enum class KEY
 {
@@ -25,5 +27,3 @@ enum class KEY
 
 	LAST, //enum의 끝
 };
-
-

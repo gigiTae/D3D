@@ -2,12 +2,12 @@
 #include "Mesh.h"
 #include "Material.h"
 
-namespace GrapicsEngine
+namespace RendererModule
 {
 	class BasicEffect;
 }
 
-namespace GrapicsEngine
+namespace RendererModule
 {
 	/// <summary>
 	/// 텍스처를 가진 박스

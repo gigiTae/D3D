@@ -4,14 +4,14 @@
 /// Animation Data를 저장하기 위한 클래스
 ///--------------------------------------------------
 
-class CAnimation_pos 
+class CAnimation_pos
 {
 public:
 	int m_time;
 	Vector3	m_pos;
 };
 
-class CAnimation_rot 
+class CAnimation_rot
 {
 public:
 	int				m_time;
@@ -20,7 +20,8 @@ public:
 	Quaternion	m_rotQT_accumulation;		// 상대변량이기 때문에 이전 값들과 누적해서 가지고 있는다 (즉 지금까지의 절대량으로 변환한다)
 };
 
-class CAnimation_scl {
+class CAnimation_scl
+{
 
 public:
 	int				m_time;
@@ -34,7 +35,8 @@ public:
 ///--------------------------------------------------
 /// 위 클래스를 조합한 Animation 클래스
 ///--------------------------------------------------
-class Animation {
+class Animation
+{
 
 public:
 

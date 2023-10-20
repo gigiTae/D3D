@@ -1,6 +1,6 @@
 #pragma once
 
-namespace GrapicsEngine
+namespace RendererModule
 {
 	/// 라이트 관련 
 

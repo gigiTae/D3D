@@ -11,7 +11,7 @@ public:
 	CameraObject();
 	~CameraObject();
 	void Initialize(int width, int hegiht, XMVECTOR position);
-	void Update(); 
+	void Update();
 	void Finalize();
 
 	DirectX::XMVECTOR GetPosition() const { return m_position; }
@@ -24,13 +24,13 @@ public:
 	float GetNearZ() const { return m_nearZ; }
 	void SetFarZ(float val) { m_farZ = val; }
 	float GetFarZ() const { return m_farZ; }
-	
+
 	void MoveCameraZ(float distace);
 	void MoveCameraX(float distace);
 	void MoveCameraY(float distace);
 	void RotateCameraY(float angle);
 	void RotateCameraX(float angle);
-	
+
 private:
 	DirectX::XMMATRIX m_viewMatrix; // 카메라 변환 행렬 
 	DirectX::XMMATRIX m_projectMatrix; // 투영 행렬
@@ -44,8 +44,8 @@ private:
 
 	float m_fovAngleY;   // 시야각 
 	float m_aspectRatio;
-	float m_nearZ; 
+	float m_nearZ;
 	float m_farZ;
-	
+
 };
 

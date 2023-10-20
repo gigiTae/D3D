@@ -13,7 +13,7 @@
 #include "Crate.h"
 #include "BasicEffect.h"
 
-GrapicsEngine::D3DRenderer::D3DRenderer()
+RendererModule::D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
 	, m_hWnd(nullptr)
 	, m_d3dDeviceContext(nullptr)
@@ -39,14 +39,14 @@ GrapicsEngine::D3DRenderer::D3DRenderer()
 
 }
 
-GrapicsEngine::D3DRenderer::~D3DRenderer()
+RendererModule::D3DRenderer::~D3DRenderer()
 {
 
 }
 
 
 
-void GrapicsEngine::D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
+void RendererModule::D3DRenderer::Initialize(HWND hWnd, int screenWidth, int screenHeight)
 {
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
@@ -70,7 +70,7 @@ void GrapicsEngine::D3DRenderer::Initialize(HWND hWnd, int screenWidth, int scre
 	InitializeObject();
 }
 
-void GrapicsEngine::D3DRenderer::Finalize()
+void RendererModule::D3DRenderer::Finalize()
 {
 	m_mainCamera->Finalize();
 
@@ -85,7 +85,7 @@ void GrapicsEngine::D3DRenderer::Finalize()
 	CoUninitialize();
 }
 
-void GrapicsEngine::D3DRenderer::ClearScreen()
+void RendererModule::D3DRenderer::ClearScreen()
 {
 	float arr[4]{ 0.f,0.f,0.f,1.f };
 	m_d3dDeviceContext->OMSetRenderTargets(1, m_d3dRenderTargetView.GetAddressOf(), nullptr);
@@ -96,7 +96,7 @@ void GrapicsEngine::D3DRenderer::ClearScreen()
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 
-void GrapicsEngine::D3DRenderer::OnResize(int width, int height)
+void RendererModule::D3DRenderer::OnResize(int width, int height)
 {
 	m_screenWidth = width;
 	m_screenHeight = height;
@@ -165,7 +165,7 @@ void GrapicsEngine::D3DRenderer::OnResize(int width, int height)
 	m_mainCamera->Initialize(m_screenWidth, m_screenHeight, cameraPosition);
 }
 
-void GrapicsEngine::D3DRenderer::Render()
+void RendererModule::D3DRenderer::Render()
 {
 
 
@@ -212,19 +212,19 @@ void GrapicsEngine::D3DRenderer::Render()
 
 }
 
-void GrapicsEngine::D3DRenderer::BeginRender()
+void RendererModule::D3DRenderer::BeginRender()
 {
 	/// BeginRender
 	ClearScreen();
 }
 
-void GrapicsEngine::D3DRenderer::EndRender()
+void RendererModule::D3DRenderer::EndRender()
 {
 	/// EndRender 
 	HR(m_swapChain->Present(0, 0));
 }
 
-void GrapicsEngine::D3DRenderer::InitializeD3D()
+void RendererModule::D3DRenderer::InitializeD3D()
 {
 	/// ======================================================
 	///                     Direct3D ÃÊ±âÈ­ 
@@ -374,7 +374,7 @@ void GrapicsEngine::D3DRenderer::InitializeD3D()
 	m_d3dDeviceContext->RSSetViewports(1, &vp);
 }
 
-void GrapicsEngine::D3DRenderer::InitializeResource()
+void RendererModule::D3DRenderer::InitializeResource()
 {
 
 	m_inputLayout = std::make_unique<InputLayout>();
@@ -411,7 +411,7 @@ void GrapicsEngine::D3DRenderer::InitializeResource()
 	HR(m_d3dDevice->CreateDepthStencilState(&equalsDesc, m_depthStencilState.GetAddressOf()));
 }
 
-void GrapicsEngine::D3DRenderer::InitializeObject()
+void RendererModule::D3DRenderer::InitializeObject()
 {
 	m_box = new Box(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_rasterizerState[0].Get());
 	m_box->Initialize();

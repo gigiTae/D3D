@@ -1,6 +1,6 @@
 #pragma once
 
-namespace GrapicsEngine
+namespace RendererModule
 {
 
 	/// <summary>

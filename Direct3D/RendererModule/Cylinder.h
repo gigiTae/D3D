@@ -29,11 +29,11 @@ private:
 	void BuildLayout();
 
 	void BuildClinderBody(float bottomRadius, float topRadius, float height, UINT sliceCount, UINT stackCount
-		, std::vector<Vertex>& vertices, std::vector<UINT>& indices);
+						  , std::vector<Vertex>& vertices, std::vector<UINT>& indices);
 	void BuildClinderTopCap(float bottomRadius, float topRadius, float height, UINT sliceCount, UINT stackCount
-		, std::vector<Vertex>& vertices, std::vector<UINT>& indices);
+							, std::vector<Vertex>& vertices, std::vector<UINT>& indices);
 	void BuildClinderBottomCap(float bottomRadius, float topRadius, float height, UINT sliceCount, UINT stackCount
-		, std::vector<Vertex>& vertices, std::vector<UINT>& indices);
+							   , std::vector<Vertex>& vertices, std::vector<UINT>& indices);
 
 private:
 	unsigned int vertexSize;

@@ -1,7 +1,7 @@
 #include "EnginePCH.h"
 #include "InputManager.h"
 
-InputManager::InputManager()
+EngineModule::InputManager::InputManager()
 	:m_matchVK{
 		VK_LEFT, VK_RIGHT, VK_UP, VK_DOWN,
 		'Q','W','E','R','T','Y','U','O','P',
@@ -31,12 +31,12 @@ InputManager::InputManager()
 
 }
 
-InputManager::~InputManager()
+EngineModule::InputManager::~InputManager()
 {
 
 }
 
-void InputManager::Initalize(HWND main)
+void EngineModule::InputManager::Initalize(HWND main)
 {
 	m_hwnd = main;
 
@@ -46,7 +46,7 @@ void InputManager::Initalize(HWND main)
 	}
 }
 
-void InputManager::Update()
+void EngineModule::InputManager::Update()
 {
 	HWND hWnd = GetFocus();
 
@@ -108,12 +108,12 @@ void InputManager::Update()
 	}
 }
 
-void InputManager::Finalize()
+void EngineModule::InputManager::Finalize()
 {
 	m_keyInfo.clear();
 }
 
-bool InputManager::IsKeyState(const KEY& _key, const KEY_STATE& _state) const
+bool EngineModule::InputManager::IsKeyState(const KEY& _key, const KEY_STATE& _state) const
 {
 	if (_state == GetKeyState(_key))
 	{

@@ -1,7 +1,7 @@
 #include "EnginePCH.h"
 #include "TimeManager.h"
 
-TimeManager::TimeManager()
+EngineModule::TimeManager::TimeManager()
 	:m_deltaTime(0.)
 	,m_frequency()
 	,m_prevCount()
@@ -13,19 +13,19 @@ TimeManager::TimeManager()
 
 }
 
-TimeManager::~TimeManager()
+EngineModule::TimeManager::~TimeManager()
 {
 
 }
 
-void TimeManager::Initialize()
+void EngineModule::TimeManager::Initialize()
 {
 	QueryPerformanceFrequency(&m_frequency); // 프로세서의 카운터 값의 빈도
 	QueryPerformanceCounter(&m_prevCount); // 이전 프레임의 카운터 값 
 	QueryPerformanceCounter(&m_curentCount);
 }
 
-float TimeManager::Update()
+float EngineModule::TimeManager::Update()
 {
 	QueryPerformanceCounter(&m_curentCount);
 
@@ -45,7 +45,7 @@ float TimeManager::Update()
 	return static_cast<float>(m_deltaTime);
 }
 
-void TimeManager::Finalize()
+void EngineModule::TimeManager::Finalize()
 {
 
 }

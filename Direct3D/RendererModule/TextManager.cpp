@@ -1,18 +1,18 @@
 #include "RendererPCH.h"
 #include "TextManager.h"
 
-GrapicsEngine::TextManager::TextManager()
+RendererModule::TextManager::TextManager()
 	: m_spriteBatch(nullptr), m_spriteFont(nullptr), m_rasterizerState(nullptr), m_depthStencilState(nullptr)
 {
 
 }
 
-GrapicsEngine::TextManager::~TextManager()
+RendererModule::TextManager::~TextManager()
 {
 
 }
 
-void GrapicsEngine::TextManager::Initialize(ID3D11Device* device, ID3D11RasterizerState* rs, ID3D11DepthStencilState* ds)
+void RendererModule::TextManager::Initialize(ID3D11Device* device, ID3D11RasterizerState* rs, ID3D11DepthStencilState* ds)
 {
 	ID3D11DeviceContext* deviceContext = nullptr;
 	device->GetImmediateContext(&deviceContext);
@@ -33,7 +33,7 @@ void GrapicsEngine::TextManager::Initialize(ID3D11Device* device, ID3D11Rasteriz
 }
 
 
-void GrapicsEngine::TextManager::DrawTextColor(DirectX::XMFLOAT2 position, DirectX::XMFLOAT4 color, const std::wstring& text)
+void RendererModule::TextManager::DrawTextColor(DirectX::XMFLOAT2 position, DirectX::XMFLOAT4 color, const std::wstring& text)
 {
 	m_spriteBatch->Begin(SpriteSortMode::SpriteSortMode_Deferred, nullptr, nullptr, m_depthStencilState.Get(), m_rasterizerState.Get());
 

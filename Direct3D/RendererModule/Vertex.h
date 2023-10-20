@@ -1,6 +1,6 @@
 #pragma once
 
-namespace GrapicsEngine
+namespace RendererModule
 {
 	/// <summary>
 	/// 가장 기본적인 정점 

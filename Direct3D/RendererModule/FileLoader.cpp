@@ -2,7 +2,7 @@
 #include "FileLoader.h"
 
 
-void GrapicsEngine::File::GetFileMemberPath(std::vector<std::wstring>& _files, const std::wstring& _filePath, bool _allDirectories)
+void RendererModule::File::GetFileMemberPath(std::vector<std::wstring>& _files, const std::wstring& _filePath, bool _allDirectories)
 {
 	std::wstring tmp = _filePath + std::wstring(L"\\*.*");
 	WIN32_FIND_DATA fd;
@@ -36,7 +36,7 @@ void GrapicsEngine::File::GetFileMemberPath(std::vector<std::wstring>& _files, c
 
 }
 
-void GrapicsEngine::File::GetFileMemberName(std::vector<std::wstring>& _files, const std::wstring& _filePath, bool _allDirectories)
+void RendererModule::File::GetFileMemberName(std::vector<std::wstring>& _files, const std::wstring& _filePath, bool _allDirectories)
 {
 	std::wstring tmp = _filePath + std::wstring(L"\\*.*");
 	WIN32_FIND_DATA fd;
@@ -69,7 +69,7 @@ void GrapicsEngine::File::GetFileMemberName(std::vector<std::wstring>& _files, c
 	}
 }
 
-const std::wstring& GrapicsEngine::File::GetCurrentFilePath()
+const std::wstring& RendererModule::File::GetCurrentFilePath()
 {
 	static std::wstring filePath{};
 
@@ -89,7 +89,7 @@ const std::wstring& GrapicsEngine::File::GetCurrentFilePath()
 	return filePath;
 }
 
-std::wstring GrapicsEngine::File::GetFileExtension(const std::wstring& filePath)
+std::wstring RendererModule::File::GetFileExtension(const std::wstring& filePath)
 {
 	// 파일 확장자 가져오기  
 	std::wstring extension = filePath.substr(filePath.find_last_of(TEXT(".")) + 1);
@@ -106,7 +106,7 @@ std::wstring GrapicsEngine::File::GetFileExtension(const std::wstring& filePath)
 	// 따라서 std::move 를 사용하지 않아도 최적화가 적용되어 효율적으로 동장할 가능성이 높다. 
 }
 
-std::wstring GrapicsEngine::File::GetFileName(const std::wstring& filePath)
+std::wstring RendererModule::File::GetFileName(const std::wstring& filePath)
 {
 	// 파일명 앞의 경로 제거 
 	std::wstring name = filePath.substr(filePath.find_last_of(L'\\') +1);

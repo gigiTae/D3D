@@ -4,7 +4,7 @@
 #include "Material.h"
 
 
-GrapicsEngine::Effect::Effect(ID3D11Device* device, const std::wstring& fileName)
+RendererModule::Effect::Effect(ID3D11Device* device, const std::wstring& fileName)
 {
 	/// 쉐이더 불러오기 
 	std::ifstream fin(fileName, std::ios::binary);
@@ -21,7 +21,7 @@ GrapicsEngine::Effect::Effect(ID3D11Device* device, const std::wstring& fileName
 		0, device, &m_fx));
 }
 
-GrapicsEngine::Effect::~Effect()
+RendererModule::Effect::~Effect()
 {
 
 }

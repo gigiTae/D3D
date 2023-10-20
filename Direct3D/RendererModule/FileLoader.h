@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace GrapicsEngine
+namespace RendererModule
 {
 	/// 파일읽기를 지원하는 헤더 
 

@@ -1,24 +1,24 @@
 #include "RendererPCH.h"
 #include "Vertex.h"
 
-GrapicsEngine::BaseVertex::BaseVertex()
+RendererModule::BaseVertex::BaseVertex()
 	:position(),normal(),tangent(),uv()
 {
 
 }
 
-GrapicsEngine::BaseVertex::~BaseVertex()
+RendererModule::BaseVertex::~BaseVertex()
 {
 
 }
 
-GrapicsEngine::SimpleVertex::SimpleVertex()
+RendererModule::SimpleVertex::SimpleVertex()
 	:position(),color()
 {
 
 }
 
-GrapicsEngine::SimpleVertex::~SimpleVertex()
+RendererModule::SimpleVertex::~SimpleVertex()
 {
 
 }

@@ -1,17 +1,15 @@
-#include "pch.h"
 #include "ImGuiManager.h"
+#include "imgui.h"
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
 
-Tool::ImGuiManager::ImGuiManager()
-{
+ToolModule::ImGuiManager::ImGuiManager()
+{}
 
-}
+ToolModule::ImGuiManager::~ImGuiManager()
+{}
 
-Tool::ImGuiManager::~ImGuiManager()
-{
-
-}
-
-void Tool::ImGuiManager::Initialize(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* deviceContext)
+void ToolModule::ImGuiManager::Initialize(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -33,19 +31,26 @@ void Tool::ImGuiManager::Initialize(HWND hwnd, ID3D11Device* device, ID3D11Devic
 
 	ImGui_ImplWin32_Init(hwnd);
 	ImGui_ImplDX11_Init(device, deviceContext);
-
 }
 
-void Tool::ImGuiManager::BeginRender()
+void ToolModule::ImGuiManager::Finalize()
 {
-	// Start the Dear ImGui frame
+		// Cleanup
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+}
+
+void ToolModule::ImGuiManager::NewFrame()
+{
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 }
 
-void Tool::ImGuiManager::EndRender(ID3D11DeviceContext* deviceContext)
+void ToolModule::ImGuiManager::EndRnder()
 {
+	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 	ImGuiIO& io = ImGui::GetIO();
@@ -56,6 +61,5 @@ void Tool::ImGuiManager::EndRender(ID3D11DeviceContext* deviceContext)
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
 	}
-
 }
 

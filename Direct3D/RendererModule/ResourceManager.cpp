@@ -5,19 +5,19 @@
 #include "BasicEffect.h"
 
 
-GrapicsEngine::ResourceManager::ResourceManager()
+RendererModule::ResourceManager::ResourceManager()
 	:m_d3dDevice()
 	,m_shaderResourceViewMap{}
 {
 
 }
 
-GrapicsEngine::ResourceManager::~ResourceManager()
+RendererModule::ResourceManager::~ResourceManager()
 {
 
 }
 
-void GrapicsEngine::ResourceManager::Initialize(ID3D11Device* device)
+void RendererModule::ResourceManager::Initialize(ID3D11Device* device)
 {
 	m_d3dDevice = device;
 
@@ -29,7 +29,7 @@ void GrapicsEngine::ResourceManager::Initialize(ID3D11Device* device)
 	LoadEffect();
 }
 
-ID3D11ShaderResourceView* GrapicsEngine::ResourceManager::GetShaderResourceView(const std::wstring& fileName)
+ID3D11ShaderResourceView* RendererModule::ResourceManager::GetShaderResourceView(const std::wstring& fileName)
 {
 	auto iter = m_shaderResourceViewMap.find(fileName);
 
@@ -38,7 +38,7 @@ ID3D11ShaderResourceView* GrapicsEngine::ResourceManager::GetShaderResourceView(
 	return iter->second.Get();
 }
 
-GrapicsEngine::Effect* GrapicsEngine::ResourceManager::GetEffect(const std::wstring& effectKey)
+RendererModule::Effect* RendererModule::ResourceManager::GetEffect(const std::wstring& effectKey)
 {
 	auto iter = m_effects.find(effectKey);
 	assert(iter != m_effects.end());
@@ -46,10 +46,10 @@ GrapicsEngine::Effect* GrapicsEngine::ResourceManager::GetEffect(const std::wstr
 	return iter->second.get();
 }
 
-void GrapicsEngine::ResourceManager::LoadTextures()
+void RendererModule::ResourceManager::LoadTextures()
 {
 	// 텍스처 파일경로 불러오기 
-	const std::wstring& filePath = GrapicsEngine::File::GetCurrentFilePath();
+	const std::wstring& filePath = RendererModule::File::GetCurrentFilePath();
 	std::wstring texturePath = filePath + L"Resource\\Texture";
 
 	std::vector<std::wstring> textureFileMember{};
@@ -63,7 +63,7 @@ void GrapicsEngine::ResourceManager::LoadTextures()
 
 }
 
-void GrapicsEngine::ResourceManager::LoadEffect()
+void RendererModule::ResourceManager::LoadEffect()
 {
 	/// 이펙트들 생성 
 	Effect* basicFX = new BasicEffect(m_d3dDevice.Get(), L"..\\Resource\\Shader\\Basic.cso");
@@ -71,7 +71,7 @@ void GrapicsEngine::ResourceManager::LoadEffect()
 
 }
 
-void GrapicsEngine::ResourceManager::CreateShaderResourceView(const std::wstring& filePath)
+void RendererModule::ResourceManager::CreateShaderResourceView(const std::wstring& filePath)
 {
 	using std::wstring;
 

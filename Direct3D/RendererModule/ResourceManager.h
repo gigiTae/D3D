@@ -1,12 +1,12 @@
 #pragma once
 
 
-namespace GrapicsEngine
+namespace RendererModule
 {
 	class Effect;
 }
 
-namespace GrapicsEngine
+namespace RendererModule
 {
 	/// <summary>
 	/// 리소스들을 담당하는 클래스 
@@ -22,7 +22,7 @@ namespace GrapicsEngine
 
 	public:
 		ID3D11ShaderResourceView* GetShaderResourceView(const std::wstring& fileName);
-		GrapicsEngine::Effect* GetEffect(const std::wstring& effectKey);
+		RendererModule::Effect* GetEffect(const std::wstring& effectKey);
 
 	private:
 		void LoadTextures();
@@ -34,7 +34,7 @@ namespace GrapicsEngine
 	private:
 		ComPtr<ID3D11Device> m_d3dDevice;
 		std::unordered_map<std::wstring, ComPtr<ID3D11ShaderResourceView>> m_shaderResourceViewMap;
-		std::unordered_map<std::wstring, std::unique_ptr<GrapicsEngine::Effect>> m_effects;
+		std::unordered_map<std::wstring, std::unique_ptr<RendererModule::Effect>> m_effects;
 	};
 
 }

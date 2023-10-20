@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Application.h"
-#include "ImGuiManager.h"
 
 static UINT g_resizeWidth = 0, g_resizeHeight = 0;
 
@@ -30,17 +29,17 @@ void Application::Initialize(HINSTANCE hInstance, int nCmdShow, UINT screenWidth
 	WindowInitialize(nCmdShow);
 
 	// 그래픽스 엔진 초기화 
-	m_d3dRenderer = std::make_unique<GrapicsEngine::D3DRenderer>();
+	m_d3dRenderer = std::make_unique<RendererModule::D3DRenderer>();
 	m_d3dRenderer->Initialize(m_hWnd, m_screenWidth, m_screenHeight );
 
 	/// tool
-	m_imguiManager = std::make_unique<Tool::ImGuiManager>();
+	m_imguiManager = std::make_unique<ToolModule::ImGuiManager>();
 	m_imguiManager->Initialize(m_hWnd, m_d3dRenderer->GetDevice(), m_d3dRenderer->GetDeviceContext());
 
 
 	// 매니저 생성
-	m_timeManager = std::make_unique<TimeManager>();
-	m_inputManager = std::make_unique<InputManager>();
+	m_timeManager = std::make_unique<EngineModule::TimeManager>();
+	m_inputManager = std::make_unique<EngineModule::InputManager>();
 
 	m_timeManager->Initialize();
 	m_inputManager->Initalize(m_hWnd);
@@ -49,6 +48,7 @@ void Application::Initialize(HINSTANCE hInstance, int nCmdShow, UINT screenWidth
 
 void Application::Finalize()
 {
+	m_imguiManager->Finalize();
 	m_d3dRenderer->Finalize();
 }
 
@@ -85,7 +85,7 @@ void Application::Process()
 
 		m_d3dRenderer->GetTextManager()->DrawTextColor(XMFLOAT2(0.f, 25.f), XMFLOAT4(0.f, 1.f, 1.f, 1.f), DT);
 
-		m_imguiManager->BeginRender();
+		m_imguiManager->NewFrame();
 
 		float s = 1.f;
 		if (ImGui::Begin("gihih237"))
@@ -108,13 +108,12 @@ void Application::Process()
 			ImGui::End();
 		}
 
-		ImGui::Render();
 		m_d3dRenderer->BeginRender();
 		m_d3dRenderer->Render();
 
 
 		// imgui
-		m_imguiManager->EndRender(m_d3dRenderer->GetDeviceContext());
+		m_imguiManager->EndRnder();
 		m_d3dRenderer->EndRender();
 
 	}
@@ -130,6 +129,7 @@ void Application::Update()
 
 void Application::CameraMove()
 {
+
 	// 일단 카메라 움직임을 구현해보자
 	float deltaTime = m_timeManager->GetDeltaTime();
 	float moveSpeed = 10.f;

@@ -4,7 +4,7 @@
 #include "BasicEffect.h"
 
 
-GrapicsEngine::Crate::Crate(ID3D11Device* device, ID3D11DeviceContext* deviceContext
+RendererModule::Crate::Crate(ID3D11Device* device, ID3D11DeviceContext* deviceContext
 	, ID3D11RasterizerState* rs, ID3D11InputLayout* inputLayout, BasicEffect* effect)
 	:m_d3dDevice(device), m_d3dDeviceContext(deviceContext), m_rasterizerState(rs)
 	, m_proj(), m_world(), m_view(), m_indexBuffer(), m_vertexBuffer(), m_inputLayout()
@@ -14,23 +14,23 @@ GrapicsEngine::Crate::Crate(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 	m_material.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_material.specular = XMFLOAT4(0.6f, 0.6f, 0.6f, 16.0f);
 }
-GrapicsEngine::Crate::~Crate()
+RendererModule::Crate::~Crate()
 {
 
 }
 
-void GrapicsEngine::Crate::Initialize(float width, float height, float depth)
+void RendererModule::Crate::Initialize(float width, float height, float depth)
 {
 	BuildBuffers(width, height, depth);
 
 }
 
-void GrapicsEngine::Crate::Update(const XMMATRIX& world, const XMMATRIX& view, const XMMATRIX& proj)
+void RendererModule::Crate::Update(const XMMATRIX& world, const XMMATRIX& view, const XMMATRIX& proj)
 {
 
 }
 
-void GrapicsEngine::Crate::Render()
+void RendererModule::Crate::Render()
 {
 	m_d3dDeviceContext->IASetInputLayout(m_inputLayout.Get());
 	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -48,7 +48,7 @@ void GrapicsEngine::Crate::Render()
 	XMMATRIX view = XMLoadFloat4x4(&m_view);
 	XMMATRIX proj = XMLoadFloat4x4(&m_proj);
 
-	XMMATRIX worldInvTranspose = DM::InverseTranspose(world);
+	XMMATRIX worldInvTranspose = MathModule::InverseTranspose(world);
 	XMMATRIX worldViewProj = world * view * proj;
 
 	D3DX11_TECHNIQUE_DESC techDesc;
@@ -70,7 +70,7 @@ void GrapicsEngine::Crate::Render()
 	}
 }
 
-void GrapicsEngine::Crate::BuildBuffers(float width, float height, float depth)
+void RendererModule::Crate::BuildBuffers(float width, float height, float depth)
 {
 	std::vector<BaseVertex> vertices{};
 	std::vector<UINT> indices{};

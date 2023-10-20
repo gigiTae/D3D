@@ -122,7 +122,7 @@ void GeoSphere::BulidBuffers(float radius, UINT numSubdivisions)
 		XMStoreFloat3(&vertices[i].normal, n);
 
 		// Derive texture coordinates from spherical coordinates.
-		float theta = DM::AngleFromXY(
+		float theta = MathModule::AngleFromXY(
 			vertices[i].position.x,
 			vertices[i].position.z);
 

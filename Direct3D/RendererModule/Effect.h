@@ -1,13 +1,13 @@
    #pragma once
 
-namespace GrapicsEngine
+namespace RendererModule
 {
 	class Material;
 	class DirectionalLight;
 }
 
 
-namespace GrapicsEngine
+namespace RendererModule
 {
 #pragma region Effect
 	class Effect

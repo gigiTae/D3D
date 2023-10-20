@@ -155,283 +155,283 @@ void CASEParser::Parsing_DivergeRecursiveALL(int depth)
 
 		switch (nowtoken)
 		{
-			case TOKEND_BLOCK_START:
+		case TOKEND_BLOCK_START:
 
-				Parsing_DivergeRecursiveALL(depth++);
-				break;
+			Parsing_DivergeRecursiveALL(depth++);
+			break;
 
-			case TOKENR_HELPER_CLASS:
-				break;
-
-				//--------------------
-				// 3DSMAX_ASCIIEXPORT
-				//--------------------
-
-			case TOKENR_3DSMAX_ASCIIEXPORT:
-				m_data_asciiexport = Parsing_NumberLong();
-				break;
-
-				//--------------------
-				// COMMENT
-				//--------------------
-
-			case TOKENR_COMMENT:
-				Parsing_String();	// 그냥 m_TokenString에 읽어버리는 역할 뿐.
-				//AfxMessageBox( m_TokenString, NULL, NULL);		/// 임시로 코멘트를 출력해본다
-				break;
-
-				//--------------------
-				// SCENE
-				//--------------------
-
-			case TOKENR_SCENE:
-				//
-				break;
-			case TOKENR_SCENE_FILENAME:
-				m_scenedata.m_filename = Parsing_String();		// 일관성 있는 함수의 사용을 위해 String과 Int도 만들어줬다.
-				break;
-			case TOKENR_SCENE_FIRSTFRAME:
-				m_scenedata.m_firstframe = Parsing_NumberLong();
-				break;
-			case TOKENR_SCENE_LASTFRAME:
-				m_scenedata.m_lastframe = Parsing_NumberLong();
-				break;
-			case TOKENR_SCENE_FRAMESPEED:
-				m_scenedata.m_framespeed = Parsing_NumberLong();
-				break;
-			case TOKENR_SCENE_TICKSPERFRAME:
-				m_scenedata.m_ticksperframe = Parsing_NumberLong();
-				break;
-			case TOKENR_SCENE_MESHFRAMESTEP:
-				m_scenedata.m_meshframestep = Parsing_NumberLong();
-				break;
-			case TOKENR_SCENE_KEYFRAMESTEP:
-				m_scenedata.m_keyframestep = Parsing_NumberLong();
-				break;
-			case TOKENR_SCENE_BACKGROUND_STATIC:
-				m_scenedata.m_scene_background_static.x = Parsing_NumberFloat();
-				m_scenedata.m_scene_background_static.y = Parsing_NumberFloat();
-				m_scenedata.m_scene_background_static.z = Parsing_NumberFloat();
-				break;
-			case TOKENR_SCENE_AMBIENT_STATIC:
-				m_scenedata.m_scene_ambient_static.x = Parsing_NumberFloat();
-				m_scenedata.m_scene_ambient_static.y = Parsing_NumberFloat();
-				m_scenedata.m_scene_ambient_static.z = Parsing_NumberFloat();
-				break;
-
-			case TOKENR_SCENE_ENVMAP:
-			{
-				// 그냥 안의 내용을 읽어버린다 }가 나올때까지
-				while (nowtoken = m_lexer->GetToken(m_TokenString), nowtoken != TOKEND_BLOCK_END) {
-				}
-			}
+		case TOKENR_HELPER_CLASS:
 			break;
 
 			//--------------------
-			// MATERIAL_LIST
+			// 3DSMAX_ASCIIEXPORT
 			//--------------------
 
+		case TOKENR_3DSMAX_ASCIIEXPORT:
+			m_data_asciiexport = Parsing_NumberLong();
+			break;
 
 			//--------------------
-			// GEOMOBJECT
+			// COMMENT
 			//--------------------
 
-			case TOKENR_GROUP:
-				//	한 개의 그룹 시작. 이 다음에 이름이 스트링으로 나오기는 하는데.
-				break;
-
-			case TOKENR_HELPEROBJECT:
-				// 일단 생성하고
-				// 오브젝트의 타입 정해줌. 이것에 따라 서로 다른 파싱 모드 발동.
-				break;
-
-			case TOKENR_GEOMOBJECT:
-				/// 이 토큰을 만났다는건 새로운 메시가 생겼다는 것이다. 지역 변수로 mesh를 하나 선언, 그 포인터를 리스트에 넣고, m_onemesh에 그 포인터를 복사, 그대로 쓰면 될까?
-				break;
-
-			case TOKENR_NODE_NAME:
-				// 어쩄든 지금은 오브젝트들을 구별 할 수 있는 유일한 값이다.
-				// 모드에 따라 넣어야 할 곳이 다르다.
-				break;
-
-			case TOKENR_NODE_PARENT:
-				// 현 노드의 부모 노드의 정보.
-				// 일단 입력을 하고, 나중에 정리하자.
-				break;
-
-				/// NODE_TM
-
-			case TOKENR_NODE_TM:
-				//m_parsingmode	=	eGeomobject;
-				// (NODE_TM으로 진입 후 NODE_NAME이 한번 더 나온다.)
-				// (Animation과도 구별을 해야 하기 때문에 이렇게 모드를 적어준다)
-
-				/// 게다가,
-				// 카메라는 NodeTM이 두번 나온다. 두번째라면 넣지 않는다.
-				// 아예 이 재귀에서 리턴을 시키고 싶지만. 중간에 읽는것을 무시해야 하기 때문에...
-				//if (m_onemesh->m_camera_isloadTarget) {
-				//	'}'이 나올때까지 나오는건 무조건 무시! 뭐 이런거 안되나..
-				// 재귀구조의 문제점이다....
-
-				break;
-
-			case TOKENR_INHERIT_POS:
-				// 카메라는 NodeTM이 두번 나온다. 두번째라면 넣지 않는다.
-				break;
-			case TOKENR_INHERIT_ROT:
-				break;
-			case TOKENR_INHERIT_SCL:
-				break;
-			case TOKENR_TM_ROW0:
-				break;
-			case TOKENR_TM_ROW1:
-				break;
-			case TOKENR_TM_ROW2:
-				break;
-			case TOKENR_TM_ROW3:
-				break;
-			case TOKENR_TM_POS:
-				break;
-			case TOKENR_TM_ROTAXIS:
-				break;
-			case TOKENR_TM_ROTANGLE:
-				break;
-			case TOKENR_TM_SCALE:
-				break;
-			case TOKENR_TM_SCALEAXIS:
-				break;
-			case TOKENR_TM_SCALEAXISANG:
-				// 현재 카메라 상태였다면 이미 노드를 읽은 것으로 표시해준다.
-				break;
-
-
-				/// MESH
-
-			case TOKENR_MESH:
-			{
-				/// 아래의 함수에서 m_OneMesh가 생긴다.
-				Create_onemesh_to_list();
-			}
+		case TOKENR_COMMENT:
+			Parsing_String();	// 그냥 m_TokenString에 읽어버리는 역할 뿐.
+			//AfxMessageBox( m_TokenString, NULL, NULL);		/// 임시로 코멘트를 출력해본다
 			break;
 
-			case TOKENR_TIMEVALUE:
-			{
-				///int _timeValue = m_lexer->GetToken(m_TokenString);
-				int _timeValue = Parsing_NumberInt();
-				m_OneMesh->m_timevalue = _timeValue;
-			}
+			//--------------------
+			// SCENE
+			//--------------------
+
+		case TOKENR_SCENE:
+			//
+			break;
+		case TOKENR_SCENE_FILENAME:
+			m_scenedata.m_filename = Parsing_String();		// 일관성 있는 함수의 사용을 위해 String과 Int도 만들어줬다.
+			break;
+		case TOKENR_SCENE_FIRSTFRAME:
+			m_scenedata.m_firstframe = Parsing_NumberLong();
+			break;
+		case TOKENR_SCENE_LASTFRAME:
+			m_scenedata.m_lastframe = Parsing_NumberLong();
+			break;
+		case TOKENR_SCENE_FRAMESPEED:
+			m_scenedata.m_framespeed = Parsing_NumberLong();
+			break;
+		case TOKENR_SCENE_TICKSPERFRAME:
+			m_scenedata.m_ticksperframe = Parsing_NumberLong();
+			break;
+		case TOKENR_SCENE_MESHFRAMESTEP:
+			m_scenedata.m_meshframestep = Parsing_NumberLong();
+			break;
+		case TOKENR_SCENE_KEYFRAMESTEP:
+			m_scenedata.m_keyframestep = Parsing_NumberLong();
+			break;
+		case TOKENR_SCENE_BACKGROUND_STATIC:
+			m_scenedata.m_scene_background_static.x = Parsing_NumberFloat();
+			m_scenedata.m_scene_background_static.y = Parsing_NumberFloat();
+			m_scenedata.m_scene_background_static.z = Parsing_NumberFloat();
+			break;
+		case TOKENR_SCENE_AMBIENT_STATIC:
+			m_scenedata.m_scene_ambient_static.x = Parsing_NumberFloat();
+			m_scenedata.m_scene_ambient_static.y = Parsing_NumberFloat();
+			m_scenedata.m_scene_ambient_static.z = Parsing_NumberFloat();
 			break;
 
-			case TOKENR_MESH_NUMBONE:
-				// 이게 있다면 이것은 Skinned Mesh라고 단정을 짓는다.
-				// 내용 입력
-				break;
-			case TOKENR_MESH_NUMSKINWEIGHT:
-				break;
-			case TOKENR_MESH_NUMVERTEX:
-				break;
-			case TOKENR_MESH_NUMFACES:
-				break;
-
-				/// MESH_VERTEX_LIST
-
-			case TOKENR_MESH_VERTEX_LIST:
-				//
-				// 버텍스의 값들을 집어넣어야 하는데
-				// 이미 벡터로 선언이 돼 있으므로 그냥 넣으면 된다.
-				break;
-			case TOKENR_MESH_VERTEX:
-				// 데이터 입력
-				break;
-
-				/// Bone
-
-			case TOKENR_SKIN_INITTM:
-				break;
-			case TOKENR_BONE_LIST:
-				break;
-			case TOKENR_BONE:
-			{
-				/// 모드 체인지 해 주고, Bone을 소유하고 있다는 것은 이것은 스키닝 오브젝트라는 것이다.
-				// 본 하나를 만들어서 임시 포인터 보관, 벡터에 넣고
-				// Bone의 넘버를 읽어 주자
+		case TOKENR_SCENE_ENVMAP:
+		{
+			// 그냥 안의 내용을 읽어버린다 }가 나올때까지
+			while (nowtoken = m_lexer->GetToken(m_TokenString), nowtoken != TOKEND_BLOCK_END) {
 			}
+		}
+		break;
+
+		//--------------------
+		// MATERIAL_LIST
+		//--------------------
+
+
+		//--------------------
+		// GEOMOBJECT
+		//--------------------
+
+		case TOKENR_GROUP:
+			//	한 개의 그룹 시작. 이 다음에 이름이 스트링으로 나오기는 하는데.
 			break;
-			//이 다음에 본의 이름을 넣어야 한다. 하지만 {를 한 개 더 열었으므로 임시 포인터 변수로서 보관해야겠지.
-			case TOKENR_BONE_NAME:
-			case TOKENR_BONE_PROPERTY:
-				// 이 다음 ABSOLUTE가 나오기는 하는데, 쓸 일이 없다.
-				break;
-				// 다음에는 TM_ROW0~3이 나오는데 역시 무시됨..
 
-			case TOKENR_MESH_WVERTEXS:
-				break;
-
-			case TOKENR_MESH_WEIGHT:
-			{
-				// 버텍스 하나의 정보를 만들어서 리스트에 넣음
-			}
+		case TOKENR_HELPEROBJECT:
+			// 일단 생성하고
+			// 오브젝트의 타입 정해줌. 이것에 따라 서로 다른 파싱 모드 발동.
 			break;
-			case TOKENR_BONE_BLENGING_WEIGHT:
-			{
-				// 대체 몇 단계를 들어가는거야...
-				// 가중치 한개를 만들어서 리스트에 넣는다
-				/// 헥 헥....
-			}
+
+		case TOKENR_GEOMOBJECT:
+			/// 이 토큰을 만났다는건 새로운 메시가 생겼다는 것이다. 지역 변수로 mesh를 하나 선언, 그 포인터를 리스트에 넣고, m_onemesh에 그 포인터를 복사, 그대로 쓰면 될까?
+			break;
+
+		case TOKENR_NODE_NAME:
+			// 어쩄든 지금은 오브젝트들을 구별 할 수 있는 유일한 값이다.
+			// 모드에 따라 넣어야 할 곳이 다르다.
+			break;
+
+		case TOKENR_NODE_PARENT:
+			// 현 노드의 부모 노드의 정보.
+			// 일단 입력을 하고, 나중에 정리하자.
+			break;
+
+			/// NODE_TM
+
+		case TOKENR_NODE_TM:
+			//m_parsingmode	=	eGeomobject;
+			// (NODE_TM으로 진입 후 NODE_NAME이 한번 더 나온다.)
+			// (Animation과도 구별을 해야 하기 때문에 이렇게 모드를 적어준다)
+
+			/// 게다가,
+			// 카메라는 NodeTM이 두번 나온다. 두번째라면 넣지 않는다.
+			// 아예 이 재귀에서 리턴을 시키고 싶지만. 중간에 읽는것을 무시해야 하기 때문에...
+			//if (m_onemesh->m_camera_isloadTarget) {
+			//	'}'이 나올때까지 나오는건 무조건 무시! 뭐 이런거 안되나..
+			// 재귀구조의 문제점이다....
+
+			break;
+
+		case TOKENR_INHERIT_POS:
+			// 카메라는 NodeTM이 두번 나온다. 두번째라면 넣지 않는다.
+			break;
+		case TOKENR_INHERIT_ROT:
+			break;
+		case TOKENR_INHERIT_SCL:
+			break;
+		case TOKENR_TM_ROW0:
+			break;
+		case TOKENR_TM_ROW1:
+			break;
+		case TOKENR_TM_ROW2:
+			break;
+		case TOKENR_TM_ROW3:
+			break;
+		case TOKENR_TM_POS:
+			break;
+		case TOKENR_TM_ROTAXIS:
+			break;
+		case TOKENR_TM_ROTANGLE:
+			break;
+		case TOKENR_TM_SCALE:
+			break;
+		case TOKENR_TM_SCALEAXIS:
+			break;
+		case TOKENR_TM_SCALEAXISANG:
+			// 현재 카메라 상태였다면 이미 노드를 읽은 것으로 표시해준다.
 			break;
 
 
-			/// MESH_FACE_LIST
-			case TOKENR_MESH_FACE_LIST:
-				//
-				break;
-			case TOKENR_MESH_FACE:
-			{
-				// Face의 번호인데...
+			/// MESH
 
-				// A:를 읽고
-				// B:
-				// C:
+		case TOKENR_MESH:
+		{
+			/// 아래의 함수에서 m_OneMesh가 생긴다.
+			Create_onemesh_to_list();
+		}
+		break;
 
-				/// (뒤에 정보가 더 있지만 default에 의해 스킵될 것이다.)
-				/// ......
+		case TOKENR_TIMEVALUE:
+		{
+			///int _timeValue = m_lexer->GetToken(m_TokenString);
+			int _timeValue = Parsing_NumberInt();
+			m_OneMesh->m_timevalue = _timeValue;
+		}
+		break;
 
-				// 벡터에 넣어준다.
-			}
+		case TOKENR_MESH_NUMBONE:
+			// 이게 있다면 이것은 Skinned Mesh라고 단정을 짓는다.
+			// 내용 입력
+			break;
+		case TOKENR_MESH_NUMSKINWEIGHT:
+			break;
+		case TOKENR_MESH_NUMVERTEX:
+			break;
+		case TOKENR_MESH_NUMFACES:
+			break;
+
+			/// MESH_VERTEX_LIST
+
+		case TOKENR_MESH_VERTEX_LIST:
+			//
+			// 버텍스의 값들을 집어넣어야 하는데
+			// 이미 벡터로 선언이 돼 있으므로 그냥 넣으면 된다.
+			break;
+		case TOKENR_MESH_VERTEX:
+			// 데이터 입력
+			break;
+
+			/// Bone
+
+		case TOKENR_SKIN_INITTM:
+			break;
+		case TOKENR_BONE_LIST:
+			break;
+		case TOKENR_BONE:
+		{
+			/// 모드 체인지 해 주고, Bone을 소유하고 있다는 것은 이것은 스키닝 오브젝트라는 것이다.
+			// 본 하나를 만들어서 임시 포인터 보관, 벡터에 넣고
+			// Bone의 넘버를 읽어 주자
+		}
+		break;
+		//이 다음에 본의 이름을 넣어야 한다. 하지만 {를 한 개 더 열었으므로 임시 포인터 변수로서 보관해야겠지.
+		case TOKENR_BONE_NAME:
+		case TOKENR_BONE_PROPERTY:
+			// 이 다음 ABSOLUTE가 나오기는 하는데, 쓸 일이 없다.
+			break;
+			// 다음에는 TM_ROW0~3이 나오는데 역시 무시됨..
+
+		case TOKENR_MESH_WVERTEXS:
+			break;
+
+		case TOKENR_MESH_WEIGHT:
+		{
+			// 버텍스 하나의 정보를 만들어서 리스트에 넣음
+		}
+		break;
+		case TOKENR_BONE_BLENGING_WEIGHT:
+		{
+			// 대체 몇 단계를 들어가는거야...
+			// 가중치 한개를 만들어서 리스트에 넣는다
+			/// 헥 헥....
+		}
+		break;
+
+
+		/// MESH_FACE_LIST
+		case TOKENR_MESH_FACE_LIST:
+			//
+			break;
+		case TOKENR_MESH_FACE:
+		{
+			// Face의 번호인데...
+
+			// A:를 읽고
+			// B:
+			// C:
+
+			/// (뒤에 정보가 더 있지만 default에 의해 스킵될 것이다.)
+			/// ......
+
+			// 벡터에 넣어준다.
+		}
+		break;
+
+
+		case TOKENR_MESH_NUMTVERTEX:
+			break;
+
+			/// MESH_TVERTLIST
+
+		case TOKENR_MESH_TVERTLIST:
+			//
+			break;
+		case TOKENR_MESH_TVERT:
+		{
+			// 버텍스의 인덱스가 나오는데 어차피 순서와 같으므로 버린다.
+			// 새로운 TVertex를 만들어서 벡터에 넣는다
+		}
+		break;
+		case TOKENR_MESH_NUMTVFACES:
 			break;
 
 
-			case TOKENR_MESH_NUMTVERTEX:
-				break;
+		case TOKEND_END:
+			// 아마도 이건 파일의 끝이 나타났을때인것 같은데. while을 탈출해야 하는데?
 
-				/// MESH_TVERTLIST
+			//AfxMessageBox("파일의 끝을 본 것 같습니다!", MB_OK, NULL);
+			TRACE("TRACE: 파싱중: 파일의 끝을 봤습니다!\n");
+			return;
 
-			case TOKENR_MESH_TVERTLIST:
-				//
-				break;
-			case TOKENR_MESH_TVERT:
-			{
-				// 버텍스의 인덱스가 나오는데 어차피 순서와 같으므로 버린다.
-				// 새로운 TVertex를 만들어서 벡터에 넣는다
-			}
 			break;
-			case TOKENR_MESH_NUMTVFACES:
-				break;
 
-
-			case TOKEND_END:
-				// 아마도 이건 파일의 끝이 나타났을때인것 같은데. while을 탈출해야 하는데?
-
-				//AfxMessageBox("파일의 끝을 본 것 같습니다!", MB_OK, NULL);
-				TRACE("TRACE: 파싱중: 파일의 끝을 봤습니다!\n");
-				return;
-
-				break;
-
-				/// 위의 아무것도 해당하지 않을때
-			default:
-				// 아무것도 하지 않는다.
-				break;
+			/// 위의 아무것도 해당하지 않을때
+		default:
+			// 아무것도 하지 않는다.
+			break;
 
 		}	// switch()
 

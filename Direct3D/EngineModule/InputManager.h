@@ -1,16 +1,17 @@
 #pragma once
 
-struct KeyInfo
-{
-	KEY_STATE state;
-	bool prevPush;
-};
 
-/// <summary>
-/// 입력관리
-/// </summary>
+namespace EngineModule
+{
+
 class InputManager
 {
+	struct KeyInfo
+	{
+		KEY_STATE state;
+		bool prevPush;
+	};
+
 public:
 	InputManager();
 	~InputManager();
@@ -28,3 +29,4 @@ private:
 	const int m_matchVK[static_cast<int>(KEY::LAST)];// KEY 값을 가상키값과 매칭시켜주는 배열
 };
 
+}

@@ -172,7 +172,7 @@ void Cylinder::BuildClinderBody(float bottomRadius, float topRadius, float heigh
 		float r = bottomRadius + i * radiusStep;
 
 		// 현재 고리의 정점들
-		float dTheta = 2.f * DM::PI / sliceCount;
+		float dTheta = 2.f * MathModule::PI / sliceCount;
 		for (unsigned int j = 0; j <= sliceCount; ++j)
 		{
 			Cylinder::Vertex v{};
@@ -213,7 +213,7 @@ void Cylinder::BuildClinderTopCap(float bottomRadius, float topRadius, float hei
 	UINT baseIndex = static_cast<UINT>(vertices.size());
 
 	float y = 0.5f * height;
-	float dTheta = 2.f * DM::PI / sliceCount;
+	float dTheta = 2.f * MathModule::PI / sliceCount;
 
 	// 고리 정점들을 복제해서 마개 정점들을 만든다. 
 	// (텍스처 좌표와 법선이 다르므로 이처럼 중복이 필요하다.)
@@ -252,7 +252,7 @@ void Cylinder::BuildClinderBottomCap(float bottomRadius, float topRadius, float 
 	UINT baseIndex = static_cast<UINT>(vertices.size());
 
 	float y = -0.5f * height;
-	float dTheta = 2.f * DM::PI / sliceCount;
+	float dTheta = 2.f * MathModule::PI / sliceCount;
 
 	// 고리 정점들을 복제해서 마개 정점들을 만든다. 
 	// (텍스처 좌표와 법선이 다르므로 이처럼 중복이 필요하다.)
