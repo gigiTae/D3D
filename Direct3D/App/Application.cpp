@@ -137,49 +137,49 @@ void Application::CameraMove()
 	
 	if (m_inputManager->IsKeyState(KEY::W, KEY_STATE::HOLD))
 	{
-		m_d3dRenderer->GetMainCamera()->MoveCameraZ(distance);
+		m_d3dRenderer->GetCamera()->Walk(distance);
 	}
 	if (m_inputManager->IsKeyState(KEY::S, KEY_STATE::HOLD))
 	{
-		m_d3dRenderer->GetMainCamera()->MoveCameraZ(-distance);
+		m_d3dRenderer->GetCamera()->Walk(-distance);
 	}
 	if (m_inputManager->IsKeyState(KEY::A, KEY_STATE::HOLD))
 	{
-		m_d3dRenderer->GetMainCamera()->MoveCameraX(-distance);
+		m_d3dRenderer->GetCamera()->Strafe(-distance);
 	}
 	if (m_inputManager->IsKeyState(KEY::D, KEY_STATE::HOLD))
 	{
-		m_d3dRenderer->GetMainCamera()->MoveCameraX(distance);
+		m_d3dRenderer->GetCamera()->Strafe(distance);
 	}
 	if (m_inputManager->IsKeyState(KEY::Q, KEY_STATE::HOLD))
 	{
-		m_d3dRenderer->GetMainCamera()->MoveCameraY(-distance);
+		m_d3dRenderer->GetCamera()->WorldUpDown(distance);
 	}
 	if (m_inputManager->IsKeyState(KEY::E, KEY_STATE::HOLD))
 	{
-		m_d3dRenderer->GetMainCamera()->MoveCameraY(distance);
+		m_d3dRenderer->GetCamera()->WorldUpDown(-distance);
 	}
 
 
 	if (m_inputManager->IsKeyState(KEY::LEFT, KEY_STATE::HOLD))
 	{
-		distance *= 0.5f;
-		m_d3dRenderer->GetMainCamera()->RotateCameraY(-distance);
+		distance *= 0.2f;
+		m_d3dRenderer->GetCamera()->RotateY(-distance);
 	}
 	if (m_inputManager->IsKeyState(KEY::RIGHT, KEY_STATE::HOLD))
 	{
-		distance *= 0.5f;
-		m_d3dRenderer->GetMainCamera()->RotateCameraY(distance);
+		distance *= 0.2f;
+		m_d3dRenderer->GetCamera()->RotateY(distance);
 	}
 	if (m_inputManager->IsKeyState(KEY::DOWN, KEY_STATE::HOLD))
 	{
-		distance *= 0.5f;
-		m_d3dRenderer->GetMainCamera()->RotateCameraX(-distance);
+		distance *= 0.2f;
+		m_d3dRenderer->GetCamera()->Pitch(distance);
 	}
 	if (m_inputManager->IsKeyState(KEY::UP, KEY_STATE::HOLD))
 	{
-		distance *= 0.5f;
-		m_d3dRenderer->GetMainCamera()->RotateCameraX(+distance);
+		distance *= 0.2f;
+		m_d3dRenderer->GetCamera()->Pitch(-distance);
 	}
 
 }

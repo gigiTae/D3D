@@ -3,7 +3,6 @@
 
 
 struct SimpleMesh;
-class CameraObject;
 class Box;
 class Grid;
 class Cylinder;
@@ -42,10 +41,10 @@ public:
 	void BeginRender();
 	void EndRender();
 
-	CameraObject* GetMainCamera() const { return m_mainCamera.get(); }
 	TextManager* GetTextManager() const { return m_textManager.get(); }
 	ID3D11Device* GetDevice() const { return m_d3dDevice.Get(); }
 	ID3D11DeviceContext* GetDeviceContext() const { return m_d3dDeviceContext.Get(); }
+	Camera* GetCamera() { return m_camera.get(); }
 
 private:
 	void InitializeD3D();
@@ -65,7 +64,6 @@ private:
 	std::unique_ptr<TextManager> m_textManager;
 
 	std::unique_ptr<Camera> m_camera;
-	std::unique_ptr<CameraObject> m_mainCamera; // 메인 카메라 
 	std::unique_ptr<InputLayout> m_inputLayout; // 입력서술 배치
 
 	D3D_FEATURE_LEVEL m_featureLevel;

@@ -1,6 +1,5 @@
 #include "RendererPCH.h"
 #include "D3DRenderer.h"
-#include "CameraObject.h"
 #include "Box.h"
 #include "Cylinder.h"
 #include "Grid.h"
@@ -12,6 +11,7 @@
 #include "TextManager.h"
 #include "Crate.h"
 #include "BasicEffect.h"
+#include "Camera.h"
 
 RendererModule::D3DRenderer::D3DRenderer()
 	:m_d3dDevice(nullptr)
@@ -37,6 +37,7 @@ RendererModule::D3DRenderer::D3DRenderer()
 	m_resourceManager = std::make_unique<ResourceManager>();
 	m_textManager = std::make_unique<TextManager>();
 	m_camera = std::make_unique<Camera>();
+	m_camera->LookAt(XMFLOAT3(8.0f, 8.0f, -8.0f), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 1.0f, 0));
 }
 
 RendererModule::D3DRenderer::~D3DRenderer()
@@ -53,9 +54,8 @@ void RendererModule::D3DRenderer::Initialize(HWND hWnd, int screenWidth, int scr
 	m_hWnd = hWnd;
 
 	// 카메라 생성
-	m_mainCamera = std::make_unique<CameraObject>();
 	XMVECTOR cameraPosition = XMVectorSet(0.f, 10.f, 10.f, 1.f);
-	m_mainCamera->Initialize(m_screenWidth, m_screenHeight, cameraPosition);
+	m_camera->SetLens(0.25f * MathModule::PI, static_cast<float>(m_screenWidth) / m_screenHeight, 1.0f, 1000.0f);
 
 	InitializeD3D();
 
@@ -72,8 +72,6 @@ void RendererModule::D3DRenderer::Initialize(HWND hWnd, int screenWidth, int scr
 
 void RendererModule::D3DRenderer::Finalize()
 {
-	m_mainCamera->Finalize();
-
 	delete m_grid;
 	delete m_box;
 	delete m_sphere;
@@ -160,19 +158,20 @@ void RendererModule::D3DRenderer::OnResize(int width, int height)
 	vp.MaxDepth = 1.0f;
 
 	m_d3dDeviceContext->RSSetViewports(1, &vp);
+
+	float aspectRatio = static_cast<float>(m_screenWidth) / m_screenHeight;
 	
-	XMVECTOR cameraPosition = XMVectorSet(0.f, 10.f, 10.f, 1.f);
-	m_mainCamera->Initialize(m_screenWidth, m_screenHeight, cameraPosition);
+	m_camera->SetLens(0.25f * MathModule::PI, aspectRatio, 1.0f, 1000.0f);
 }
 
 void RendererModule::D3DRenderer::Render()
 {
-
+	m_camera->UpdateViewMatrix();
 
 	// 그림을 그려보자 
 	XMMATRIX worldMatrix = XMMatrixIdentity();
-	XMMATRIX viewMatrix = m_mainCamera->GetViewMatrix();
-	XMMATRIX projectMatrix = m_mainCamera->GetProjectMatrix();
+	XMMATRIX viewMatrix = m_camera->View();
+	XMMATRIX projectMatrix = m_camera->Proj();
 
 	m_box->Update(worldMatrix, viewMatrix, projectMatrix);
 	//m_box->Render();
@@ -195,7 +194,7 @@ void RendererModule::D3DRenderer::Render()
 	m_crate->Render();
 
 	XMFLOAT3 cameraPos; 
-	XMStoreFloat3(&cameraPos, m_mainCamera->GetPosition());
+	XMStoreFloat3(&cameraPos, m_camera->GetPositionXM());
 
 
 	/// 카메라 위치 
