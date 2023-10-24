@@ -2,7 +2,6 @@
 
 #include <d3d11.h> // dx11 Á¾¼ÓÀû
 
-
 namespace ToolModule
 {
 class ImGuiManager

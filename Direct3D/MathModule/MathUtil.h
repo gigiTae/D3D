@@ -11,6 +11,6 @@ namespace MathModule
 	float AngleFromXY(float x, float y);
 
 
-	XMMATRIX InverseTranspose(CXMMATRIX M);
+	XMMATRIX InverseTranspose(DirectX::CXMMATRIX M);
 
 }

@@ -31,7 +31,7 @@
     <Filter Include="Resource\Effect">
       <UniqueIdentifier>{dab35443-1121-4ffe-b889-0e4139629067}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Camera\Common">
+    <Filter Include="Common">
       <UniqueIdentifier>{fdd7fb52-fca5-4b03-a489-168ccdaf642d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -81,10 +81,10 @@
     <ClCompile Include="D3DRenderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="FL\DDSTextureLoader.cpp">
-      <Filter>Camera\Common</Filter>
+      <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="FileLoader.cpp">
-      <Filter>Camera\Common</Filter>
+      <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="TextManager.cpp" />
     <ClCompile Include="BasicEffect.cpp">
@@ -92,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="Crate.cpp">
       <Filter>Resource\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,10 +146,10 @@
     <ClInclude Include="D3DRenderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="FL\DDSTextureLoader.h">
-      <Filter>Camera\Common</Filter>
+      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="FileLoader.h">
-      <Filter>Camera\Common</Filter>
+      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="TextManager.h" />
     <ClInclude Include="Effect.h">
@@ -157,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="Crate.h">
       <Filter>Resource\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

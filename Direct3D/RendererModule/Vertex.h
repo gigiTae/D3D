@@ -24,7 +24,7 @@ namespace RendererModule
 		XMFLOAT3 position; // 위치값
 		XMFLOAT3 normal;   // 텍스터 좌표
 		XMFLOAT3 tangent;  // 탄젠트 
-		XMFLOAT2 uv;       // 노말
+		DirectX::XMFLOAT2 uv;       // 노말
 	};
 
 	/// <summary>

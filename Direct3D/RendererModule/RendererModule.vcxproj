@@ -150,6 +150,7 @@
     <ClInclude Include="BaseAxis.h" />
     <ClInclude Include="BasicEffect.h" />
     <ClInclude Include="Box.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraObject.h" />
     <ClInclude Include="Crate.h" />
     <ClInclude Include="Cylinder.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="BaseAxis.cpp" />
     <ClCompile Include="BasicEffect.cpp" />
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraObject.cpp" />
     <ClCompile Include="Crate.cpp" />
     <ClCompile Include="Cylinder.cpp" />

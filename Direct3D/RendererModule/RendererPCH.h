@@ -20,7 +20,7 @@
 #include <unordered_map>
 
 #include <wrl/client.h>
-using Microsoft::WRL::ComPtr;
+using Microsoft::WRL::ComPtr; //편하지만 지양해야한다.
 
 /// =============== D3D ========================= 
 #include <d3d11.h>

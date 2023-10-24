@@ -17,6 +17,7 @@ class Crate;
 class InputLayout;
 class ResourceManager;
 class TextManager;
+class Camera;
 }
 
 namespace RendererModule
@@ -46,7 +47,6 @@ public:
 	ID3D11Device* GetDevice() const { return m_d3dDevice.Get(); }
 	ID3D11DeviceContext* GetDeviceContext() const { return m_d3dDeviceContext.Get(); }
 
-
 private:
 	void InitializeD3D();
 	void InitializeResource();
@@ -64,6 +64,7 @@ private:
 	std::unique_ptr<ResourceManager> m_resourceManager;
 	std::unique_ptr<TextManager> m_textManager;
 
+	std::unique_ptr<Camera> m_camera;
 	std::unique_ptr<CameraObject> m_mainCamera; // 메인 카메라 
 	std::unique_ptr<InputLayout> m_inputLayout; // 입력서술 배치
 

@@ -32,11 +32,11 @@ RendererModule::D3DRenderer::D3DRenderer()
 	, m_cylinder(nullptr)
 	, m_geoSphere(nullptr)
 	, m_baseAxis(nullptr)
+	,m_camera(nullptr)
 {
 	m_resourceManager = std::make_unique<ResourceManager>();
 	m_textManager = std::make_unique<TextManager>();
-
-
+	m_camera = std::make_unique<Camera>();
 }
 
 RendererModule::D3DRenderer::~D3DRenderer()
