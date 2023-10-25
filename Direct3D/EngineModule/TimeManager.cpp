@@ -3,12 +3,12 @@
 
 EngineModule::TimeManager::TimeManager()
 	:m_deltaTime(0.)
-	,m_frequency()
-	,m_prevCount()
-	,m_curentCount()
-	,m_elapsedTime(0.)
-	,m_fps(0)
-	,m_updateCount(0)
+	, m_frequency()
+	, m_prevCount()
+	, m_curentCount()
+	, m_elapsedTime(0.)
+	, m_fps(0)
+	, m_updateCount(0)
 {
 
 }

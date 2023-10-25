@@ -5,11 +5,11 @@ static UINT g_resizeWidth = 0, g_resizeHeight = 0;
 
 Application::Application()
 	:m_hInstance(nullptr)
-	,m_hWnd(nullptr)
-	,m_screenHeight(0)
-	,m_screenWidth(0)
-	,m_d3dRenderer(nullptr)
-	,m_inputManager(nullptr)
+	, m_hWnd(nullptr)
+	, m_screenHeight(0)
+	, m_screenWidth(0)
+	, m_d3dRenderer(nullptr)
+	, m_inputManager(nullptr)
 {
 
 }
@@ -30,7 +30,7 @@ void Application::Initialize(HINSTANCE hInstance, int nCmdShow, UINT screenWidth
 
 	// 그래픽스 엔진 초기화 
 	m_d3dRenderer = std::make_unique<RendererModule::D3DRenderer>();
-	m_d3dRenderer->Initialize(m_hWnd, m_screenWidth, m_screenHeight );
+	m_d3dRenderer->Initialize(m_hWnd, m_screenWidth, m_screenHeight);
 
 	/// tool
 	m_imguiManager = std::make_unique<ToolModule::ImGuiManager>();
@@ -56,60 +56,66 @@ void Application::Process()
 {
 	MSG msg;
 
-	while (true)
+	bool isDone = false;
+	while (!isDone)
 	{
 		// 픽메세지 함수를 사용해서 메세지를 관리한다.
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
-			if (msg.message == WM_QUIT) break;
+			if (msg.message == WM_QUIT)
+			{
+				isDone = true;
+				break;
+			}
 			DispatchMessage(&msg);
 		}
-
-		if (g_resizeHeight != 0 && g_resizeWidth != 0)
+		else
 		{
-			m_d3dRenderer->OnResize(g_resizeWidth, g_resizeHeight);
-			g_resizeHeight = 0;
-			g_resizeWidth = 0;
+			if (g_resizeHeight != 0 && g_resizeWidth != 0)
+			{
+				m_d3dRenderer->OnResize(g_resizeWidth, g_resizeHeight);
+				g_resizeHeight = 0;
+				g_resizeWidth = 0;
+			}
+
+			// 게임 프로세스 루프
+			Update();
+
+
+			float dt = m_timeManager->GetDeltaTime();
+			int fps = m_timeManager->GetFPS();
+
+			std::wstring DT = L"DT : " + std::to_wstring(dt) + L" FPS : " + std::to_wstring(fps);
+
+			m_d3dRenderer->GetTextManager()->DrawTextColor(XMFLOAT2(0.f, 25.f), XMFLOAT4(0.f, 1.f, 1.f, 1.f), DT);
+
+			m_imguiManager->NewFrame();
+
+			float s = 1.f;
+			if (ImGui::Begin("camera"))
+			{
+				XMFLOAT3 pos = m_d3dRenderer->GetCamera()->GetPosition();
+
+				ImGui::SliderFloat(" X", &pos.x, -100.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+				ImGui::SliderFloat(" Y", &pos.y, -100.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+				ImGui::SliderFloat(" Z", &pos.z, -100.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+
+				m_d3dRenderer->GetCamera()->SetPosition(pos);
+
+				ImGui::End();
+			}
+
+			m_d3dRenderer->BeginRender();
+			m_d3dRenderer->Render();
+
+
+			// imgui
+			m_imguiManager->EndRnder();
+			m_d3dRenderer->EndRender();
+
 		}
-
-
-		// 게임 프로세스 루프
-		Update();
-
-
-
-		float dt = m_timeManager->GetDeltaTime();
-		int fps = m_timeManager->GetFPS();
-
-		std::wstring DT = L"DT : " + std::to_wstring(dt) + L" FPS : " + std::to_wstring(fps);
-
-		m_d3dRenderer->GetTextManager()->DrawTextColor(XMFLOAT2(0.f, 25.f), XMFLOAT4(0.f, 1.f, 1.f, 1.f), DT);
-
-		m_imguiManager->NewFrame();
-
-		float s = 1.f;
-		if (ImGui::Begin("camera"))
-		{
-			XMFLOAT3 pos = m_d3dRenderer->GetCamera()->GetPosition();
-
-			ImGui::SliderFloat(" X", &pos.x, -100.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-			ImGui::SliderFloat(" Y", &pos.y, -100.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-			ImGui::SliderFloat(" Z", &pos.z, -100.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-
-			m_d3dRenderer->GetCamera()->SetPosition(pos);
-
-			ImGui::End();
-		}
-
-		m_d3dRenderer->BeginRender();
-		m_d3dRenderer->Render();
-
-
-		// imgui
-		m_imguiManager->EndRnder();
-		m_d3dRenderer->EndRender();
-
 	}
+
 }
 
 void Application::Update()
@@ -127,7 +133,7 @@ void Application::CameraMove()
 	float deltaTime = m_timeManager->GetDeltaTime();
 	float moveSpeed = 10.f;
 	float distance = deltaTime * moveSpeed;
-	
+
 	if (m_inputManager->IsKeyState(KEY::W, KEY_STATE::HOLD))
 	{
 		m_d3dRenderer->GetCamera()->Walk(distance);
@@ -220,11 +226,11 @@ void Application::WindowInitialize(int nCmdShow)
 
 	// 윈도우 창 생성
 	m_hWnd = CreateWindow(title, title
-		, WS_OVERLAPPEDWINDOW // 창이 겹침
-		, left, top, m_screenWidth, m_screenHeight
-		, NULL, NULL, m_hInstance, NULL);
+						  , WS_OVERLAPPEDWINDOW // 창이 겹침
+						  , left, top, m_screenWidth, m_screenHeight
+						  , NULL, NULL, m_hInstance, NULL);
 
-	// 방어적코드
+					  // 방어적코드
 	assert(m_hWnd);
 
 	ShowWindow(m_hWnd, nCmdShow);
@@ -245,26 +251,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	switch (message)
 	{
-		case WM_DESTROY:
-			PostQuitMessage(0);
-			break;
-		case WM_SIZE:
-			if (wParam == SIZE_MINIMIZED)
-				return 0;
-			g_resizeWidth = (UINT)LOWORD(lParam); // Queue resize
-			g_resizeHeight = (UINT)HIWORD(lParam);
-			return 0;
-		case WM_DPICHANGED:
-			if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DpiEnableScaleViewports)
-			{
-				//const int dpi = HIWORD(wParam);
-				//printf("WM_DPICHANGED to %d (%.0f%%)\n", dpi, (float)dpi / 96.0f * 100.0f);
-				const RECT* suggested_rect = (RECT*)lParam;
-				::SetWindowPos(hWnd, nullptr, suggested_rect->left, suggested_rect->top, suggested_rect->right - suggested_rect->left, suggested_rect->bottom - suggested_rect->top, SWP_NOZORDER | SWP_NOACTIVATE);
-			}
-			break;
-		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
+	case WM_DESTROY:
+	PostQuitMessage(0);
+	break;
+	case WM_SIZE:
+	if (wParam == SIZE_MINIMIZED)
+		return 0;
+	g_resizeWidth = (UINT)LOWORD(lParam); // Queue resize
+	g_resizeHeight = (UINT)HIWORD(lParam);
+	return 0;
+	case WM_DPICHANGED:
+	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DpiEnableScaleViewports)
+	{
+		//const int dpi = HIWORD(wParam);
+		//printf("WM_DPICHANGED to %d (%.0f%%)\n", dpi, (float)dpi / 96.0f * 100.0f);
+		const RECT* suggested_rect = (RECT*)lParam;
+		::SetWindowPos(hWnd, nullptr, suggested_rect->left, suggested_rect->top, suggested_rect->right - suggested_rect->left, suggested_rect->bottom - suggested_rect->top, SWP_NOZORDER | SWP_NOACTIVATE);
+	}
+	break;
+	default:
+	return DefWindowProc(hWnd, message, wParam, lParam);
 
 	}
 	return 0;

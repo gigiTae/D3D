@@ -5,15 +5,16 @@
 
 
 RendererModule::Crate::Crate(ID3D11Device* device, ID3D11DeviceContext* deviceContext
-	, ID3D11RasterizerState* rs, ID3D11InputLayout* inputLayout, BasicEffect* effect)
+							 , ID3D11RasterizerState* rs, ID3D11InputLayout* inputLayout, BasicEffect* effect)
 	:m_d3dDevice(device), m_d3dDeviceContext(deviceContext), m_rasterizerState(rs)
 	, m_proj(), m_world(), m_view(), m_indexBuffer(), m_vertexBuffer(), m_inputLayout()
-	,m_basicEffect(effect)
+	, m_basicEffect(effect)
 {
 	m_material.ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
 	m_material.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_material.specular = XMFLOAT4(0.6f, 0.6f, 0.6f, 16.0f);
 }
+
 RendererModule::Crate::~Crate()
 {
 

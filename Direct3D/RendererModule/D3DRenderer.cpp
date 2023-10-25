@@ -387,7 +387,7 @@ void RendererModule::D3DRenderer::InitializeResource()
 	rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME; // 와이어 프레임 모드
 	//rasterizerDesc.FillMode = D3D11_FILL_SOLID; // 삼각형 채우기 모드 
 	//rasterizerDesc.CullMode = D3D11_CULL_BACK; // 후면 삼각현 제외
-	rasterizerDesc.CullMode = D3D11_CULL_NONE;  // 카메라에 대한 양면 랜더링 활성화
+	rasterizerDesc.CullMode = D3D11_CULL_BACK;  // 카메라에 대한 양면 랜더링 활성화
 	rasterizerDesc.FrontCounterClockwise = false; // 시계 방향으로 그려지는 삼각형
 	rasterizerDesc.DepthClipEnable = true; // 깊이 클리핑 활성화
 
@@ -431,7 +431,6 @@ void RendererModule::D3DRenderer::InitializeObject()
 	m_baseAxis->Initalize();
 
 	BasicEffect* ef = dynamic_cast<BasicEffect*>(m_resourceManager->GetEffect(L"Basic"));
-
 
 	m_crate = new Crate(m_d3dDevice.Get(), m_d3dDeviceContext.Get()
 		, m_rasterizerState[0].Get(), m_inputLayout->GetBasicLayout(),ef);
