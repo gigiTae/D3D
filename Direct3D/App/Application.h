@@ -1,9 +1,5 @@
 #pragma once
 
-namespace ToolModule
-{
-class ImGuiManager;
-}
 
 /// <summary>
 ///  모듈들을 이용하는 가장 상단 클래스 

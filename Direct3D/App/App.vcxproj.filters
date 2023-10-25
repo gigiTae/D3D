@@ -9,47 +9,47 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Private\Windows">
+    <Filter Include="Entry">
       <UniqueIdentifier>{5a246e34-949e-4af3-a3a0-f078394767c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Private\Windows\Resource">
+    <Filter Include="Entry\Resource">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
-      <Filter>Private\Windows\Resource</Filter>
+      <Filter>Entry\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h" />
     <ClInclude Include="Application.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
       <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="WindowsApp.cpp">
-      <Filter>Private\Windows</Filter>
+      <Filter>Entry</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
       <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App.rc">
-      <Filter>Private\Windows\Resource</Filter>
+      <Filter>Entry\Resource</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
-      <Filter>Private\Windows\Resource</Filter>
+      <Filter>Entry\Resource</Filter>
     </Image>
     <Image Include="App.ico">
-      <Filter>Private\Windows\Resource</Filter>
+      <Filter>Entry\Resource</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Basic.fx" />
-    <FxCompile Include="LightHelper.fx" />
   </ItemGroup>
 </Project>

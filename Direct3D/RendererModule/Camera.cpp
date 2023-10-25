@@ -25,6 +25,7 @@ XMFLOAT3 RendererModule::Camera::GetPosition() const
 	return m_position;
 }
 
+
 void RendererModule::Camera::SetPosition(float x, float y, float z)
 {
 	m_position = XMFLOAT3(x, y, z);

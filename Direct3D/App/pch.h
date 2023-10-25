@@ -32,8 +32,8 @@
 #include "MathModule/MathHeader.h"
 #include "RendererModule/RendererHeader.h"
 #include "EngineModule/EngineHeader.h"
+#include "ToolModule/ToolModuleHeader.h"
 
 #include "resource.h"
-#include "ToolModule/ToolModuleHeader.h"
 
 #endif //PCH_H

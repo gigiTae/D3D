@@ -13,12 +13,6 @@
     <Filter Include="Resource\Mesh\Gizumo">
       <UniqueIdentifier>{a6c0c9c4-669a-4965-a5a8-5c6fd1415580}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Camera">
-      <UniqueIdentifier>{fa0e41eb-c3ea-4792-859e-941187b50e28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Define">
-      <UniqueIdentifier>{f660b35c-8022-47e2-acba-8a30df49c0db}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource\Light">
       <UniqueIdentifier>{55f9dd26-4eb6-46ff-8f03-2d8ddaaa1ade}</UniqueIdentifier>
     </Filter>
@@ -31,17 +25,14 @@
     <Filter Include="Resource\Effect">
       <UniqueIdentifier>{dab35443-1121-4ffe-b889-0e4139629067}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Common">
-      <UniqueIdentifier>{fdd7fb52-fca5-4b03-a489-168ccdaf642d}</UniqueIdentifier>
+    <Filter Include="Public">
+      <UniqueIdentifier>{4d164208-4dd7-4e7f-b6a8-d8284bd86ed6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private">
+      <UniqueIdentifier>{e71404bf-7a1c-47ee-8c67-d3bda62fe30d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CameraObject.cpp">
-      <Filter>Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="RendererPCH.cpp">
-      <Filter>Define</Filter>
-    </ClCompile>
     <ClCompile Include="Box.cpp">
       <Filter>Resource\Mesh\Geometry</Filter>
     </ClCompile>
@@ -78,14 +69,6 @@
     <ClCompile Include="Effect.cpp">
       <Filter>Resource\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="D3DRenderer.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="FL\DDSTextureLoader.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="FileLoader.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="TextManager.cpp" />
     <ClCompile Include="BasicEffect.cpp">
       <Filter>Resource\Effect</Filter>
@@ -93,23 +76,29 @@
     <ClCompile Include="Crate.cpp">
       <Filter>Resource\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="RendererPCH.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="FileLoader.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="FL\DDSTextureLoader.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraObject.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Camera</Filter>
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DRenderer.cpp">
+      <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraObject.h">
-      <Filter>Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="HRDefine.h">
-      <Filter>Define</Filter>
-    </ClInclude>
-    <ClInclude Include="RendererHeader.h">
-      <Filter>Define</Filter>
-    </ClInclude>
-    <ClInclude Include="RendererPCH.h">
-      <Filter>Define</Filter>
-    </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>Resource\Mesh\Geometry</Filter>
     </ClInclude>
@@ -143,15 +132,6 @@
     <ClInclude Include="Material.h">
       <Filter>Resource\Material</Filter>
     </ClInclude>
-    <ClInclude Include="D3DRenderer.h" />
-    <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="FL\DDSTextureLoader.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="FileLoader.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="TextManager.h" />
     <ClInclude Include="Effect.h">
       <Filter>Resource\Effect</Filter>
     </ClInclude>
@@ -161,8 +141,35 @@
     <ClInclude Include="Crate.h">
       <Filter>Resource\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="TextManager.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DRenderer.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="RendererPCH.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="RendererHeader.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="HRDefine.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="FileLoader.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="FL\DDSTextureLoader.h">
+      <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraObject.h">
+      <Filter>Public</Filter>
+    </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Camera</Filter>
+      <Filter>Public</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -14,7 +14,7 @@ public:
 	XMFLOAT3 GetPosition() const;
 	void SetPosition(float x, float y, float z);
 	void SetPosition(const XMFLOAT3& v);
-
+	
 	// Get camera basis vectors.
 	XMVECTOR GetRightXM() const;
 	XMFLOAT3 GetRight() const;
@@ -63,6 +63,7 @@ public:
 private:
 	// Camera coordinate system with coordinates relative to world space.
 	XMFLOAT3 m_position;
+	
 	XMFLOAT3 m_right;
 	XMFLOAT3 m_up;
 	XMFLOAT3 m_look;
