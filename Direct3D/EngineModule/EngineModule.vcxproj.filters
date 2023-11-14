@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Public">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Private">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -12,11 +8,27 @@
     <Filter Include="Private\Manager">
       <UniqueIdentifier>{1e2b1eba-8bc1-483b-98f0-f2a94218ab51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Private\Entity">
+      <UniqueIdentifier>{bd3fc562-3d1b-420e-a66c-34ce64cc6432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Private\Component">
+      <UniqueIdentifier>{1a991102-6793-47e0-93c5-3910c3eb73e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
     <Filter Include="Public\Manager">
       <UniqueIdentifier>{6a3dafa7-b016-47b6-a73c-ce12a5eea18a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Public\EnumClass">
       <UniqueIdentifier>{60f85de1-8332-46a2-98e8-548f96eadeee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\Entity">
+      <UniqueIdentifier>{14513ac9-1124-40fb-84c3-85b3a9a3069f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Public\Component">
+      <UniqueIdentifier>{8e6476d4-27ad-4daa-b084-2702e6607d13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +45,21 @@
       <Filter>Public</Filter>
     </ClInclude>
     <ClInclude Include="EngineHeader.h" />
+    <ClInclude Include="EventManager.h">
+      <Filter>Public\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Public\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseComponent.h">
+      <Filter>Public\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Public\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="EventEnumClass.h">
+      <Filter>Public\EnumClass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="InputManager.cpp">
@@ -43,6 +70,18 @@
     </ClCompile>
     <ClCompile Include="EnginePCH.cpp">
       <Filter>Private</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Private\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Private\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseComponent.cpp">
+      <Filter>Private\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Private\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

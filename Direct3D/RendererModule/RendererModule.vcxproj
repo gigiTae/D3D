@@ -204,9 +204,6 @@
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ASE Parser\ASE Parser.vcxproj">
-      <Project>{44f9dc24-f585-415a-a827-d5079f96c601}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\MathModule\MathModule.vcxproj">
       <Project>{fab56e85-4bc3-4306-b2c0-3ac78ca3cd29}</Project>
     </ProjectReference>

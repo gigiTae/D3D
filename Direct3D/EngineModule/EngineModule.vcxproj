@@ -140,13 +140,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="EngineHeader.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="EventEnumClass.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="InputEnumClass.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="EnginePCH.h" />
     <ClInclude Include="TimeManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="EnginePCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
